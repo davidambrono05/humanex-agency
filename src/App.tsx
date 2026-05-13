@@ -771,7 +771,7 @@ export default function App() {
       <footer style={{
         borderTop: "1px solid rgba(255,255,255,0.06)",
         padding: "48px 48px",
-        display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24,
+        display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 24,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <svg width="34" height="34" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -801,7 +801,7 @@ export default function App() {
               style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>{l.label}</a>
           ))}
         </div>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.25)" }}>
+        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.25)", textAlign: "right" }}>
           © {new Date().getFullYear()} HUMANEX. Toate drepturile rezervate.
         </p>
       </footer>
@@ -847,7 +847,8 @@ export default function App() {
           .contact-form-row { grid-template-columns: 1fr !important; }
 
           /* Footer */
-          footer { flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 32px 24px !important; gap: 16px !important; }
+          footer { display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 32px 24px !important; gap: 16px !important; }
+          footer p { text-align: center !important; }
 
           /* Section padding */
           section { padding-left: 16px !important; padding-right: 16px !important; }
