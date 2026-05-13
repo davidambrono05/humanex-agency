@@ -321,7 +321,7 @@ export default function App() {
           fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.5)",
           maxWidth: 580, lineHeight: 1.75, marginBottom: 44,
         }}>
-          Sisteme AI personalizate pentru afaceri mici și mijlocii. Rapoarte, notificări, dashboarduri — complet automatizate, livrate rapid.
+          Sisteme AI personalizate pentru afaceri mici și mijlocii. Rapoarte, notificări, dashboarduri, complet automatizate, livrate rapid.
         </p>
 
         {/* CTA */}
