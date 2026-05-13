@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 const SERVICES = [
   {
@@ -140,10 +141,34 @@ const FAQS = [
   },
 ];
 
+const EMAILJS_SERVICE = "service_vgg5fdg";
+const EMAILJS_TEMPLATE = "template_asjlv4r";
+const EMAILJS_KEY = "km3Un_Nuwq0eqaiPP";
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+    setSending(true);
+    setError(false);
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE, EMAILJS_TEMPLATE, formRef.current, EMAILJS_KEY);
+      setSent(true);
+      formRef.current.reset();
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -678,36 +703,38 @@ export default function App() {
             </p>
           </div>
 
-          <form style={{ display: "flex", flexDirection: "column", gap: 14 }} onSubmit={e => e.preventDefault()}>
+          <form ref={formRef} style={{ display: "flex", flexDirection: "column", gap: 14 }} onSubmit={handleSubmit}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-              {[
-                { placeholder: "Numele tău", type: "text" },
-                { placeholder: "Email", type: "email" },
-              ].map(f => (
-                <input key={f.placeholder} type={f.type} placeholder={f.placeholder}
-                  style={{
-                    background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                    borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
-                    outline: "none", fontFamily: "inherit",
-                  }}
-                />
-              ))}
+              <input type="text" name="name" placeholder="Numele tău" required
+                style={{
+                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
+                  borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
+                  outline: "none", fontFamily: "inherit",
+                }}
+              />
+              <input type="email" name="email" placeholder="Email" required
+                style={{
+                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
+                  borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
+                  outline: "none", fontFamily: "inherit",
+                }}
+              />
             </div>
-            <input type="text" placeholder="Telefon / WhatsApp"
+            <input type="text" name="phone" placeholder="Telefon / WhatsApp"
               style={{
                 background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
                 borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
                 outline: "none", fontFamily: "inherit",
               }}
             />
-            <input type="text" placeholder="Tipul afacerii tale (ex: construcții, transport, servicii)"
+            <input type="text" name="business" placeholder="Tipul afacerii tale (ex: construcții, transport, servicii)"
               style={{
                 background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
                 borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
                 outline: "none", fontFamily: "inherit",
               }}
             />
-            <textarea placeholder="Ce vrei să automatizezi? Descrie procesul actual..."
+            <textarea name="message" placeholder="Ce vrei să automatizezi? Descrie procesul actual..."
               rows={5}
               style={{
                 background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
@@ -715,12 +742,27 @@ export default function App() {
                 outline: "none", resize: "vertical", fontFamily: "inherit",
               }}
             />
-            <button type="submit" style={{
-              background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
+            {sent && (
+              <div style={{
+                background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)",
+                borderRadius: 12, padding: "14px 18px", color: "#4ade80", fontSize: 15, fontWeight: 600,
+              }}>✓ Mesaj trimis! Te contactăm în maxim 24 de ore.</div>
+            )}
+            {error && (
+              <div style={{
+                background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)",
+                borderRadius: 12, padding: "14px 18px", color: "#f87171", fontSize: 15, fontWeight: 600,
+              }}>❌ Eroare la trimitere. Încearcă din nou.</div>
+            )}
+            <button type="submit" disabled={sending || sent} style={{
+              background: sent ? "rgba(34,197,94,0.2)" : "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
               color: "#fff", padding: "18px", borderRadius: 12, border: "none",
-              fontWeight: 800, fontSize: 17, cursor: "pointer",
-              boxShadow: "0 0 50px rgba(29,78,216,0.45)",
-            }}>Trimite Mesajul →</button>
+              fontWeight: 800, fontSize: 17, cursor: sending || sent ? "default" : "pointer",
+              boxShadow: sent ? "none" : "0 0 50px rgba(29,78,216,0.45)",
+              opacity: sending ? 0.7 : 1,
+            }}>
+              {sending ? "Se trimite..." : sent ? "✓ Trimis!" : "Trimite Mesajul →"}
+            </button>
           </form>
         </div>
       </section>
