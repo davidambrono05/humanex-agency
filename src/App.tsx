@@ -256,7 +256,7 @@ export default function App() {
       </nav>
 
       {/* ── HERO ── */}
-      <section ref={heroRef} style={{
+      <section ref={heroRef} className="hero-section" style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         padding: "130px 24px 80px", textAlign: "center", position: "relative",
@@ -792,9 +792,13 @@ export default function App() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 32 }}>
-          {["Servicii", "Prețuri", "Contact"].map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`}
-              style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>{l}</a>
+          {[
+            { label: "Servicii", href: "#servicii" },
+            { label: "Prețuri", href: "#preturi" },
+            { label: "Contact", href: "#contact" },
+          ].map(l => (
+            <a key={l.label} href={l.href}
+              style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>{l.label}</a>
           ))}
         </div>
         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.25)" }}>
@@ -812,10 +816,11 @@ export default function App() {
           nav { padding: 0 20px !important; }
 
           /* Hero */
+          .hero-section { padding-top: 100px !important; padding-bottom: 48px !important; }
           .hero-stats { flex-direction: column !important; gap: 0 !important; }
           .hero-stats > div { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
           .hero-stats > div:last-child { border-bottom: none; }
-          .hero-cta { flex-direction: column !important; align-items: center !important; }
+          .hero-cta { flex-direction: column !important; align-items: center !important; margin-bottom: 36px !important; }
           .hero-cta a { width: 100% !important; text-align: center !important; box-sizing: border-box; }
 
           /* Services */
