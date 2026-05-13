@@ -233,7 +233,7 @@ export default function App() {
         </div>
 
         {/* Links */}
-        <div style={{ display: "flex", gap: 36, alignItems: "center" }}>
+        <div className="nav-links" style={{ display: "flex", gap: 36, alignItems: "center" }}>
           {navLinks.map(l => (
             <a key={l.id} href={`#${l.id}`}
               style={{
@@ -325,7 +325,7 @@ export default function App() {
         </p>
 
         {/* CTA */}
-        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center", marginBottom: 80 }}>
+        <div className="hero-cta" style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center", marginBottom: 80 }}>
           <a href="#contact" style={{
             background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
             color: "#fff", padding: "16px 36px", borderRadius: 12,
@@ -346,7 +346,7 @@ export default function App() {
         </div>
 
         {/* Stats bar */}
-        <div style={{
+        <div className="hero-stats" style={{
           display: "flex", gap: 0, flexWrap: "wrap", justifyContent: "center",
           background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
           borderRadius: 16, overflow: "hidden", maxWidth: 820, width: "100%",
@@ -366,7 +366,7 @@ export default function App() {
       {/* ── SERVICES ── */}
       <section id="servicii" style={{ padding: "110px 24px" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 64, flexWrap: "wrap", gap: 24 }}>
+          <div className="services-header" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 64, flexWrap: "wrap", gap: 24 }}>
             <div>
               <p style={{ fontSize: 12, fontWeight: 700, color: "#60a5fa", letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>
                 Ce Construim
@@ -442,14 +442,14 @@ export default function App() {
             background: "linear-gradient(135deg, rgba(29,78,216,0.12) 0%, rgba(14,165,233,0.06) 100%)",
             border: "1px solid rgba(29,78,216,0.25)", borderRadius: 24,
             padding: "56px 56px", position: "relative", overflow: "hidden",
-          }}>
+          }} className="case-study-wrap">
             <div style={{
               position: "absolute", top: -60, right: -60, width: 300, height: 300,
               borderRadius: "50%",
               background: "radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%)",
             }} />
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 56, alignItems: "center" }}>
+            <div className="case-study-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 56, alignItems: "center" }}>
               <div>
                 <div style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
@@ -482,7 +482,7 @@ export default function App() {
                 <p style={{ fontSize: 20, color: "rgba(255,255,255,0.8)", lineHeight: 1.8, marginBottom: 32, fontStyle: "italic" }}>
                   "Șefii de echipă completează raportul zilnic de pe telefon. Proprietarul primește raportul complet pe email și WhatsApp în câteva secunde — fără niciun PC implicat, 24/7."
                 </p>
-                <div style={{ display: "flex", gap: 32 }}>
+                <div className="case-study-stats" style={{ display: "flex", gap: 32 }}>
                   {[
                     { value: "< 3s", label: "Timp de trimitere raport" },
                     { value: "100%", label: "Disponibilitate sistem" },
@@ -510,11 +510,11 @@ export default function App() {
             </h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
             {STEPS.map((step, i) => (
               <div key={step.number} style={{ position: "relative" }}>
                 {i < STEPS.length - 1 && (
-                  <div style={{
+                  <div className="step-connector" style={{
                     position: "absolute", top: 32, left: "calc(100% - 12px)", right: "-12px",
                     height: 1, background: "linear-gradient(90deg, rgba(29,78,216,0.5), rgba(29,78,216,0.1))",
                     zIndex: 1,
@@ -561,9 +561,9 @@ export default function App() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, alignItems: "center" }}>
+          <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, alignItems: "center" }}>
             {PLANS.map((plan) => (
-              <div key={plan.name} style={{
+              <div key={plan.name} className={plan.highlight ? "pricing-highlight" : undefined} style={{
                 background: plan.highlight ? "linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 100%)" : "rgba(255,255,255,0.025)",
                 border: plan.highlight ? "1px solid rgba(96,165,250,0.4)" : "1px solid rgba(255,255,255,0.07)",
                 borderRadius: 24, padding: plan.highlight ? "44px 32px" : "36px 28px",
@@ -667,7 +667,7 @@ export default function App() {
             background: "linear-gradient(135deg, #1d4ed8 0%, #0f172a 60%, #1e40af 100%)",
             border: "1px solid rgba(96,165,250,0.2)", borderRadius: 24,
             padding: "72px 56px", textAlign: "center", position: "relative", overflow: "hidden",
-          }}>
+          }} className="cta-band">
             <div style={{
               position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)",
               width: 500, height: 500, borderRadius: "50%",
@@ -704,7 +704,7 @@ export default function App() {
           </div>
 
           <form ref={formRef} style={{ display: "flex", flexDirection: "column", gap: 14 }} onSubmit={handleSubmit}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div className="contact-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               <input type="text" name="name" placeholder="Numele tău" required
                 style={{
                   background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
@@ -801,6 +801,60 @@ export default function App() {
           © {new Date().getFullYear()} HUMANEX. Toate drepturile rezervate.
         </p>
       </footer>
+
+      <style>{`
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 768px) {
+
+          /* Navbar */
+          .nav-links { display: none !important; }
+          .nav-cta { display: none !important; }
+          nav { padding: 0 20px !important; }
+
+          /* Hero */
+          .hero-stats { flex-direction: column !important; gap: 0 !important; }
+          .hero-stats > div { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
+          .hero-stats > div:last-child { border-bottom: none; }
+          .hero-cta { flex-direction: column !important; align-items: center !important; }
+          .hero-cta a { width: 100% !important; text-align: center !important; box-sizing: border-box; }
+
+          /* Services */
+          .services-header { flex-direction: column !important; align-items: flex-start !important; }
+
+          /* Case study */
+          .case-study-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .case-study-stats { flex-wrap: wrap !important; gap: 20px !important; }
+          .case-study-wrap { padding: 32px 24px !important; }
+
+          /* How it works */
+          .steps-grid { grid-template-columns: 1fr !important; }
+          .step-connector { display: none !important; }
+
+          /* Pricing */
+          .pricing-grid { grid-template-columns: 1fr !important; }
+          .pricing-highlight { transform: scale(1) !important; }
+
+          /* CTA band */
+          .cta-band { padding: 48px 28px !important; }
+
+          /* Contact form */
+          .contact-form-row { grid-template-columns: 1fr !important; }
+
+          /* Footer */
+          footer { flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 32px 24px !important; gap: 16px !important; }
+
+          /* Section padding */
+          section { padding-left: 16px !important; padding-right: 16px !important; }
+        }
+
+        /* Smooth hover for inputs */
+        input:focus, textarea:focus {
+          border-color: rgba(29,78,216,0.5) !important;
+        }
+        input::placeholder, textarea::placeholder {
+          color: rgba(255,255,255,0.3);
+        }
+      `}</style>
     </div>
   );
 }
