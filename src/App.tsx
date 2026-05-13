@@ -352,7 +352,7 @@ export default function App() {
           borderRadius: 16, overflow: "hidden", maxWidth: 820, width: "100%",
         }}>
           {STATS.map((s, i) => (
-            <div key={s.label} style={{
+            <div key={s.label} className="stat-item" style={{
               flex: "1 1 180px", padding: "24px 20px", textAlign: "center",
               borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
             }}>
@@ -822,6 +822,7 @@ export default function App() {
           .hero-stats > div:last-child { border-bottom: none; }
           .hero-cta { flex-direction: column !important; align-items: center !important; margin-bottom: 36px !important; }
           .hero-cta a { width: 100% !important; text-align: center !important; box-sizing: border-box; }
+          .stat-item { padding: 14px 16px !important; flex: 1 1 100% !important; }
 
           /* Services */
           .services-header { flex-direction: column !important; align-items: flex-start !important; }
