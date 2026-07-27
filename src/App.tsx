@@ -240,7 +240,7 @@ const PLANS = [
 
 const CASE_STUDIES = [
   {
-    name: "da Vinci",
+    name: "DaVinci",
     meta: "Restaurant & Boutique Hotel • Centrul Vechi, Brașov",
     items: [
       "Campanii Meta Ads administrate",
