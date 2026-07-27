@@ -91,8 +91,14 @@ const SOCIAL_PLANS = [
     name: "Social Media Start",
     price: "150€ – 300€",
     period: "lună",
-    desc: "Gestionarea paginilor de Instagram și Facebook, cu conținut constant",
-    features: ["8 postări / lună", "Story-uri săptămânale", "Plan de conținut", "Raport lunar"],
+    desc: "Postăm în fiecare zi pentru tine. Pagina ta rămâne activă, fără să te ocupi de nimic.",
+    features: [
+      "O postare în fiecare zi — 30 pe lună",
+      "Story-uri zilnice",
+      "Plan de conținut lunar",
+      "Răspuns la comentarii și mesaje",
+      "Raport lunar",
+    ],
     highlight: false,
     badge: "Social Media",
   },
@@ -100,19 +106,17 @@ const SOCIAL_PLANS = [
     name: "Social Media + Ads",
     price: "300€ – 600€",
     period: "lună",
-    desc: "Conținut complet plus campanii Meta Ads administrate și optimizate",
-    features: ["12 postări / lună", "4 reels", "Campanii Meta Ads", "Răspuns la mesaje", "Raport lunar"],
+    desc: "Postare zilnică plus campanii plătite administrate și optimizate de noi.",
+    features: [
+      "O postare în fiecare zi — 30 pe lună",
+      "8 reels pe lună",
+      "Campanii Meta Ads și TikTok Ads",
+      "Story-uri zilnice",
+      "Răspuns la comentarii și mesaje",
+      "Raport lunar",
+    ],
     highlight: true,
     badge: "Cel mai ales",
-  },
-  {
-    name: "Promovare Completă",
-    price: "600€ – 1.200€",
-    period: "lună",
-    desc: "Meta Ads și TikTok Ads, producție foto-video și gestionare completă",
-    features: ["Conținut nelimitat", "Meta Ads + TikTok Ads", "Producție foto & video", "Community management", "Raport bilunar"],
-    highlight: false,
-    badge: "Social Media",
   },
 ];
 
@@ -735,14 +739,15 @@ export default function App() {
           {/* Social media & ads — recurring */}
           <div style={{ marginBottom: 48 }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: 2, textTransform: "uppercase", marginBottom: 24 }}>Promovare & Social Media — Lunar</h3>
-            <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+            <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16, maxWidth: 760, margin: "0 auto" }}>
               {SOCIAL_PLANS.map((plan) => (
                 <div key={plan.name} className={plan.highlight ? "pricing-highlight" : undefined} style={{
                   background: plan.highlight ? "linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 100%)" : "rgba(255,255,255,0.025)",
                   border: plan.highlight ? "1px solid rgba(96,165,250,0.4)" : "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: plan.highlight ? "36px 28px" : "32px 24px",
+                  borderRadius: 20, padding: "32px 26px",
                   position: "relative",
                   boxShadow: plan.highlight ? "0 0 60px rgba(29,78,216,0.3)" : "none",
+                  display: "flex", flexDirection: "column",
                 }}>
                   <div style={{
                     display: "inline-block", fontSize: 10, fontWeight: 800, letterSpacing: 1,
@@ -775,11 +780,12 @@ export default function App() {
                     color: plan.highlight ? "#1e3a8a" : "#93c5fd",
                     background: plan.highlight ? "#fff" : "rgba(29,78,216,0.12)",
                     border: plan.highlight ? "1px solid #fff" : "1px solid rgba(29,78,216,0.3)",
+                    marginTop: "auto",
                   }}>Începe acum →</a>
                 </div>
               ))}
             </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginTop: 16, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginTop: 16, lineHeight: 1.7, maxWidth: 760, margin: "16px auto 0" }}>
               Bugetul de reclame se plătește separat, direct către Meta sau TikTok. Prețurile de mai sus acoperă doar munca de administrare, conținut și optimizare.
             </p>
           </div>
@@ -792,9 +798,10 @@ export default function App() {
                 <div key={plan.name} className={plan.highlight ? "pricing-highlight" : undefined} style={{
                   background: plan.highlight ? "linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 100%)" : "rgba(255,255,255,0.025)",
                   border: plan.highlight ? "1px solid rgba(96,165,250,0.4)" : "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: plan.highlight ? "36px 28px" : "32px 24px",
+                  borderRadius: 20, padding: "32px 26px",
                   position: "relative",
                   boxShadow: plan.highlight ? "0 0 60px rgba(29,78,216,0.3)" : "none",
+                  display: "flex", flexDirection: "column",
                 }}>
                   {plan.highlight && (
                     <div style={{
@@ -838,6 +845,7 @@ export default function App() {
                     background: plan.highlight ? "rgba(255,255,255,0.18)" : "rgba(29,78,216,0.25)",
                     border: `1px solid ${plan.highlight ? "rgba(255,255,255,0.25)" : "rgba(29,78,216,0.4)"}`,
                     color: "#fff",
+                    marginTop: "auto",
                   }}>Începe acum →</a>
                 </div>
               ))}
@@ -852,8 +860,9 @@ export default function App() {
                 <div key={plan.name} style={{
                   background: "rgba(255,255,255,0.025)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: "32px 24px",
+                  borderRadius: 20, padding: "32px 26px",
                   position: "relative",
+                  display: "flex", flexDirection: "column",
                 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, color: "#60a5fa", background: "rgba(29,78,216,0.15)", border: "1px solid rgba(29,78,216,0.3)", borderRadius: 6, padding: "2px 8px" }}>{plan.badge}</span>
@@ -885,6 +894,7 @@ export default function App() {
                     display: "block", textAlign: "center", padding: "12px",
                     borderRadius: 10, fontWeight: 700, fontSize: 14, textDecoration: "none",
                     background: "rgba(29,78,216,0.25)", border: "1px solid rgba(29,78,216,0.4)", color: "#fff",
+                    marginTop: "auto",
                   }}>Începe acum →</a>
                 </div>
               ))}
