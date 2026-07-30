@@ -494,7 +494,7 @@ export default function App() {
             display: "inline-block", boxShadow: "0 0 8px #22d3ee",
           }} />
           <span style={{ fontSize: 13, color: "#93c5fd", fontWeight: 600, letterSpacing: 0.5 }}>
-            Agenție de Promovare & Automatizare AI • Brașov
+            Agenție de Promovare & Automatizare AI
           </span>
         </div>
 
@@ -516,7 +516,7 @@ export default function App() {
           fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.5)",
           maxWidth: 580, lineHeight: 1.75, marginBottom: 44,
         }}>
-          Campanii Meta și TikTok Ads, gestionarea rețelelor sociale și sisteme AI personalizate — pentru afaceri mici și mijlocii din România.
+          Campanii Meta și TikTok Ads, gestionarea rețelelor sociale și sisteme AI personalizate, pentru afaceri mici și mijlocii din România.
         </p>
 
         {/* CTA */}
