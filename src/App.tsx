@@ -258,6 +258,24 @@ const CASE_STUDIES = [
     ],
   },
   {
+    name: "SpecialDelivery",
+    meta: "Livrări fast food • Județul Bacău",
+    items: [
+      "Site construit de la zero, cu preluare de comenzi",
+      "Campanii țintite pe localitățile fără acoperire",
+      "Acoperire în orașe și sate din tot județul",
+      "Livrare caldă, în ambalaje termice",
+    ],
+    quote:
+      "Brandurile mari de fast food se opreau la marginea Bacăului. Am construit site-ul prin care oamenii din orașele și satele din tot județul puteau comanda aceeași mâncare — livrată caldă, în cutii create special — și campaniile care au dus vestea acolo unde nu ajunsese nimeni.",
+    // TODO David: dacă știi comenzi/lună sau nr. de localități acoperite, înlocuiește
+    stats: [
+      { value: "Tot județul", label: "Zonă acoperită" },
+      { value: "Site + Ads", label: "Construit și promovat" },
+      { value: "Direct", label: "Comenzi fără intermediari" },
+    ],
+  },
+  {
     name: "Energoprest",
     meta: "Servicii Electrice • Bacău",
     items: [
