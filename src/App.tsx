@@ -267,7 +267,7 @@ const CASE_STUDIES = [
       "Livrare caldă, în ambalaje termice",
     ],
     quote:
-      "Brandurile mari de fast food se opreau la marginea Bacăului. Am construit site-ul prin care oamenii din orașele și satele din tot județul puteau comanda aceeași mâncare — livrată caldă, în cutii create special — și campaniile care au dus vestea acolo unde nu ajunsese nimeni.",
+      "Brandurile mari de fast food se opreau la marginea Bacăului. Am construit site-ul prin care satele și orașele din tot județul puteau comanda aceeași mâncare, livrată caldă — plus campaniile care au dus vestea acolo.",
     // TODO David: dacă știi comenzi/lună sau nr. de localități acoperite, înlocuiește
     stats: [
       { value: "Tot județul", label: "Zonă acoperită" },
@@ -657,7 +657,11 @@ export default function App() {
                       Studiu de caz
                     </span>
                   </div>
-                  <h3 style={{ fontSize: 52, fontWeight: 900, letterSpacing: "-2px", marginBottom: 6 }}>{cs.name}</h3>
+                  <h3 style={{
+                    fontSize: "clamp(30px, 7vw, 52px)", fontWeight: 900,
+                    letterSpacing: "-1.5px", marginBottom: 6, lineHeight: 1.05,
+                    overflowWrap: "anywhere",
+                  }}>{cs.name}</h3>
                   <p style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 28 }}>{cs.meta}</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {cs.items.map(item => (
@@ -675,8 +679,15 @@ export default function App() {
                 </div>
 
                 <div>
-                  <p style={{ fontSize: 20, color: "rgba(255,255,255,0.8)", lineHeight: 1.8, marginBottom: 32, fontStyle: "italic" }}>
-                    &ldquo;{cs.quote}&rdquo;
+                  {/* Fără italic: textele astea sunt descrieri, nu citate scurte.
+                      Un paragraf întreg în italic e greu de urmărit, mai ales pe
+                      ecran îngust, unde ajunge la 6-7 rânduri. */}
+                  <p style={{
+                    fontSize: "clamp(16px, 2vw, 19px)",
+                    color: "rgba(255,255,255,0.88)",
+                    lineHeight: 1.65, marginBottom: 32,
+                  }}>
+                    {cs.quote}
                   </p>
                   <div className="case-study-stats" style={{ display: "flex", gap: 32 }}>
                     {cs.stats.map(stat => (
