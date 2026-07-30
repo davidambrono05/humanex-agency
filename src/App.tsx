@@ -516,7 +516,7 @@ export default function App() {
           fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.5)",
           maxWidth: 580, lineHeight: 1.75, marginBottom: 44,
         }}>
-          Campanii Meta și TikTok Ads, gestionarea rețelelor sociale și sisteme AI personalizate, pentru afaceri mici și mijlocii din România.
+          Campanii Meta și TikTok Ads, gestionarea rețelelor sociale și sisteme AI personalizate, pentru afaceri din România.
         </p>
 
         {/* CTA */}
