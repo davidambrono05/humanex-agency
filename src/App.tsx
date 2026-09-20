@@ -1070,18 +1070,22 @@ export default function App() {
             )}
           </div>
 
-          {/* Principiul care îl deosebește — merită spațiul lui */}
-          <div style={{
-            margin: "28px 0 36px", padding: "26px 30px", borderRadius: 16,
-            background: "rgba(29,78,216,0.07)", border: "1px solid rgba(29,78,216,0.22)",
-            borderLeft: "3px solid #60a5fa",
+          {/* Principiul care îl deosebește — merită spațiul lui.
+              Tratat ca un citat, nu ca un card: o linie de un pixel și
+              spațiu. Caseta colorată îl făcea să arate ca o alertă. */}
+          <blockquote style={{
+            margin: "34px 0 40px", padding: "4px 0 4px 26px",
+            borderLeft: "1px solid rgba(96,165,250,0.45)", maxWidth: 760,
           }}>
-            <p style={{ fontSize: "clamp(16px, 2vw, 19px)", lineHeight: 1.65, color: "rgba(255,255,255,0.9)" }}>
+            <p style={{
+              fontSize: "clamp(17px, 2.1vw, 21px)", lineHeight: 1.6,
+              color: "rgba(255,255,255,0.82)", fontWeight: 300,
+            }}>
               {lang === "ro"
                 ? "Un sistem care numește pe cineva după două zile e mai periculos decât unul care nu numește pe nimeni. Sub pragul lui de dovezi, CloseCheck tace — și spune de ce tace."
                 : "A system that names someone after two days is more dangerous than one that names nobody. Below its evidence threshold, CloseCheck stays quiet — and tells you why."}
             </p>
-          </div>
+          </blockquote>
 
           <div className="cc-shots" style={{
             display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 20,
