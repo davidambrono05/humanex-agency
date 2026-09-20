@@ -47,7 +47,6 @@ const UI = {
   },
   liveLabel: { ro: "Live", en: "Live" },
   buildingLabel: { ro: "În dezvoltare", en: "In development" },
-  visitLabel: { ro: "Vezi site-ul", en: "Visit site" },
 
   ccEyebrow: { ro: "Ultimul proiect", en: "Latest project" },
   ccWatch: { ro: "Vezi prezentarea completă", en: "Watch the full walkthrough" },
@@ -147,7 +146,6 @@ type Project = {
   client: TX;
   desc: TX;
   points: TX[];
-  url?: string;
   live: boolean;
   accent: string;
 };
@@ -185,7 +183,6 @@ const PROJECTS: Project[] = [
       { ro: "Materiale, manoperă și poze, pe fiecare lucrare", en: "Materials, labour and photos, per job" },
       { ro: "Rulează în cloud, 24/7", en: "Runs in the cloud, 24/7" },
     ],
-    url: "https://www.energoprest.site",
     live: true,
     accent: "#22d3ee",
   },
@@ -203,7 +200,6 @@ const PROJECTS: Project[] = [
       { ro: "Compară ofertele primite de la furnizori", en: "Compares the quotes that come back from suppliers" },
       { ro: "Alerte pe termenele care se apropie", en: "Alerts on deadlines coming up" },
     ],
-    url: "https://energoprest.humanex.space",
     live: true,
     accent: "#a78bfa",
   },
@@ -221,7 +217,6 @@ const PROJECTS: Project[] = [
       { ro: "Campanii Meta și TikTok, țintite pe turiști și localnici", en: "Meta and TikTok campaigns, targeting tourists and locals" },
       { ro: "Fără abonament lunar de găzduire", en: "No monthly hosting subscription" },
     ],
-    url: "https://davincibrasov.com",
     live: true,
     accent: "#f0b429",
   },
@@ -1160,14 +1155,6 @@ export default function App() {
                       overflowWrap: "anywhere",
                     }}>{L(p.name)}</h3>
                     <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.4)", marginBottom: 22 }}>{L(p.client)}</p>
-
-                    {p.url && (
-                      <a href={p.url} target="_blank" rel="noopener noreferrer" style={{
-                        display: "inline-flex", alignItems: "center", gap: 7,
-                        fontSize: 13.5, fontWeight: 700, textDecoration: "none", color: p.accent,
-                        border: `1px solid ${p.accent}44`, borderRadius: 9, padding: "8px 15px",
-                      }}>{L(UI.visitLabel)} ↗</a>
-                    )}
                   </div>
 
                   <div>
