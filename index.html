@@ -4,45 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary SEO -->
-    <title>HUMANEX — Meta Ads, TikTok Ads & Social Media | Agenție Brașov</title>
-    <meta name="description" content="Agenție de marketing din Brașov: campanii Meta Ads și TikTok Ads, gestionarea rețelelor sociale, conținut foto-video și sisteme AI personalizate pentru afaceri mici și mijlocii." />
-    <meta name="keywords" content="agentie marketing Brasov, Meta Ads Brasov, TikTok Ads Romania, administrare social media Brasov, promovare Facebook Instagram, continut foto video, automatizare afaceri Romania, HUMANEX, AMBRONUS SRL" />
-    <meta name="author" content="HUMANEX AI Systems" />
+    <!-- SEO principal. Titlul și descrierea sunt în română fiindcă de acolo
+         vine majoritatea traficului; App.tsx le rescrie în engleză când
+         vizitatorul are browserul pe altă limbă. -->
+    <title>HUMANEX — Software la comandă și promovare pentru afaceri | Brașov</title>
+    <meta name="description" content="Construim software la comandă — sisteme de raportare, panouri de control, site-uri — și aducem clienți prin campanii Meta și TikTok. Din Brașov, pentru clienți din România și din afară." />
+    <meta name="keywords" content="software la comanda Romania, sisteme de raportare, automatizare afaceri, agentie marketing Brasov, Meta Ads Romania, TikTok Ads, custom software Romania, business automation, HUMANEX, AMBRONUS SRL" />
+    <meta name="author" content="HUMANEX" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://humanex.space" />
 
-    <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://humanex.space" />
-    <meta property="og:title" content="HUMANEX — Sistemele Noastre Lucrează Non-Stop. Tu Crești." />
-    <meta property="og:description" content="Campanii Meta Ads și TikTok Ads, gestionarea rețelelor sociale și sisteme AI personalizate pentru afaceri mici și mijlocii din România." />
+    <meta property="og:title" content="HUMANEX — Sisteme care lucrează cât timp tu dormi" />
+    <meta property="og:description" content="Software la comandă pentru afaceri mici și mijlocii, plus campanii Meta și TikTok. Vezi CloseCheck, Energoprest și celelalte proiecte." />
     <meta property="og:image" content="https://humanex.space/og-image.png" />
     <meta property="og:locale" content="ro_RO" />
-    <meta property="og:site_name" content="HUMANEX AI Systems" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="og:site_name" content="HUMANEX" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://humanex.space" />
-    <meta name="twitter:title" content="HUMANEX — Marketing & Automatizare pentru Afaceri" />
-    <meta name="twitter:description" content="Meta Ads, TikTok Ads și gestionare social media pentru afaceri din România. Plus sisteme AI construite pe măsură." />
+    <meta name="twitter:title" content="HUMANEX — Custom software & marketing for small business" />
+    <meta name="twitter:description" content="Bespoke software, reporting systems and Meta/TikTok campaigns. Based in Romania, working with clients anywhere." />
     <meta name="twitter:image" content="https://humanex.space/og-image.png" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
-    <!-- JSON-LD Structured Data -->
+    <!-- Date structurate -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "HUMANEX",
       "legalName": "AMBRONUS SRL",
-      "alternateName": "HUMANEX AI Systems",
       "url": "https://humanex.space",
       "logo": "https://humanex.space/favicon.svg",
-      "description": "Agenție de marketing digital și automatizare din Brașov. Campanii Meta Ads și TikTok Ads, gestionarea rețelelor sociale, producție de conținut foto-video și sisteme AI personalizate pentru afaceri mici și mijlocii.",
+      "description": "Agenție de software și promovare din Brașov. Construim software la comandă — sisteme de raportare, panouri de control, site-uri — și administrăm campanii Meta Ads și TikTok Ads pentru afaceri mici și mijlocii.",
       "founder": {
         "@type": "Person",
         "name": "David Ambrono"
@@ -53,51 +55,54 @@
         "addressRegion": "Brașov",
         "addressCountry": "RO"
       },
-      "areaServed": {
-        "@type": "Country",
-        "name": "România"
-      },
+      "areaServed": [
+        { "@type": "Country", "name": "România" },
+        { "@type": "Place", "name": "European Union" }
+      ],
+      "knowsLanguage": ["ro", "en"],
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer service",
         "email": "humanex23@gmail.com",
-        "availableLanguage": "Romanian"
+        "availableLanguage": ["Romanian", "English"]
       },
-      "sameAs": [
-        "https://humanex.space"
-      ],
+      "sameAs": ["https://humanex.space"],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Servicii HUMANEX",
         "itemListElement": [
           {
             "@type": "Offer",
-            "name": "Social Media Start",
-            "price": "150",
+            "name": "Sistem de raportare",
+            "price": "1000",
             "priceCurrency": "EUR",
-            "description": "O postare în fiecare zi (30 pe lună), story-uri zilnice și gestionarea paginilor de Instagram și Facebook — abonament lunar"
+            "description": "Echipa completează raportul de pe telefon, proprietarul îl primește pe email și WhatsApp în câteva secunde — preț de proiect"
           },
           {
             "@type": "Offer",
-            "name": "Social Media + Ads",
-            "price": "300",
+            "name": "Panou de control la comandă",
+            "price": "1500",
             "priceCurrency": "EUR",
-            "description": "O postare în fiecare zi (30 pe lună), 8 reels, plus campanii Meta Ads și TikTok Ads administrate și optimizate — abonament lunar"
+            "description": "Clienți, lucrări, echipe și facturi într-un singur loc, construit pe fluxul afacerii — preț de proiect"
           },
           {
             "@type": "Offer",
-            "name": "Sisteme AI și Automatizări",
+            "name": "Site de firmă",
+            "price": "700",
+            "priceCurrency": "EUR",
+            "description": "Site complet, cu design premium, analytics și automatizări de bază — preț de proiect"
+          },
+          {
+            "@type": "Offer",
+            "name": "Social Media + Reclame",
             "price": "300",
             "priceCurrency": "EUR",
-            "description": "Sisteme custom de raportare, dashboarduri și automatizări — preț de proiect, o singură dată"
+            "description": "O postare zilnică, 8 reels pe lună, plus campanii Meta Ads și TikTok Ads administrate — abonament lunar"
           }
         ]
       }
     }
     </script>
-
-    <!-- Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
   </head>
   <body>
     <div id="root"></div>

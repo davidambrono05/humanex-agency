@@ -1,338 +1,677 @@
 import { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
 
-const SERVICES = [
+/* ═══════════════════════════════════════════════════════════════
+   Bilingv RO / EN.
+
+   Fiecare bucată de text e un obiect { ro, en } și se alege cu t().
+   Varianta cu două fișiere de traduceri separate ar fi rupt textul
+   de locul unde e folosit — aici vezi ambele limbi una lângă alta,
+   deci nu poți modifica una și uita de cealaltă.
+   ═══════════════════════════════════════════════════════════════ */
+
+type Lang = "ro" | "en";
+type TX = { ro: string; en: string };
+
+const t = (x: TX, l: Lang) => x[l];
+
+/* ── Texte de interfață ─────────────────────────────────────── */
+
+const UI = {
+  tagline: { ro: "Sisteme AI & Promovare", en: "AI Systems & Marketing" },
+  navServices: { ro: "Servicii", en: "Services" },
+  navProjects: { ro: "Proiecte", en: "Work" },
+  navProcess: { ro: "Proces", en: "Process" },
+  navPricing: { ro: "Prețuri", en: "Pricing" },
+  navContact: { ro: "Contact", en: "Contact" },
+  navCta: { ro: "Începe acum", en: "Get started" },
+
+  heroBadge: {
+    ro: "Agenție de software și promovare · România",
+    en: "Software & marketing studio · Romania",
+  },
+  heroTitle1: { ro: "Sisteme care lucrează", en: "Systems that work" },
+  heroTitle2: { ro: "cât timp tu dormi.", en: "while you sleep." },
+  heroSub: {
+    ro: "Construim software la comandă pentru afaceri mici și mijlocii — și le ducem clienți prin campanii pe Meta și TikTok. Din Brașov, pentru clienți din România și din afară.",
+    en: "We build custom software for small and mid-sized businesses — and bring them customers through Meta and TikTok campaigns. Based in Romania, working with clients anywhere.",
+  },
+  heroCta1: { ro: "Începe un proiect", en: "Start a project" },
+  heroCta2: { ro: "Vezi ce am construit", en: "See our work" },
+
+  projectsEyebrow: { ro: "Proiecte", en: "Selected work" },
+  projectsTitle: { ro: "Ce am construit", en: "What we have built" },
+  projectsSub: {
+    ro: "Fiecare sistem de mai jos rulează acum, pentru o afacere reală.",
+    en: "Every system below is running right now, for a real business.",
+  },
+  liveLabel: { ro: "Live", en: "Live" },
+  buildingLabel: { ro: "În dezvoltare", en: "In development" },
+  visitLabel: { ro: "Vezi site-ul", en: "Visit site" },
+
+  ccEyebrow: { ro: "Ultimul proiect", en: "Latest project" },
+  ccWatch: { ro: "Vezi prezentarea completă", en: "Watch the full walkthrough" },
+  ccDuration: { ro: "4 min", en: "4 min" },
+  ccNoVideo: {
+    ro: "Browserul tău nu poate reda acest video.",
+    en: "Your browser cannot play this video.",
+  },
+
+  servicesEyebrow: { ro: "Ce facem", en: "What we do" },
+  servicesTitle: {
+    ro: "Software la comandă și promovare",
+    en: "Custom software and marketing",
+  },
+  servicesSub: {
+    ro: "Îți aducem clienți prin campanii, apoi automatizăm munca care vine după.",
+    en: "We bring you customers through campaigns, then automate the work that follows.",
+  },
+
+  processEyebrow: { ro: "Cum lucrăm", en: "How we work" },
+  processTitle: { ro: "Simplu. Rapid. Gata.", en: "Simple. Fast. Done." },
+
+  pricingEyebrow: { ro: "Prețuri", en: "Pricing" },
+  pricingTitle: { ro: "Transparent, fără surprize", en: "Transparent, no surprises" },
+  pricingSub: {
+    ro: "Promovarea se lucrează pe abonament lunar. Sistemele se plătesc o singură dată, la livrare.",
+    en: "Marketing runs on a monthly retainer. Systems are paid once, on delivery.",
+  },
+  pricingSocial: {
+    ro: "Promovare și social media — lunar",
+    en: "Marketing and social media — monthly",
+  },
+  pricingOneTime: { ro: "Sisteme — plată unică", en: "Systems — one-time" },
+  pricingMonthly: { ro: "Mentenanță lunară", en: "Monthly support" },
+  pricingNote: {
+    ro: "Bugetul de reclame se plătește separat, direct către Meta sau TikTok, din contul tău. Prețurile de mai sus acoperă strategia, conținutul și administrarea.",
+    en: "Ad spend is paid separately, straight to Meta or TikTok from your own account. The prices above cover strategy, content and management.",
+  },
+  perMonth: { ro: "lună", en: "month" },
+  perProject: { ro: "proiect", en: "project" },
+  planCta: { ro: "Începe acum", en: "Get started" },
+  popular: { ro: "Cel mai ales", en: "Most chosen" },
+
+  faqEyebrow: { ro: "Întrebări", en: "Questions" },
+  faqTitle: { ro: "Întrebări frecvente", en: "Frequently asked" },
+
+  ctaTitle: {
+    ro: "Ai un proces care îți mănâncă ziua?",
+    en: "Got a process eating your day?",
+  },
+  ctaSub: {
+    ro: "Discuție gratuită, fără obligații. Îți spunem direct dacă se poate automatiza și cât ar dura.",
+    en: "Free call, no strings. We will tell you straight whether it can be automated and how long it would take.",
+  },
+  ctaButton: { ro: "Programează o discuție", en: "Book a call" },
+
+  contactEyebrow: { ro: "Contact", en: "Contact" },
+  contactTitle: { ro: "Hai să vorbim", en: "Let us talk" },
+  contactSub: {
+    ro: "Descrie-ne afacerea și ce vrei să automatizezi. Îți răspundem în maxim 24 de ore.",
+    en: "Tell us about your business and what you want to automate. We reply within 24 hours.",
+  },
+  fName: { ro: "Numele tău", en: "Your name" },
+  fEmail: { ro: "Email", en: "Email" },
+  fPhone: { ro: "Telefon / WhatsApp", en: "Phone / WhatsApp" },
+  fBusiness: {
+    ro: "Tipul afacerii (ex: restaurant, construcții, transport)",
+    en: "Type of business (e.g. restaurant, construction, logistics)",
+  },
+  fMessage: {
+    ro: "Ce vrei să automatizezi? Descrie procesul actual…",
+    en: "What would you like to automate? Describe how it works today…",
+  },
+  fSend: { ro: "Trimite mesajul", en: "Send message" },
+  fSending: { ro: "Se trimite…", en: "Sending…" },
+  fSent: { ro: "Trimis!", en: "Sent!" },
+  fOk: {
+    ro: "Mesaj trimis. Te contactăm în maxim 24 de ore.",
+    en: "Message sent. We will be in touch within 24 hours.",
+  },
+  fErr: {
+    ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct pe email.",
+    en: "Something went wrong. Try again, or email us directly.",
+  },
+  rights: { ro: "Toate drepturile rezervate.", en: "All rights reserved." },
+  basedIn: { ro: "Brașov, România", en: "Brașov, Romania" },
+};
+
+/* ── Proiecte ───────────────────────────────────────────────── */
+
+type Project = {
+  /* Numele de marcă rămân la fel în ambele limbi; partea descriptivă
+     („Raportare zilnică") se traduce, altfel un vizitator străin
+     citește jumătate de titlu în română. */
+  name: TX;
+  kind: TX;
+  client: TX;
+  desc: TX;
+  points: TX[];
+  url?: string;
+  live: boolean;
+  accent: string;
+};
+
+const PROJECTS: Project[] = [
   {
-    icon: "🎯",
-    title: "Campanii Meta Ads",
-    desc: "Reclame pe Facebook și Instagram — targetare locală, buget controlat, optimizare continuă și raport lunar clar.",
-    tags: ["Facebook", "Instagram", "Targetare"],
+    name: { ro: "CloseCheck", en: "CloseCheck" },
+    kind: { ro: "Produs · Contabilitate", en: "Product · Accounting" },
+    client: { ro: "Cabinete de contabilitate", en: "Accounting firms" },
+    desc: {
+      ro: "Într-un restaurant, banii trec prin patru locuri: casa de marcat, terminalul de card, aplicațiile de livrare și sertarul. Nimeni nu le compară între ele. CloseCheck o face în fiecare seară și arată unde nu se potrivesc.",
+      en: "In a restaurant, money moves through four places: the till, the card terminal, the delivery apps and the cash drawer. Nobody compares them against each other. CloseCheck does it every evening and shows where they stop matching.",
+    },
+    points: [
+      { ro: "Închiderea turei se face de pe telefon, în câteva minute", en: "Shift close happens on the phone, in a few minutes" },
+      { ro: "Un panou pentru toate restaurantele din portofoliu", en: "One dashboard for every restaurant in the portfolio" },
+      { ro: "Diferențele neexplicate, urmărite săptămână de săptămână", en: "Unexplained differences, tracked week by week" },
+      { ro: "Rezultatul pentru fiecare client, exportabil în PDF și Word", en: "Per-client results, exported to PDF and Word" },
+      { ro: "Termenele și declarațiile lunii, pe client", en: "Monthly filing deadlines, per client" },
+    ],
+    live: false,
+    accent: "#60a5fa",
   },
   {
-    icon: "🎬",
-    title: "Campanii TikTok Ads",
-    desc: "Reclame video pe TikTok pentru audiențe tinere — creative produse de noi, testate și optimizate săptămânal.",
-    tags: ["TikTok", "Video", "Optimizare"],
+    name: { ro: "Energoprest — Raportare zilnică", en: "Energoprest — Daily reporting" },
+    kind: { ro: "Software la comandă", en: "Custom software" },
+    client: { ro: "Firmă de instalații electrice · Bacău", en: "Electrical contractor · Romania" },
+    desc: {
+      ro: "Șefii de echipă completează raportul zilei de pe telefon, direct de pe șantier. Proprietarul primește raportul complet, cu poze, pe email și WhatsApp în câteva secunde — fără niciun calculator pornit.",
+      en: "Team leads file the daily report from their phone, straight from the site. The owner gets the full report with photos by email and WhatsApp within seconds — no computer involved.",
+    },
+    points: [
+      { ro: "Formular mobil pentru echipele de pe teren", en: "Mobile form for field crews" },
+      { ro: "Raport PDF generat și trimis automat", en: "PDF report generated and sent automatically" },
+      { ro: "Materiale, manoperă și poze, pe fiecare lucrare", en: "Materials, labour and photos, per job" },
+      { ro: "Rulează în cloud, 24/7", en: "Runs in the cloud, 24/7" },
+    ],
+    url: "https://www.energoprest.site",
+    live: true,
+    accent: "#22d3ee",
   },
   {
-    icon: "📱",
-    title: "Gestionare Social Media",
-    desc: "Ne ocupăm complet de paginile tale: plan de conținut, postări, reels, story-uri și răspuns la mesaje.",
-    tags: ["Conținut", "Reels", "Community"],
+    name: { ro: "Energoprest — Licitații", en: "Energoprest — Public tenders" },
+    kind: { ro: "Software la comandă", en: "Custom software" },
+    client: { ro: "Firmă de instalații electrice · Bacău", en: "Electrical contractor · Romania" },
+    desc: {
+      ro: "Sistem care citește documentația unei licitații publice și scoate singur lucrările și termenele, verifică ce lipsește din listele de cantități, pregătește devizul și cererile de ofertă. O muncă de trei-patru zile devine câteva ore.",
+      en: "A system that reads public tender documents, pulls out the works and deadlines on its own, checks what is missing from the bill of quantities, and prepares the cost estimate and supplier requests. Three or four days of work becomes a few hours.",
+    },
+    points: [
+      { ro: "Citește documentația și extrage termenele", en: "Reads the documents and extracts deadlines" },
+      { ro: "Verifică ce lipsește din listele de cantități", en: "Checks what is missing from the bill of quantities" },
+      { ro: "Compară ofertele primite de la furnizori", en: "Compares the quotes that come back from suppliers" },
+      { ro: "Alerte pe termenele care se apropie", en: "Alerts on deadlines coming up" },
+    ],
+    url: "https://energoprest.humanex.space",
+    live: true,
+    accent: "#a78bfa",
   },
   {
-    icon: "📸",
-    title: "Conținut Foto & Video",
-    desc: "Producție de materiale pentru rețele sociale și reclame — editare profesională, inclusiv cu unelte AI.",
-    tags: ["Foto", "Video", "Editare AI"],
+    name: { ro: "da Vinci", en: "da Vinci" },
+    kind: { ro: "Site + Promovare", en: "Website + Marketing" },
+    client: { ro: "Restaurant & boutique hotel · Brașov", en: "Restaurant & boutique hotel · Brașov" },
+    desc: {
+      ro: "Site complet pentru un restaurant din Centrul Vechi al Brașovului, cu meniul real de 278 de preparate și rezervări trimise direct pe WhatsApp. Plus campanii plătite pe Meta și TikTok și conținut foto-video produs lunar.",
+      en: "A complete website for a restaurant in Brașov's old town, with the real 278-dish menu and reservations sent straight to WhatsApp. Plus paid Meta and TikTok campaigns and monthly photo and video content.",
+    },
+    points: [
+      { ro: "Meniu complet, care se salvează ca PDF", en: "Full menu, saveable as a PDF" },
+      { ro: "Rezervări de masă și de cameră, pe WhatsApp", en: "Table and room bookings, over WhatsApp" },
+      { ro: "Campanii Meta și TikTok, țintite pe turiști și localnici", en: "Meta and TikTok campaigns, targeting tourists and locals" },
+      { ro: "Fără abonament lunar de găzduire", en: "No monthly hosting subscription" },
+    ],
+    url: "https://davincibrasov.com",
+    live: true,
+    accent: "#f0b429",
+  },
+  {
+    name: { ro: "SpecialDelivery", en: "SpecialDelivery" },
+    kind: { ro: "Site + Promovare", en: "Website + Marketing" },
+    client: { ro: "Livrări fast food · Județul Bacău", en: "Fast food delivery · Romania" },
+    desc: {
+      ro: "Brandurile mari de livrare se opreau la marginea orașului. Am construit site-ul prin care satele și orașele din tot județul puteau comanda aceeași mâncare, livrată caldă — plus campaniile care au dus vestea acolo.",
+      en: "The big delivery brands stopped at the edge of the city. We built the site that let villages and towns across the whole county order the same food, delivered hot — plus the campaigns that spread the word.",
+    },
+    points: [
+      { ro: "Preluare de comenzi direct, fără intermediari", en: "Orders taken directly, no middlemen" },
+      { ro: "Campanii țintite pe localitățile fără acoperire", en: "Campaigns targeted at areas with no coverage" },
+      { ro: "Acoperire în tot județul", en: "Coverage across the whole county" },
+    ],
+    live: true,
+    accent: "#4ade80",
+  },
+];
+
+/* Capturi din prezentarea CloseCheck */
+const CC_SHOTS: { src: string; cap: TX }[] = [
+  { src: "/cc-mobil.jpg", cap: { ro: "Închiderea turei, de pe telefon", en: "Shift close, from the phone" } },
+  { src: "/cc-panou.jpg", cap: { ro: "Panoul contabilului", en: "The accountant's dashboard" } },
+  { src: "/cc-rezultate.jpg", cap: { ro: "Rezultatul pentru client", en: "Results per client" } },
+  { src: "/cc-termene.jpg", cap: { ro: "Termene și declarații", en: "Deadlines and filings" } },
+];
+
+/* ── Servicii ───────────────────────────────────────────────── */
+
+const SERVICES: { icon: string; title: TX; desc: TX; tags: TX[] }[] = [
+  {
+    icon: "⚙️",
+    title: { ro: "Software la comandă", en: "Custom software" },
+    desc: {
+      ro: "Construim exact sistemul de care are nevoie afacerea ta. Dacă îl poți descrie, îl putem construi.",
+      en: "We build exactly the system your business needs. If you can describe it, we can build it.",
+    },
+    tags: [
+      { ro: "La comandă", en: "Bespoke" },
+      { ro: "Scalabil", en: "Scalable" },
+      { ro: "Cloud", en: "Cloud" },
+    ],
   },
   {
     icon: "📊",
-    title: "Sisteme de Raportare",
-    desc: "Rapoarte zilnice automate trimise proprietarului pe email și WhatsApp — în timp real, fără niciun PC pornit.",
-    tags: ["Email", "WhatsApp", "PDF"],
-  },
-  {
-    icon: "💬",
-    title: "Automatizare WhatsApp",
-    desc: "Notificări instant, mesaje clienți și alerte automate — direct pe WhatsApp, 24/7.",
-    tags: ["Notificări", "Clienți", "Alerte"],
+    title: { ro: "Sisteme de raportare", en: "Reporting systems" },
+    desc: {
+      ro: "Rapoarte zilnice trimise automat pe email și WhatsApp, în timp real, fără niciun calculator pornit.",
+      en: "Daily reports sent automatically by email and WhatsApp, in real time, with no computer running.",
+    },
+    tags: [
+      { ro: "Email", en: "Email" },
+      { ro: "WhatsApp", en: "WhatsApp" },
+      { ro: "PDF", en: "PDF" },
+    ],
   },
   {
     icon: "🗂️",
-    title: "Dashboarduri Personalizate",
-    desc: "Urmărești clienți, lucrări, echipe și facturi dintr-un singur loc — construit exact pentru afacerea ta.",
-    tags: ["CRM", "Facturi", "Echipe"],
+    title: { ro: "Panouri de control", en: "Dashboards" },
+    desc: {
+      ro: "Urmărești clienți, lucrări, echipe și facturi dintr-un singur loc, construit pentru felul tău de a lucra.",
+      en: "Track clients, jobs, teams and invoices from one place, built around the way you actually work.",
+    },
+    tags: [
+      { ro: "CRM", en: "CRM" },
+      { ro: "Facturi", en: "Invoicing" },
+      { ro: "Echipe", en: "Teams" },
+    ],
   },
   {
-    icon: "📧",
-    title: "Automatizare Email",
-    desc: "Emailuri profesionale pentru rapoarte, facturi și follow-up-uri — rulează automat, fără intervenția ta.",
-    tags: ["SMTP", "Template", "Auto-send"],
+    icon: "🌐",
+    title: { ro: "Site-uri și magazine online", en: "Websites and online stores" },
+    desc: {
+      ro: "Site-uri rapide, care arată bine pe telefon și aduc cereri reale — nu doar vizite.",
+      en: "Fast sites that look right on a phone and bring in real enquiries — not just visits.",
+    },
+    tags: [
+      { ro: "Site", en: "Website" },
+      { ro: "Shopify", en: "Shopify" },
+      { ro: "SEO", en: "SEO" },
+    ],
+  },
+  {
+    icon: "🎯",
+    title: { ro: "Campanii Meta Ads", en: "Meta Ads campaigns" },
+    desc: {
+      ro: "Reclame pe Facebook și Instagram — targetare locală, buget controlat, raport lunar clar.",
+      en: "Facebook and Instagram ads — local targeting, controlled budget, a clear monthly report.",
+    },
+    tags: [
+      { ro: "Facebook", en: "Facebook" },
+      { ro: "Instagram", en: "Instagram" },
+      { ro: "Targetare", en: "Targeting" },
+    ],
+  },
+  {
+    icon: "🎬",
+    title: { ro: "Campanii TikTok Ads", en: "TikTok Ads campaigns" },
+    desc: {
+      ro: "Reclame video pentru audiențe tinere — creative produse de noi, testate și optimizate săptămânal.",
+      en: "Video ads for younger audiences — creative made in-house, tested and tuned every week.",
+    },
+    tags: [
+      { ro: "TikTok", en: "TikTok" },
+      { ro: "Video", en: "Video" },
+      { ro: "Optimizare", en: "Optimisation" },
+    ],
+  },
+  {
+    icon: "📱",
+    title: { ro: "Gestionare social media", en: "Social media management" },
+    desc: {
+      ro: "Ne ocupăm complet de paginile tale: plan de conținut, postări, reels, story-uri și răspuns la mesaje.",
+      en: "We run your pages end to end: content plan, posts, reels, stories and replies to messages.",
+    },
+    tags: [
+      { ro: "Conținut", en: "Content" },
+      { ro: "Reels", en: "Reels" },
+      { ro: "Comunitate", en: "Community" },
+    ],
+  },
+  {
+    icon: "📸",
+    title: { ro: "Conținut foto și video", en: "Photo and video content" },
+    desc: {
+      ro: "Producție de materiale pentru rețele și reclame, cu editare profesională și unelte AI acolo unde ajută.",
+      en: "Content produced for social and ads, professionally edited, with AI tools where they genuinely help.",
+    },
+    tags: [
+      { ro: "Foto", en: "Photo" },
+      { ro: "Video", en: "Video" },
+      { ro: "Editare", en: "Editing" },
+    ],
   },
   {
     icon: "🔗",
-    title: "Integrări Business",
-    desc: "Conectezi software-ul de facturare, plăți, calendare — totul într-un singur flux automat.",
-    tags: ["SmartBill", "API", "Webhooks"],
+    title: { ro: "Integrări între programe", en: "Integrations" },
+    desc: {
+      ro: "Conectăm facturarea, plățile și calendarele pe care le folosești deja, într-un singur flux automat.",
+      en: "We connect the invoicing, payments and calendars you already use into one automatic flow.",
+    },
+    tags: [
+      { ro: "Facturare", en: "Invoicing" },
+      { ro: "API", en: "API" },
+      { ro: "Webhooks", en: "Webhooks" },
+    ],
   },
   {
-    icon: "⚡",
-    title: "Sisteme AI Custom",
-    desc: "Soluții de automatizare construite exact pentru nevoile tale. Dacă îl poți descrie, îl putem construi.",
-    tags: ["AI", "Custom", "Scalabil"],
+    icon: "💬",
+    title: { ro: "Automatizare WhatsApp", en: "WhatsApp automation" },
+    desc: {
+      ro: "Notificări instant, mesaje către clienți și alerte automate, direct pe WhatsApp, 24/7.",
+      en: "Instant notifications, customer messages and automatic alerts, straight to WhatsApp, 24/7.",
+    },
+    tags: [
+      { ro: "Notificări", en: "Notifications" },
+      { ro: "Clienți", en: "Customers" },
+      { ro: "Alerte", en: "Alerts" },
+    ],
   },
 ];
 
-const STEPS = [
+/* ── Proces ─────────────────────────────────────────────────── */
+
+const STEPS: { number: string; title: TX; desc: TX; detail: TX }[] = [
   {
     number: "01",
-    title: "Discuție inițială",
-    desc: "Aflăm despre afacerea ta, fluxul de lucru actual și ce îți ia cel mai mult timp.",
-    detail: "Gratuit, fără obligații",
+    title: { ro: "Discuție inițială", en: "First conversation" },
+    desc: {
+      ro: "Aflăm despre afacerea ta, cum lucrezi acum și ce îți ia cel mai mult timp.",
+      en: "We learn about your business, how you work today, and what eats the most time.",
+    },
+    detail: { ro: "Gratuit, fără obligații", en: "Free, no obligation" },
   },
   {
     number: "02",
-    title: "Construim sistemul",
-    desc: "În zile, nu luni. Un sistem complet funcțional, construit pentru nevoile tale exacte.",
-    detail: "Livrare în 3–7 zile",
+    title: { ro: "Construim sistemul", en: "We build it" },
+    desc: {
+      ro: "În zile, nu în luni. Un sistem complet funcțional, făcut pentru nevoile tale exacte.",
+      en: "In days, not months. A fully working system, built for your exact needs.",
+    },
+    detail: { ro: "Livrare în 3–7 zile", en: "Delivered in 3–7 days" },
   },
   {
     number: "03",
-    title: "Tu te relaxezi",
-    desc: "Sistemul rulează 24/7. Fără mentenanță din partea ta. Noi ne ocupăm de orice.",
-    detail: "Suport inclus",
+    title: { ro: "Tu te ocupi de afacere", en: "You get on with business" },
+    desc: {
+      ro: "Sistemul rulează singur. Fără mentenanță din partea ta — de tot ce apare ne ocupăm noi.",
+      en: "The system runs itself. No upkeep on your side — anything that comes up, we handle.",
+    },
+    detail: { ro: "Suport inclus", en: "Support included" },
   },
 ];
 
-// Abonamente lunare de promovare — bugetul de reclame se plătește separat, direct către platformă
-const SOCIAL_PLANS = [
+/* ── Prețuri ────────────────────────────────────────────────── */
+
+type Plan = {
+  name: TX;
+  price: string;
+  period: "month" | "project";
+  desc: TX;
+  features: TX[];
+  highlight?: boolean;
+  badge: TX;
+  isMonthly?: boolean;
+};
+
+const SOCIAL_PLANS: Plan[] = [
   {
-    name: "Social Media Start",
-    price: "150€ – 300€",
-    period: "lună",
-    desc: "Postăm în fiecare zi pentru tine. Pagina ta rămâne activă, fără să te ocupi de nimic.",
+    name: { ro: "Social Media Start", en: "Social Media Start" },
+    price: "150 € – 300 €",
+    period: "month",
+    desc: {
+      ro: "Postăm în fiecare zi pentru tine. Pagina rămâne activă, fără să te ocupi de nimic.",
+      en: "We post every day for you. Your page stays alive without you touching it.",
+    },
     features: [
-      "O postare în fiecare zi — 30 pe lună",
-      "Story-uri zilnice",
-      "Plan de conținut lunar",
-      "Răspuns la comentarii și mesaje",
-      "Raport lunar",
+      { ro: "O postare în fiecare zi — 30 pe lună", en: "A post every day — 30 a month" },
+      { ro: "Story-uri zilnice", en: "Daily stories" },
+      { ro: "Plan de conținut lunar", en: "Monthly content plan" },
+      { ro: "Răspuns la comentarii și mesaje", en: "Replies to comments and messages" },
+      { ro: "Raport lunar", en: "Monthly report" },
     ],
-    highlight: false,
-    badge: "Social Media",
+    badge: { ro: "Social Media", en: "Social Media" },
   },
   {
-    name: "Social Media + Ads",
-    price: "300€ – 600€",
-    period: "lună",
-    desc: "Postare zilnică plus campanii plătite administrate și optimizate de noi.",
+    name: { ro: "Social Media + Reclame", en: "Social Media + Ads" },
+    price: "300 € – 600 €",
+    period: "month",
+    desc: {
+      ro: "Postare zilnică, plus campanii plătite administrate și optimizate de noi.",
+      en: "Daily posting, plus paid campaigns run and optimised by us.",
+    },
     features: [
-      "O postare în fiecare zi — 30 pe lună",
-      "8 reels pe lună",
-      "Campanii Meta Ads și TikTok Ads",
-      "Story-uri zilnice",
-      "Răspuns la comentarii și mesaje",
-      "Raport lunar",
+      { ro: "O postare în fiecare zi — 30 pe lună", en: "A post every day — 30 a month" },
+      { ro: "8 reels pe lună", en: "8 reels a month" },
+      { ro: "Campanii Meta Ads și TikTok Ads", en: "Meta Ads and TikTok Ads campaigns" },
+      { ro: "Story-uri zilnice", en: "Daily stories" },
+      { ro: "Răspuns la comentarii și mesaje", en: "Replies to comments and messages" },
+      { ro: "Raport lunar", en: "Monthly report" },
     ],
     highlight: true,
-    badge: "Cel mai ales",
+    badge: { ro: "Cel mai ales", en: "Most chosen" },
   },
 ];
 
-const PLANS = [
-  // One-time services
+const PLANS: Plan[] = [
   {
-    name: "AI Landing Page",
-    price: "300€ – 500€",
-    period: "proiect",
-    desc: "Design modern + mobile responsive + formular contact + SEO basic",
-    features: ["Design modern", "Mobile responsive", "Formular contact + WhatsApp", "SEO basic", "Livrare rapidă"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Web",
+    name: { ro: "Pagină de prezentare", en: "Landing page" },
+    price: "300 € – 500 €",
+    period: "project",
+    desc: {
+      ro: "Design modern, arată bine pe telefon, formular de contact și SEO de bază.",
+      en: "Modern design, looks right on a phone, contact form and basic SEO.",
+    },
+    features: [
+      { ro: "Design modern", en: "Modern design" },
+      { ro: "Optimizat pentru telefon", en: "Mobile-first" },
+      { ro: "Formular + WhatsApp", en: "Form + WhatsApp" },
+      { ro: "SEO de bază", en: "Basic SEO" },
+    ],
+    badge: { ro: "Web", en: "Web" },
   },
   {
-    name: "Business Website",
-    price: "700€ – 1.500€",
-    period: "proiect",
-    desc: "Website profesional complet cu design premium și automatizări",
-    features: ["Design premium", "Analytics integrat", "Automatizări basic", "SEO complet", "CMS"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Web",
+    name: { ro: "Site de firmă", en: "Business website" },
+    price: "700 € – 1.500 €",
+    period: "project",
+    desc: {
+      ro: "Site complet, cu design premium, analytics și automatizări de bază.",
+      en: "A complete site with premium design, analytics and basic automation.",
+    },
+    features: [
+      { ro: "Design premium", en: "Premium design" },
+      { ro: "Analytics integrat", en: "Analytics built in" },
+      { ro: "Automatizări de bază", en: "Basic automation" },
+      { ro: "SEO complet", en: "Full SEO" },
+    ],
+    badge: { ro: "Web", en: "Web" },
   },
   {
-    name: "Shopify / Magazin Online",
-    price: "1.500€ – 3.000€",
-    period: "proiect",
-    desc: "Setup complet Shopify cu design premium și automatizări",
-    features: ["Setup complet Shopify", "Produse + colecții", "Plăți online", "Design premium", "Automatizări basic"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "E-commerce",
+    name: { ro: "Magazin online", en: "Online store" },
+    price: "1.500 € – 3.000 €",
+    period: "project",
+    desc: {
+      ro: "Magazin complet, cu produse, plăți online și design premium.",
+      en: "A full store with products, online payments and premium design.",
+    },
+    features: [
+      { ro: "Configurare completă", en: "Full setup" },
+      { ro: "Produse și colecții", en: "Products and collections" },
+      { ro: "Plăți online", en: "Online payments" },
+      { ro: "Design premium", en: "Premium design" },
+    ],
+    badge: { ro: "E-commerce", en: "E-commerce" },
   },
   {
-    name: "AI Lead Generation System",
-    price: "1.000€ – 3.000€",
-    period: "proiect",
-    desc: "Lead generation automatizat cu CRM, outreach și dashboard analytics",
-    features: ["Lead generation AI", "CRM intern", "Outreach system", "Dashboard analytics", "Automatizări AI"],
+    name: { ro: "Sistem de raportare", en: "Reporting system" },
+    price: "1.000 € – 3.000 €",
+    period: "project",
+    desc: {
+      ro: "Ca la Energoprest: echipa completează de pe telefon, tu primești raportul pe email și WhatsApp.",
+      en: "Like Energoprest: the crew files from their phone, you get the report by email and WhatsApp.",
+    },
+    features: [
+      { ro: "Formular mobil pentru echipă", en: "Mobile form for the crew" },
+      { ro: "Raport PDF automat", en: "Automatic PDF report" },
+      { ro: "Email și WhatsApp", en: "Email and WhatsApp" },
+      { ro: "Poze de pe teren", en: "Photos from the field" },
+    ],
     highlight: true,
-    color: "linear-gradient(135deg, #1d4ed8, #1e40af)",
-    badge: "AI Systems",
+    badge: { ro: "Sisteme", en: "Systems" },
   },
   {
-    name: "AI CRM + Dashboard",
-    price: "1.500€ – 5.000€",
-    period: "proiect",
-    desc: "Dashboard custom cu client management și pipeline AI",
-    features: ["Dashboard custom", "Client management", "Analytics timp real", "Pipeline management", "Automatizări + notificări"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "AI Systems",
+    name: { ro: "Panou de control", en: "Custom dashboard" },
+    price: "1.500 € – 5.000 €",
+    period: "project",
+    desc: {
+      ro: "Clienți, lucrări, echipe și facturi într-un singur loc, construit pe fluxul tău.",
+      en: "Clients, jobs, teams and invoices in one place, built around your workflow.",
+    },
+    features: [
+      { ro: "Panou la comandă", en: "Bespoke dashboard" },
+      { ro: "Gestionare clienți", en: "Client management" },
+      { ro: "Cifre în timp real", en: "Real-time numbers" },
+      { ro: "Notificări automate", en: "Automatic notifications" },
+    ],
+    badge: { ro: "Sisteme", en: "Systems" },
   },
   {
-    name: "Business Automation System",
-    price: "2.000€ – 7.000€",
-    period: "proiect",
-    desc: "Automatizări complete business cu WhatsApp, email și AI",
-    features: ["Automatizări complete", "WhatsApp workflows", "Email automation", "AI workflows", "Dashboard operational"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Automation",
+    name: { ro: "Automatizare completă", en: "Full automation" },
+    price: "2.000 € – 7.000 €",
+    period: "project",
+    desc: {
+      ro: "Legăm tot ce folosești deja — facturare, WhatsApp, email — într-un singur flux automat.",
+      en: "We tie together everything you already use — invoicing, WhatsApp, email — into one automatic flow.",
+    },
+    features: [
+      { ro: "Automatizări complete", en: "End-to-end automation" },
+      { ro: "Fluxuri WhatsApp", en: "WhatsApp flows" },
+      { ro: "Email automat", en: "Automated email" },
+      { ro: "Panou operațional", en: "Operations dashboard" },
+    ],
+    badge: { ro: "Automatizare", en: "Automation" },
   },
+];
+
+const SUPPORT_PLANS: Plan[] = [
   {
-    name: "AI Content System",
-    price: "500€ – 2.000€",
-    period: "proiect",
-    desc: "Reels generation, hooks, scripts și content calendar automat",
-    features: ["Reels generation", "Hooks + scripts", "Content calendar", "Social media workflows", "Analytics"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Content",
-  },
-  {
-    name: "HUMANEX AI Operations",
-    price: "3.000€ – 10.000€",
-    period: "proiect",
-    desc: "AI orchestration complet cu agents, workflows și business automation",
-    features: ["AI orchestration", "AI agents custom", "Workflow management", "Analytics avansat", "Monitoring", "Business automation"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Enterprise",
-  },
-  // Monthly maintenance
-  {
-    name: "Basic Support",
-    price: "50€ – 100€",
-    period: "lună",
-    desc: "Updates, bug fixes și suport tehnic lunar",
-    features: ["Updates lunare", "Bug fixes", "Suport tehnic", "Monitorizare uptime"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Mentenanță",
+    name: { ro: "Suport de bază", en: "Basic support" },
+    price: "50 € – 100 €",
+    period: "month",
+    desc: {
+      ro: "Actualizări, reparații și suport tehnic lunar.",
+      en: "Updates, fixes and technical support each month.",
+    },
+    features: [
+      { ro: "Actualizări lunare", en: "Monthly updates" },
+      { ro: "Reparații", en: "Bug fixes" },
+      { ro: "Suport tehnic", en: "Technical support" },
+      { ro: "Monitorizare", en: "Uptime monitoring" },
+    ],
+    badge: { ro: "Mentenanță", en: "Support" },
     isMonthly: true,
   },
   {
-    name: "Growth Support",
-    price: "150€ – 300€",
-    period: "lună",
-    desc: "Automatizări, analytics, optimizări și workflow management",
-    features: ["Automatizări noi", "Analytics avansat", "Optimizări continue", "Workflow management", "Raport lunar"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Mentenanță",
-    isMonthly: true,
-  },
-  {
-    name: "AI Operations Retainer",
-    price: "500€ – 2.000€",
-    period: "lună",
-    desc: "AI systems management complet cu lead generation și outreach",
-    features: ["AI systems management", "Lead generation activ", "Outreach management", "Dashboard monitoring", "Business automation", "Raport săptămânal"],
-    highlight: false,
-    color: "rgba(29,78,216,0.08)",
-    badge: "Mentenanță",
+    name: { ro: "Suport extins", en: "Growth support" },
+    price: "150 € – 300 €",
+    period: "month",
+    desc: {
+      ro: "Automatizări noi, optimizări și îmbunătățiri continue.",
+      en: "New automations, optimisation and continuous improvement.",
+    },
+    features: [
+      { ro: "Automatizări noi", en: "New automations" },
+      { ro: "Cifre detaliate", en: "Deeper analytics" },
+      { ro: "Optimizări continue", en: "Continuous optimisation" },
+      { ro: "Raport lunar", en: "Monthly report" },
+    ],
+    badge: { ro: "Mentenanță", en: "Support" },
     isMonthly: true,
   },
 ];
 
-const CASE_STUDIES = [
-  {
-    name: "DaVinci",
-    meta: "Restaurant & Boutique Hotel • Centrul Vechi, Brașov",
-    items: [
-      "Campanii Meta Ads administrate",
-      "Conținut foto și video produs lunar",
-      "Gestionare Instagram și Facebook",
-      "Strategie adaptată sezonului turistic",
-    ],
-    quote:
-      "Campanii plătite pe Facebook și Instagram, conținut foto-video produs lunar și gestionarea completă a paginilor — pentru un restaurant din inima Centrului Vechi, cu public format din localnici și turiști.",
-    // TODO David: înlocuiește cu cifre reale din Meta Ads Manager când ai un istoric de 2–3 luni
-    stats: [
-      { value: "3", label: "Canale gestionate" },
-      { value: "24/7", label: "Campanii active" },
-      { value: "Lunar", label: "Conținut nou livrat" },
-    ],
-  },
-  {
-    name: "SpecialDelivery",
-    meta: "Livrări fast food • Județul Bacău",
-    items: [
-      "Site construit de la zero, cu preluare de comenzi",
-      "Campanii țintite pe localitățile fără acoperire",
-      "Acoperire în orașe și sate din tot județul",
-      "Livrare caldă, în ambalaje termice",
-    ],
-    quote:
-      "Brandurile mari de fast food se opreau la marginea Bacăului. Am construit site-ul prin care satele și orașele din tot județul puteau comanda aceeași mâncare, livrată caldă — plus campaniile care au dus vestea acolo.",
-    // TODO David: dacă știi comenzi/lună sau nr. de localități acoperite, înlocuiește
-    stats: [
-      { value: "Tot județul", label: "Zonă acoperită" },
-      { value: "Site + Ads", label: "Construit și promovat" },
-      { value: "Direct", label: "Comenzi fără intermediari" },
-    ],
-  },
-  {
-    name: "Energoprest",
-    meta: "Servicii Electrice • Bacău",
-    items: [
-      "Raportare zilnică automată",
-      "Email + WhatsApp instant",
-      "Formular mobil pentru echipă",
-      "Funcționare 24/7 în cloud",
-    ],
-    quote:
-      "Șefii de echipă completează raportul zilnic de pe telefon. Proprietarul primește raportul complet pe email și WhatsApp în câteva secunde — fără niciun PC implicat, 24/7.",
-    stats: [
-      { value: "< 3s", label: "Timp de trimitere raport" },
-      { value: "100%", label: "Disponibilitate sistem" },
-      { value: "0", label: "Intervenții manuale" },
-    ],
-  },
+/* ── Cifre și întrebări ─────────────────────────────────────── */
+
+const STATS: { value: string; label: TX }[] = [
+  { value: "24/7", label: { ro: "Sistemele rulează non-stop", en: "Systems run around the clock" } },
+  { value: "3–7", label: { ro: "Zile până la livrare", en: "Days to delivery" } },
+  { value: "100%", label: { ro: "Construit la comandă", en: "Built bespoke" } },
+  { value: "0", label: { ro: "Mentenanță din partea ta", en: "Upkeep on your side" } },
 ];
 
-const STATS = [
-  { value: "24/7", label: "Sistemele rulează non-stop" },
-  { value: "< 7 zile", label: "Timp mediu de livrare" },
-  { value: "100%", label: "Construit personalizat" },
-  { value: "0", label: "Mentenanță necesară din partea ta" },
-];
-
-const FAQS = [
+const FAQS: { q: TX; a: TX }[] = [
   {
-    q: "Bugetul de reclame e inclus în preț?",
-    a: "Nu. Prețul abonamentului acoperă strategia, conținutul, administrarea și optimizarea campaniilor. Bugetul de reclame îl plătești separat, direct către Meta sau TikTok, din contul tău — așa vezi exact cât se cheltuie și rămâi proprietarul contului.",
+    q: { ro: "Lucrați și cu clienți din afara României?", en: "Do you work with clients outside Romania?" },
+    a: {
+      ro: "Da. Lucrăm la distanță, în engleză sau română, iar plata se face prin transfer bancar în euro. Firma noastră e înregistrată în România, cu facturare în regulă pentru clienți din UE.",
+      en: "Yes. We work remotely, in English or Romanian, and invoice in euro by bank transfer. Our company is registered in Romania, with proper invoicing for EU clients.",
+    },
   },
   {
-    q: "Ce buget de reclame îmi trebuie ca să merite?",
-    a: "Pentru o afacere locală, pornim de obicei de la 10–15 € pe zi. Sub acest prag, platformele nu au suficiente date ca să optimizeze corect. Stabilim împreună bugetul în funcție de obiectiv, iar tu îl poți modifica oricând.",
+    q: { ro: "Cât durează să construiți un sistem?", en: "How long does a system take to build?" },
+    a: {
+      ro: "De obicei între 3 și 7 zile lucrătoare, în funcție de complexitate. Sistemele simple pot fi gata chiar și în 24 de ore.",
+      en: "Usually between 3 and 7 working days, depending on complexity. Simple systems can be ready within 24 hours.",
+    },
   },
   {
-    q: "Există contract pe termen lung?",
-    a: "Nu. Lucrăm lunar, iar prima lună o poți trata ca perioadă de probă. Dacă nu ești mulțumit de rezultate, ne oprim fără penalizări. Conturile de reclame și paginile rămân întotdeauna ale tale.",
+    q: { ro: "Am nevoie de cunoștințe tehnice?", en: "Do I need any technical knowledge?" },
+    a: {
+      ro: "Deloc. Noi ne ocupăm de toată partea tehnică. Tu primești un sistem gata de folosit, cu instrucțiuni clare.",
+      en: "Not at all. We handle the technical side. You get a system that is ready to use, with clear instructions.",
+    },
   },
   {
-    q: "Cât durează să construiți un sistem?",
-    a: "De obicei între 3 și 7 zile lucrătoare, în funcție de complexitate. Sisteme simple pot fi livrate chiar și în 24 de ore.",
+    q: { ro: "Bugetul de reclame e inclus în preț?", en: "Is ad spend included in the price?" },
+    a: {
+      ro: "Nu. Prețul acoperă strategia, conținutul, administrarea și optimizarea. Bugetul de reclame îl plătești separat, direct către Meta sau TikTok, din contul tău — așa vezi exact cât se cheltuie și rămâi proprietarul contului.",
+      en: "No. The price covers strategy, content, management and optimisation. Ad spend is paid separately, straight to Meta or TikTok from your own account — so you see exactly what is spent and you stay the owner of the account.",
+    },
   },
   {
-    q: "Am nevoie de cunoștințe tehnice?",
-    a: "Deloc. Noi ne ocupăm de tot aspectul tehnic. Tu primești un sistem gata de utilizat, cu instrucțiuni clare.",
+    q: { ro: "Există contract pe termen lung?", en: "Is there a long-term contract?" },
+    a: {
+      ro: "Nu. Lucrăm lunar, iar prima lună o poți trata ca perioadă de probă. Dacă nu ești mulțumit, ne oprim fără penalizări. Conturile și paginile rămân întotdeauna ale tale.",
+      en: "No. We work month to month, and you can treat the first month as a trial. If you are not happy, we stop, with no penalty. The accounts and pages are always yours.",
+    },
   },
   {
-    q: "Ce se întâmplă dacă vreau modificări după livrare?",
-    a: "Modificările sunt incluse în perioada de suport. Orice ajustare o facem rapid, fără costuri suplimentare în această perioadă.",
+    q: { ro: "Sistemele merg și când nu am calculatorul pornit?", en: "Do the systems work when my computer is off?" },
+    a: {
+      ro: "Da, complet. Totul rulează în cloud. Calculatorul tău nu are nicio legătură cu funcționarea sistemului.",
+      en: "Yes, entirely. Everything runs in the cloud. Your computer has nothing to do with whether the system works.",
+    },
   },
   {
-    q: "Sistemele funcționează și când nu am PC-ul pornit?",
-    a: "Da, 100%. Totul rulează în cloud — Supabase, funcții serverless, integrări externe. PC-ul tău nu are nicio relevanță.",
+    q: { ro: "Cui aparțin codul și datele?", en: "Who owns the code and the data?" },
+    a: {
+      ro: "Ție. Primești sistemul și datele, iar dacă vrei să pleci în altă parte, nu te ține nimic aici.",
+      en: "You do. You get the system and the data, and if you ever want to move elsewhere, nothing holds you here.",
+    },
   },
   {
-    q: "Pot adăuga funcționalități noi mai târziu?",
-    a: "Absolut. Sistemele noastre sunt construite modular, tocmai pentru a permite extinderea ușoară pe măsură ce afacerea crește.",
+    q: { ro: "Pot adăuga funcții noi mai târziu?", en: "Can I add features later?" },
+    a: {
+      ro: "Da. Construim modular tocmai ca sistemul să poată crește odată cu afacerea.",
+      en: "Yes. We build modular precisely so the system can grow as the business does.",
+    },
   },
 ];
 
@@ -340,14 +679,63 @@ const EMAILJS_SERVICE = "service_vgg5fdg";
 const EMAILJS_TEMPLATE = "template_asjlv4r";
 const EMAILJS_KEY = "km3Un_Nuwq0eqaiPP";
 
+const META: Record<Lang, { title: string; desc: string }> = {
+  ro: {
+    title: "HUMANEX — Sisteme AI și promovare pentru afaceri",
+    desc: "Software la comandă, sisteme de raportare și campanii Meta și TikTok pentru afaceri mici și mijlocii. Din Brașov, România.",
+  },
+  en: {
+    title: "HUMANEX — Custom software and marketing for small business",
+    desc: "Bespoke software, reporting systems and Meta and TikTok campaigns for small and mid-sized businesses. Based in Romania, working worldwide.",
+  },
+};
+
+/* Limba de start: alegerea salvată, altfel româna doar pentru un
+   browser setat pe română. Restul lumii primește engleză din prima —
+   un vizitator străin care nimerește pe o pagină în română pleacă
+   înainte să caute butonul de limbă. */
+function limbaInitiala(): Lang {
+  try {
+    const salvat = localStorage.getItem("humanex-lang");
+    if (salvat === "ro" || salvat === "en") return salvat;
+  } catch {
+    /* localStorage blocat (fereastră privată) — mergem pe browser */
+  }
+  const nav = typeof navigator !== "undefined" ? navigator.language : "";
+  return nav.toLowerCase().startsWith("ro") ? "ro" : "en";
+}
+
 export default function App() {
+  const [lang, setLang] = useState<Lang>(limbaInitiala);
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
+  const [playing, setPlaying] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
+
+  const L = (x: TX) => t(x, lang);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("humanex-lang", lang);
+    } catch {
+      /* fără localStorage, alegerea ține doar cât e pagina deschisă */
+    }
+    document.documentElement.lang = lang;
+    document.title = META[lang].title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", META[lang].desc);
+  }, [lang]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -365,20 +753,104 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  /* Videoul se încarcă abia la apăsare (preload="none"), deci cele
+     14 MB nu intră în costul primei vizite. */
+  const porneste = () => {
+    setPlaying(true);
+    requestAnimationFrame(() => videoRef.current?.play().catch(() => {}));
+  };
 
   const navLinks = [
-    { label: "Servicii", id: "servicii" },
-    { label: "Proces", id: "proces" },
-    { label: "Prețuri", id: "preturi" },
-    { label: "Contact", id: "contact" },
+    { label: UI.navProjects, id: "proiecte" },
+    { label: UI.navServices, id: "servicii" },
+    { label: UI.navProcess, id: "proces" },
+    { label: UI.navPricing, id: "preturi" },
+    { label: UI.navContact, id: "contact" },
   ];
+
+  const eyebrow: React.CSSProperties = {
+    fontSize: 12, fontWeight: 700, color: "#60a5fa",
+    letterSpacing: 3, textTransform: "uppercase", marginBottom: 14,
+  };
+  const h2: React.CSSProperties = {
+    fontSize: "clamp(30px, 4vw, 48px)", fontWeight: 900,
+    letterSpacing: "-1.5px", lineHeight: 1.15,
+  };
+  const card: React.CSSProperties = {
+    background: "rgba(255,255,255,0.025)",
+    border: "1px solid rgba(255,255,255,0.07)",
+    borderRadius: 20,
+  };
+  const input: React.CSSProperties = {
+    background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
+    borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
+    outline: "none", fontFamily: "inherit", width: "100%", boxSizing: "border-box",
+  };
+
+  const Logo = ({ size = 42, id = "lg" }: { size?: number; id?: string }) => (
+    <svg width={size} height={size} viewBox="0 0 42 42" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#1d4ed8" />
+          <stop offset="100%" stopColor="#0ea5e9" />
+        </linearGradient>
+      </defs>
+      <path d="M21 2L38 11.5V30.5L21 40L4 30.5V11.5L21 2Z" fill={`url(#${id})`} opacity="0.15" />
+      <path d="M21 2L38 11.5V30.5L21 40L4 30.5V11.5L21 2Z" stroke={`url(#${id})`} strokeWidth="1.5" fill="none" />
+      <text x="21" y="27" textAnchor="middle" fill="white" fontSize="18" fontWeight="900"
+        fontFamily="-apple-system, BlinkMacSystemFont, sans-serif">H</text>
+      <circle cx="21" cy="2" r="2" fill="#0ea5e9" opacity="0.8" />
+    </svg>
+  );
+
+  const planCard = (plan: Plan) => (
+    <div key={plan.name.en} className={plan.highlight ? "pricing-highlight" : undefined} style={{
+      ...card,
+      background: plan.highlight ? "linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 100%)" : card.background,
+      border: plan.highlight ? "1px solid rgba(96,165,250,0.4)" : card.border,
+      padding: "32px 26px", position: "relative",
+      boxShadow: plan.highlight ? "0 0 60px rgba(29,78,216,0.28)" : "none",
+      display: "flex", flexDirection: "column",
+    }}>
+      <div style={{
+        alignSelf: "flex-start", fontSize: 10, fontWeight: 800, letterSpacing: 1,
+        textTransform: "uppercase", padding: "4px 10px", borderRadius: 6, marginBottom: 16,
+        color: plan.highlight ? "#fff" : "#93c5fd",
+        background: plan.highlight ? "rgba(255,255,255,0.18)" : "rgba(29,78,216,0.15)",
+        border: plan.highlight ? "1px solid rgba(255,255,255,0.3)" : "1px solid rgba(29,78,216,0.3)",
+      }}>{L(plan.badge)}</div>
+
+      <h4 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8, letterSpacing: "-0.3px" }}>{L(plan.name)}</h4>
+      <p style={{
+        fontSize: 13, lineHeight: 1.7, marginBottom: 18,
+        color: plan.highlight ? "rgba(255,255,255,0.78)" : "rgba(255,255,255,0.45)",
+      }}>{L(plan.desc)}</p>
+
+      <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 22 }}>
+        <span style={{ fontSize: 25, fontWeight: 900, letterSpacing: "-1px" }}>{plan.price}</span>
+        <span style={{ fontSize: 13, color: plan.highlight ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)" }}>
+          / {plan.period === "month" ? L(UI.perMonth) : L(UI.perProject)}
+        </span>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 24 }}>
+        {plan.features.map((f) => (
+          <div key={f.en} style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
+            <span style={{ fontSize: 12, lineHeight: "22px", color: plan.highlight ? "#bfdbfe" : "#60a5fa" }}>✓</span>
+            <span style={{ fontSize: 13.5, lineHeight: 1.6, color: plan.highlight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)" }}>{L(f)}</span>
+          </div>
+        ))}
+      </div>
+
+      <a href="#contact" style={{
+        display: "block", textAlign: "center", padding: "12px 18px", borderRadius: 10,
+        fontSize: 13.5, fontWeight: 700, textDecoration: "none", marginTop: "auto",
+        color: plan.highlight ? "#1e3a8a" : "#93c5fd",
+        background: plan.highlight ? "#fff" : "rgba(29,78,216,0.14)",
+        border: plan.highlight ? "1px solid #fff" : "1px solid rgba(29,78,216,0.3)",
+      }}>{L(UI.planCta)} →</a>
+    </div>
+  );
 
   return (
     <div style={{ minHeight: "100vh", background: "#040d1f", color: "#fff", overflowX: "hidden" }}>
@@ -389,101 +861,83 @@ export default function App() {
         background: scrolled ? "rgba(4,13,31,0.92)" : "transparent",
         backdropFilter: scrolled ? "blur(20px)" : "none",
         borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
-        transition: "all 0.4s ease",
+        transition: "background .4s ease, border-color .4s ease",
         padding: "0 48px", height: 72,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
+        display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
       }}>
-        {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logoGrad" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#1d4ed8"/>
-                <stop offset="100%" stopColor="#0ea5e9"/>
-              </linearGradient>
-              <filter id="logoGlow">
-                <feGaussianBlur stdDeviation="2" result="blur"/>
-                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-              </filter>
-            </defs>
-            {/* Hexagon shape */}
-            <path d="M21 2L38 11.5V30.5L21 40L4 30.5V11.5L21 2Z"
-              fill="url(#logoGrad)" opacity="0.15"/>
-            <path d="M21 2L38 11.5V30.5L21 40L4 30.5V11.5L21 2Z"
-              stroke="url(#logoGrad)" strokeWidth="1.5" fill="none"/>
-            {/* H letter */}
-            <text x="21" y="27" textAnchor="middle"
-              fill="white" fontSize="18" fontWeight="900"
-              fontFamily="-apple-system, BlinkMacSystemFont, sans-serif"
-              filter="url(#logoGlow)">H</text>
-            {/* Corner dots */}
-            <circle cx="21" cy="2" r="2" fill="#0ea5e9" opacity="0.8"/>
-            <circle cx="38" cy="11.5" r="2" fill="#1d4ed8" opacity="0.6"/>
-            <circle cx="38" cy="30.5" r="2" fill="#1d4ed8" opacity="0.6"/>
-          </svg>
+        <a href="#top" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "#fff" }}>
+          <Logo />
           <div>
             <div style={{ fontWeight: 900, fontSize: 19, letterSpacing: "0.5px", lineHeight: 1 }}>HUMANEX</div>
-            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.35)", letterSpacing: 3, textTransform: "uppercase", marginTop: 2 }}>AI Systems</div>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.35)", letterSpacing: 3, textTransform: "uppercase", marginTop: 2 }}>
+              {L(UI.tagline)}
+            </div>
           </div>
-        </div>
+        </a>
 
-        {/* Links */}
-        <div className="nav-links" style={{ display: "flex", gap: 36, alignItems: "center" }}>
-          {navLinks.map(l => (
-            <a key={l.id} href={`#${l.id}`}
-              style={{
-                color: "rgba(255,255,255,0.55)",
-                fontSize: 14, fontWeight: 500, textDecoration: "none",
-                transition: "color 0.2s",
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div className="nav-links" style={{ display: "flex", gap: 32, alignItems: "center" }}>
+            {navLinks.map((l) => (
+              <a key={l.id} href={`#${l.id}`} style={{
+                color: "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: 500, textDecoration: "none",
+                transition: "color .2s", whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
-            >{l.label}</a>
-          ))}
-          <a href="#contact" style={{
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
+              >{L(l.label)}</a>
+            ))}
+          </div>
+
+          {/* Comutatorul de limbă rămâne vizibil și pe telefon, unde
+              restul navigației dispare — altfel un vizitator străin
+              n-ar avea nicio cale să schimbe limba. */}
+          <div role="group" aria-label="Language" style={{
+            display: "flex", alignItems: "center",
+            border: "1px solid rgba(255,255,255,0.14)", borderRadius: 999,
+            padding: 3, gap: 2, flexShrink: 0,
+          }}>
+            {(["ro", "en"] as Lang[]).map((code) => (
+              <button key={code} onClick={() => setLang(code)}
+                aria-pressed={lang === code}
+                style={{
+                  border: "none", cursor: "pointer", borderRadius: 999,
+                  padding: "5px 11px", fontSize: 12, fontWeight: 800, letterSpacing: 0.6,
+                  fontFamily: "inherit", transition: "background .2s, color .2s",
+                  background: lang === code ? "linear-gradient(135deg, #1d4ed8, #0ea5e9)" : "transparent",
+                  color: lang === code ? "#fff" : "rgba(255,255,255,0.5)",
+                }}>{code.toUpperCase()}</button>
+            ))}
+          </div>
+
+          <a href="#contact" className="nav-cta" style={{
             background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
             color: "#fff", padding: "10px 22px", borderRadius: 8,
-            fontWeight: 700, fontSize: 14, textDecoration: "none",
+            fontWeight: 700, fontSize: 14, textDecoration: "none", whiteSpace: "nowrap",
             boxShadow: "0 0 24px rgba(29,78,216,0.35)",
-            transition: "box-shadow 0.2s",
-          }}>Începe acum</a>
+          }}>{L(UI.navCta)}</a>
         </div>
       </nav>
 
       {/* ── HERO ── */}
-      <section ref={heroRef} className="hero-section" style={{
+      <section id="top" className="hero-section" style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         padding: "130px 24px 80px", textAlign: "center", position: "relative",
       }}>
-        {/* Glow bg */}
-        <div style={{
-          position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none",
-        }}>
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
           <div style={{
             position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)",
             width: 900, height: 900, borderRadius: "50%",
             background: "radial-gradient(circle, rgba(29,78,216,0.13) 0%, transparent 65%)",
           }} />
           <div style={{
-            position: "absolute", top: "30%", left: "20%",
-            width: 300, height: 300, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%)",
-          }} />
-          <div style={{
-            position: "absolute", top: "40%", right: "15%",
-            width: 250, height: 250, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(29,78,216,0.08) 0%, transparent 70%)",
-          }} />
-          {/* Grid lines */}
-          <div style={{
             position: "absolute", inset: 0,
-            backgroundImage: "linear-gradient(rgba(29,78,216,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(29,78,216,0.04) 1px, transparent 1px)",
+            backgroundImage:
+              "linear-gradient(rgba(29,78,216,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(29,78,216,0.04) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
           }} />
         </div>
 
-        {/* Badge */}
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 28,
           background: "rgba(29,78,216,0.12)", border: "1px solid rgba(29,78,216,0.35)",
@@ -494,32 +948,26 @@ export default function App() {
             display: "inline-block", boxShadow: "0 0 8px #22d3ee",
           }} />
           <span style={{ fontSize: 13, color: "#93c5fd", fontWeight: 600, letterSpacing: 0.5 }}>
-            Agenție de Promovare & Automatizare AI
+            {L(UI.heroBadge)}
           </span>
         </div>
 
-        {/* Heading */}
         <h1 style={{
-          fontSize: "clamp(40px, 6.5vw, 80px)", fontWeight: 900,
-          lineHeight: 1.05, letterSpacing: "-2.5px", maxWidth: 880, marginBottom: 28,
+          fontSize: "clamp(38px, 6.2vw, 78px)", fontWeight: 900,
+          lineHeight: 1.05, letterSpacing: "-2.5px", maxWidth: 900, marginBottom: 28,
         }}>
-          Sistemele Noastre Lucrează Non-Stop.{" "}
+          {L(UI.heroTitle1)}{" "}
           <span style={{
             background: "linear-gradient(135deg, #60a5fa 0%, #0ea5e9 50%, #38bdf8 100%)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          }}>
-            Tu Crești.
-          </span>
+          }}>{L(UI.heroTitle2)}</span>
         </h1>
 
         <p style={{
-          fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.5)",
-          maxWidth: 580, lineHeight: 1.75, marginBottom: 44,
-        }}>
-          Campanii Meta și TikTok Ads, gestionarea rețelelor sociale și sisteme AI personalizate, pentru afaceri din România.
-        </p>
+          fontSize: "clamp(16px, 2vw, 19px)", color: "rgba(255,255,255,0.5)",
+          maxWidth: 640, lineHeight: 1.75, marginBottom: 44,
+        }}>{L(UI.heroSub)}</p>
 
-        {/* CTA */}
         <div className="hero-cta" style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center", marginBottom: 80 }}>
           <a href="#contact" style={{
             background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
@@ -527,101 +975,265 @@ export default function App() {
             fontWeight: 800, fontSize: 16, textDecoration: "none",
             boxShadow: "0 0 50px rgba(29,78,216,0.45)",
             display: "flex", alignItems: "center", gap: 8,
-          }}>
-            Începe Proiectul Tău
-            <span style={{ fontSize: 18 }}>→</span>
-          </a>
-          <a href="#servicii" style={{
+          }}>{L(UI.heroCta1)} <span style={{ fontSize: 18 }}>→</span></a>
+          <a href="#proiecte" style={{
             background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
             color: "#fff", padding: "16px 36px", borderRadius: 12,
             fontWeight: 600, fontSize: 16, textDecoration: "none",
-          }}>
-            Vezi Serviciile
-          </a>
+          }}>{L(UI.heroCta2)}</a>
         </div>
 
-        {/* Stats bar */}
         <div className="hero-stats" style={{
-          display: "flex", gap: 0, flexWrap: "wrap", justifyContent: "center",
+          display: "flex", flexWrap: "wrap", justifyContent: "center",
           background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
           borderRadius: 16, overflow: "hidden", maxWidth: 820, width: "100%",
         }}>
           {STATS.map((s, i) => (
-            <div key={s.label} className="stat-item" style={{
+            <div key={s.label.en} className="stat-item" style={{
               flex: "1 1 180px", padding: "24px 20px", textAlign: "center",
               borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
             }}>
               <div style={{ fontSize: 26, fontWeight: 900, color: "#60a5fa", marginBottom: 4 }}>{s.value}</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{s.label}</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{L(s.label)}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── SERVICES ── */}
-      <section id="servicii" style={{ padding: "110px 24px" }}>
+      {/* ── CLOSECHECK — proiectul cu video ── */}
+      <section id="proiecte" style={{ padding: "90px 24px 0" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div className="services-header" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 64, flexWrap: "wrap", gap: 24 }}>
+          <p style={eyebrow}>{L(UI.ccEyebrow)}</p>
+
+          <div className="cc-head" style={{
+            display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+            gap: 28, flexWrap: "wrap", marginBottom: 40,
+          }}>
             <div>
-              <p style={{ fontSize: 12, fontWeight: 700, color: "#60a5fa", letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>
-                Ce Facem
+              <h2 style={{ ...h2, marginBottom: 10 }}>CloseCheck</h2>
+              <p style={{ fontSize: 17, color: "#93c5fd", fontWeight: 600 }}>
+                {lang === "ro" ? "Verificarea pe care n-o face nimeni" : "The check nobody runs"}
               </p>
-              <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1.15, maxWidth: 560 }}>
-                Promovare și Automatizare pentru Afaceri Reale
-              </h2>
             </div>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", maxWidth: 340, lineHeight: 1.8 }}>
-              Îți aducem clienți prin campanii și social media, apoi automatizăm ce urmează după — totul construit pe măsura afacerii tale.
+            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", maxWidth: 440, lineHeight: 1.8 }}>
+              {L(PROJECTS[0].desc)}
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 20 }}>
+          {/* Player: poster întâi, videoul se descarcă abia la apăsare */}
+          <div style={{
+            position: "relative", borderRadius: 20, overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.1)", background: "#0b1628",
+            boxShadow: "0 30px 90px -30px rgba(0,0,0,0.8)", aspectRatio: "16 / 9",
+          }}>
+            {playing ? (
+              <video ref={videoRef} controls playsInline preload="auto"
+                poster="/closecheck-poster.jpg"
+                style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}>
+                <source src="/closecheck.mp4" type="video/mp4" />
+                {L(UI.ccNoVideo)}
+              </video>
+            ) : (
+              <button onClick={porneste} aria-label={L(UI.ccWatch)} style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                border: "none", padding: 0, cursor: "pointer", background: "none",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <img src="/closecheck-poster.jpg" alt={L(PROJECTS[0].name)}
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                <span style={{
+                  position: "absolute", inset: 0,
+                  background: "linear-gradient(180deg, rgba(4,13,31,0.15) 0%, rgba(4,13,31,0.72) 100%)",
+                }} />
+                <span style={{
+                  position: "relative", display: "flex", flexDirection: "column",
+                  alignItems: "center", gap: 16, color: "#fff",
+                }}>
+                  <span style={{
+                    width: 74, height: 74, borderRadius: "50%",
+                    background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 0 60px rgba(29,78,216,0.65)", fontSize: 26, paddingLeft: 6,
+                  }}>▶</span>
+                  {/* Umbra ține textul lizibil peste orice cadru ar ajunge
+                      poster — partea de sus a lui e hârtie deschisă. */}
+                  <span style={{
+                    fontSize: 15, fontWeight: 700, letterSpacing: 0.3,
+                    textShadow: "0 2px 14px rgba(0,0,0,0.85)",
+                  }}>{L(UI.ccWatch)}</span>
+                  <span style={{
+                    fontSize: 12, color: "rgba(255,255,255,0.75)",
+                    textShadow: "0 2px 10px rgba(0,0,0,0.8)",
+                  }}>{L(UI.ccDuration)}</span>
+                </span>
+              </button>
+            )}
+          </div>
+
+          {/* Principiul care îl deosebește — merită spațiul lui */}
+          <div style={{
+            margin: "28px 0 36px", padding: "26px 30px", borderRadius: 16,
+            background: "rgba(29,78,216,0.07)", border: "1px solid rgba(29,78,216,0.22)",
+            borderLeft: "3px solid #60a5fa",
+          }}>
+            <p style={{ fontSize: "clamp(16px, 2vw, 19px)", lineHeight: 1.65, color: "rgba(255,255,255,0.9)" }}>
+              {lang === "ro"
+                ? "Un sistem care numește pe cineva după două zile e mai periculos decât unul care nu numește pe nimeni. Sub pragul lui de dovezi, CloseCheck tace — și spune de ce tace."
+                : "A system that names someone after two days is more dangerous than one that names nobody. Below its evidence threshold, CloseCheck stays quiet — and tells you why."}
+            </p>
+          </div>
+
+          <div className="cc-shots" style={{
+            display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 20,
+          }}>
+            {CC_SHOTS.map((shot) => (
+              <figure key={shot.src} style={{ margin: 0 }}>
+                <img src={shot.src} alt={L(shot.cap)} loading="lazy"
+                  style={{
+                    width: "100%", display: "block", borderRadius: 12,
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }} />
+                <figcaption style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 10, lineHeight: 1.5 }}>
+                  {L(shot.cap)}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 22px", marginBottom: 20 }}>
+            {PROJECTS[0].points.map((p) => (
+              <div key={p.en} style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                <span style={{ color: "#60a5fa", fontSize: 13 }}>✓</span>
+                <span style={{ fontSize: 14, color: "rgba(255,255,255,0.72)" }}>{L(p)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CELELALTE PROIECTE ── */}
+      <section style={{ padding: "80px 24px 110px" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
+          <div style={{ marginBottom: 48 }}>
+            <p style={eyebrow}>{L(UI.projectsEyebrow)}</p>
+            <h2 style={{ ...h2, marginBottom: 14 }}>{L(UI.projectsTitle)}</h2>
+            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", maxWidth: 560, lineHeight: 1.7 }}>
+              {L(UI.projectsSub)}
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {PROJECTS.slice(1).map((p) => (
+              <article key={p.name.en} className="project-card" style={{
+                ...card, padding: "40px 44px", position: "relative", overflow: "hidden",
+              }}>
+                <div className="project-grid" style={{
+                  display: "grid", gridTemplateColumns: "1fr 1.35fr", gap: 44, alignItems: "start",
+                }}>
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+                      <span style={{
+                        fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase",
+                        color: p.accent, background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "3px 10px",
+                      }}>{L(p.kind)}</span>
+                      <span style={{
+                        display: "inline-flex", alignItems: "center", gap: 6,
+                        fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
+                        color: p.live ? "#4ade80" : "#fbbf24",
+                      }}>
+                        <span style={{
+                          width: 6, height: 6, borderRadius: "50%",
+                          background: p.live ? "#4ade80" : "#fbbf24",
+                        }} />
+                        {p.live ? L(UI.liveLabel) : L(UI.buildingLabel)}
+                      </span>
+                    </div>
+
+                    <h3 style={{
+                      fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 900,
+                      letterSpacing: "-0.8px", lineHeight: 1.15, marginBottom: 8,
+                      overflowWrap: "anywhere",
+                    }}>{L(p.name)}</h3>
+                    <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.4)", marginBottom: 22 }}>{L(p.client)}</p>
+
+                    {p.url && (
+                      <a href={p.url} target="_blank" rel="noopener noreferrer" style={{
+                        display: "inline-flex", alignItems: "center", gap: 7,
+                        fontSize: 13.5, fontWeight: 700, textDecoration: "none", color: p.accent,
+                        border: `1px solid ${p.accent}44`, borderRadius: 9, padding: "8px 15px",
+                      }}>{L(UI.visitLabel)} ↗</a>
+                    )}
+                  </div>
+
+                  <div>
+                    <p style={{
+                      fontSize: "clamp(15px, 1.7vw, 17px)", color: "rgba(255,255,255,0.85)",
+                      lineHeight: 1.7, marginBottom: 24,
+                    }}>{L(p.desc)}</p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {p.points.map((pt) => (
+                        <div key={pt.en} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                          <span style={{ color: p.accent, fontSize: 13, lineHeight: "22px" }}>✓</span>
+                          <span style={{ fontSize: 14, color: "rgba(255,255,255,0.68)", lineHeight: 1.6 }}>{L(pt)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICII ── */}
+      <section id="servicii" style={{ padding: "110px 24px", background: "rgba(255,255,255,0.015)" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
+          <div className="services-header" style={{
+            display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+            marginBottom: 56, flexWrap: "wrap", gap: 24,
+          }}>
+            <div>
+              <p style={eyebrow}>{L(UI.servicesEyebrow)}</p>
+              <h2 style={{ ...h2, maxWidth: 560 }}>{L(UI.servicesTitle)}</h2>
+            </div>
+            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", maxWidth: 340, lineHeight: 1.8 }}>
+              {L(UI.servicesSub)}
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
             {SERVICES.map((s) => (
-              <div key={s.title}
-                style={{
-                  background: "rgba(255,255,255,0.02)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: "32px 28px",
-                  transition: "all 0.3s ease", cursor: "default",
-                  position: "relative", overflow: "hidden",
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement;
+              <div key={s.title.en} style={{ ...card, padding: "30px 26px", transition: "border-color .3s, transform .3s, background .3s" }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget;
                   el.style.borderColor = "rgba(29,78,216,0.5)";
                   el.style.background = "rgba(29,78,216,0.06)";
-                  el.style.transform = "translateY(-6px)";
-                  el.style.boxShadow = "0 20px 60px rgba(29,78,216,0.15)";
+                  el.style.transform = "translateY(-5px)";
                 }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement;
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget;
                   el.style.borderColor = "rgba(255,255,255,0.07)";
-                  el.style.background = "rgba(255,255,255,0.02)";
+                  el.style.background = "rgba(255,255,255,0.025)";
                   el.style.transform = "translateY(0)";
-                  el.style.boxShadow = "none";
                 }}
               >
                 <div style={{
-                  position: "absolute", top: -20, right: -20,
-                  fontSize: 80, opacity: 0.04, userSelect: "none",
-                }}>{s.icon}</div>
-
-                <div style={{
-                  width: 52, height: 52, borderRadius: 14,
+                  width: 50, height: 50, borderRadius: 14,
                   background: "rgba(29,78,216,0.15)", border: "1px solid rgba(29,78,216,0.3)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 24, marginBottom: 20,
+                  fontSize: 23, marginBottom: 18,
                 }}>{s.icon}</div>
-
-                <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 12, letterSpacing: "-0.3px" }}>{s.title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75, marginBottom: 20 }}>{s.desc}</p>
-
+                <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 11, letterSpacing: "-0.3px" }}>{L(s.title)}</h3>
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75, marginBottom: 18 }}>{L(s.desc)}</p>
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {s.tags.map(tag => (
-                    <span key={tag} style={{
+                  {s.tags.map((tag) => (
+                    <span key={tag.en} style={{
                       fontSize: 11, fontWeight: 700, color: "#60a5fa",
                       background: "rgba(29,78,216,0.12)", border: "1px solid rgba(29,78,216,0.25)",
                       borderRadius: 6, padding: "3px 10px", letterSpacing: 0.5,
-                    }}>{tag}</span>
+                    }}>{L(tag)}</span>
                   ))}
                 </div>
               </div>
@@ -630,88 +1242,12 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── CASE STUDIES ── */}
-      <section style={{ padding: "0 24px 110px" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto", display: "flex", flexDirection: "column", gap: 24 }}>
-          {CASE_STUDIES.map((cs) => (
-            <div key={cs.name} style={{
-              background: "linear-gradient(135deg, rgba(29,78,216,0.12) 0%, rgba(14,165,233,0.06) 100%)",
-              border: "1px solid rgba(29,78,216,0.25)", borderRadius: 24,
-              padding: "56px 56px", position: "relative", overflow: "hidden",
-            }} className="case-study-wrap">
-              <div style={{
-                position: "absolute", top: -60, right: -60, width: 300, height: 300,
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%)",
-              }} />
-
-              <div className="case-study-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 56, alignItems: "center" }}>
-                <div>
-                  <div style={{
-                    display: "inline-flex", alignItems: "center", gap: 8,
-                    padding: "5px 14px", borderRadius: 8,
-                    background: "rgba(29,78,216,0.2)", border: "1px solid rgba(29,78,216,0.35)",
-                    marginBottom: 20,
-                  }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "#93c5fd", letterSpacing: 1, textTransform: "uppercase" }}>
-                      Studiu de caz
-                    </span>
-                  </div>
-                  <h3 style={{
-                    fontSize: "clamp(30px, 7vw, 52px)", fontWeight: 900,
-                    letterSpacing: "-1.5px", marginBottom: 6, lineHeight: 1.05,
-                    overflowWrap: "anywhere",
-                  }}>{cs.name}</h3>
-                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 28 }}>{cs.meta}</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {cs.items.map(item => (
-                      <div key={item} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{
-                          width: 20, height: 20, borderRadius: 6,
-                          background: "rgba(29,78,216,0.3)", border: "1px solid rgba(29,78,216,0.5)",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 11, color: "#60a5fa", flexShrink: 0,
-                        }}>✓</div>
-                        <span style={{ fontSize: 14, color: "rgba(255,255,255,0.75)" }}>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  {/* Fără italic: textele astea sunt descrieri, nu citate scurte.
-                      Un paragraf întreg în italic e greu de urmărit, mai ales pe
-                      ecran îngust, unde ajunge la 6-7 rânduri. */}
-                  <p style={{
-                    fontSize: "clamp(16px, 2vw, 19px)",
-                    color: "rgba(255,255,255,0.88)",
-                    lineHeight: 1.65, marginBottom: 32,
-                  }}>
-                    {cs.quote}
-                  </p>
-                  <div className="case-study-stats" style={{ display: "flex", gap: 32 }}>
-                    {cs.stats.map(stat => (
-                      <div key={stat.label}>
-                        <div style={{ fontSize: 28, fontWeight: 900, color: "#60a5fa" }}>{stat.value}</div>
-                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{stat.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ── */}
-      <section id="proces" style={{ padding: "110px 24px", background: "rgba(255,255,255,0.015)" }}>
+      {/* ── PROCES ── */}
+      <section id="proces" style={{ padding: "110px 24px" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 72 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#60a5fa", letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Procesul Nostru</p>
-            <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-1.5px" }}>
-              Simplu. Rapid. Gata.
-            </h2>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <p style={eyebrow}>{L(UI.processEyebrow)}</p>
+            <h2 style={h2}>{L(UI.processTitle)}</h2>
           </div>
 
           <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
@@ -721,30 +1257,24 @@ export default function App() {
                   <div className="step-connector" style={{
                     position: "absolute", top: 32, left: "calc(100% - 12px)", right: "-12px",
                     height: 1, background: "linear-gradient(90deg, rgba(29,78,216,0.5), rgba(29,78,216,0.1))",
-                    zIndex: 1,
                   }} />
                 )}
-                <div style={{
-                  background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: "36px 28px", height: "100%",
-                }}>
+                <div style={{ ...card, padding: "34px 28px", height: "100%", boxSizing: "border-box" }}>
                   <div style={{
-                    width: 56, height: 56, borderRadius: 14,
+                    width: 54, height: 54, borderRadius: 14,
                     background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontWeight: 900, fontSize: 20, marginBottom: 24,
+                    fontWeight: 900, fontSize: 20, marginBottom: 22,
                     boxShadow: "0 0 30px rgba(29,78,216,0.4)",
                   }}>{step.number}</div>
-
                   <div style={{
                     display: "inline-block", fontSize: 11, fontWeight: 700,
                     color: "#22d3ee", background: "rgba(34,211,238,0.1)",
                     border: "1px solid rgba(34,211,238,0.2)", borderRadius: 6,
                     padding: "3px 10px", marginBottom: 14, letterSpacing: 0.5,
-                  }}>{step.detail}</div>
-
-                  <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 12, letterSpacing: "-0.3px" }}>{step.title}</h3>
-                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>{step.desc}</p>
+                  }}>{L(step.detail)}</div>
+                  <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 11, letterSpacing: "-0.3px" }}>{L(step.title)}</h3>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>{L(step.desc)}</p>
                 </div>
               </div>
             ))}
@@ -752,220 +1282,94 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── PRICING ── */}
-      <section id="preturi" style={{ padding: "110px 24px" }}>
+      {/* ── PREȚURI ── */}
+      <section id="preturi" style={{ padding: "110px 24px", background: "rgba(255,255,255,0.015)" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 72 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#60a5fa", letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Prețuri</p>
-            <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-1.5px", marginBottom: 16 }}>
-              Transparent. Fără Surprize.
-            </h2>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", maxWidth: 520, margin: "0 auto" }}>
-              Promovarea se lucrează pe abonament lunar. Sistemele se plătesc o singură dată, la livrare.
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <p style={eyebrow}>{L(UI.pricingEyebrow)}</p>
+            <h2 style={{ ...h2, marginBottom: 16 }}>{L(UI.pricingTitle)}</h2>
+            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+              {L(UI.pricingSub)}
             </p>
           </div>
 
-          {/* Social media & ads — recurring */}
-          <div style={{ marginBottom: 48 }}>
-            <h3 style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: 2, textTransform: "uppercase", marginBottom: 24 }}>Promovare & Social Media — Lunar</h3>
-            <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16, maxWidth: 760, margin: "0 auto" }}>
-              {SOCIAL_PLANS.map((plan) => (
-                <div key={plan.name} className={plan.highlight ? "pricing-highlight" : undefined} style={{
-                  background: plan.highlight ? "linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 100%)" : "rgba(255,255,255,0.025)",
-                  border: plan.highlight ? "1px solid rgba(96,165,250,0.4)" : "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: "32px 26px",
-                  position: "relative",
-                  boxShadow: plan.highlight ? "0 0 60px rgba(29,78,216,0.3)" : "none",
-                  display: "flex", flexDirection: "column",
-                }}>
-                  <div style={{
-                    display: "inline-block", fontSize: 10, fontWeight: 800, letterSpacing: 1,
-                    textTransform: "uppercase", padding: "4px 10px", borderRadius: 6, marginBottom: 16,
-                    color: plan.highlight ? "#fff" : "#93c5fd",
-                    background: plan.highlight ? "rgba(255,255,255,0.18)" : "rgba(29,78,216,0.15)",
-                    border: plan.highlight ? "1px solid rgba(255,255,255,0.3)" : "1px solid rgba(29,78,216,0.3)",
-                  }}>{plan.badge}</div>
-
-                  <h4 style={{ fontSize: 19, fontWeight: 800, marginBottom: 8, letterSpacing: "-0.3px" }}>{plan.name}</h4>
-                  <p style={{ fontSize: 13, color: plan.highlight ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.45)", lineHeight: 1.7, marginBottom: 18, minHeight: 44 }}>{plan.desc}</p>
-
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 22 }}>
-                    <span style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-1px" }}>{plan.price}</span>
-                    <span style={{ fontSize: 13, color: plan.highlight ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)" }}>/ {plan.period}</span>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 24 }}>
-                    {plan.features.map(f => (
-                      <div key={f} style={{ display: "flex", alignItems: "center", gap: 9 }}>
-                        <span style={{ fontSize: 12, color: plan.highlight ? "#bfdbfe" : "#60a5fa" }}>✓</span>
-                        <span style={{ fontSize: 13.5, color: plan.highlight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)" }}>{f}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <a href="#contact" style={{
-                    display: "block", textAlign: "center", padding: "11px 18px", borderRadius: 10,
-                    fontSize: 13.5, fontWeight: 700, textDecoration: "none",
-                    color: plan.highlight ? "#1e3a8a" : "#93c5fd",
-                    background: plan.highlight ? "#fff" : "rgba(29,78,216,0.12)",
-                    border: plan.highlight ? "1px solid #fff" : "1px solid rgba(29,78,216,0.3)",
-                    marginTop: "auto",
-                  }}>Începe acum →</a>
-                </div>
-              ))}
+          <div style={{ marginBottom: 52 }}>
+            <h3 className="price-group" style={{
+              fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)",
+              letterSpacing: 2, textTransform: "uppercase", marginBottom: 22,
+            }}>{L(UI.pricingSocial)}</h3>
+            <div className="pricing-grid" style={{
+              display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: 16, maxWidth: 760, margin: "0 auto",
+            }}>
+              {SOCIAL_PLANS.map(planCard)}
             </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginTop: 16, lineHeight: 1.7, maxWidth: 760, margin: "16px auto 0" }}>
-              Bugetul de reclame se plătește separat, direct către Meta sau TikTok. Prețurile de mai sus acoperă doar munca de administrare, conținut și optimizare.
-            </p>
+            <p style={{
+              fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7,
+              maxWidth: 760, margin: "16px auto 0",
+            }}>{L(UI.pricingNote)}</p>
           </div>
 
-          {/* One-time services */}
-          <div style={{ marginBottom: 48 }}>
-            <h3 style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: 2, textTransform: "uppercase", marginBottom: 24 }}>Servicii One-Time</h3>
-            <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
-              {PLANS.filter(p => !p.isMonthly).map((plan) => (
-                <div key={plan.name} className={plan.highlight ? "pricing-highlight" : undefined} style={{
-                  background: plan.highlight ? "linear-gradient(160deg, #1d4ed8 0%, #1e3a8a 100%)" : "rgba(255,255,255,0.025)",
-                  border: plan.highlight ? "1px solid rgba(96,165,250,0.4)" : "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: "32px 26px",
-                  position: "relative",
-                  boxShadow: plan.highlight ? "0 0 60px rgba(29,78,216,0.3)" : "none",
-                  display: "flex", flexDirection: "column",
-                }}>
-                  {plan.highlight && (
-                    <div style={{
-                      position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
-                      background: "linear-gradient(135deg, #0ea5e9, #38bdf8)",
-                      borderRadius: 999, padding: "4px 16px",
-                      fontSize: 11, fontWeight: 800, color: "#fff", whiteSpace: "nowrap",
-                      boxShadow: "0 0 20px rgba(14,165,233,0.5)",
-                    }}>⭐ Cel mai popular</div>
-                  )}
-
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "#60a5fa", background: "rgba(29,78,216,0.15)", border: "1px solid rgba(29,78,216,0.3)", borderRadius: 6, padding: "2px 8px" }}>{plan.badge}</span>
-                  </div>
-
-                  <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 4 }}>{plan.name}</div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 16 }}>{plan.desc}</div>
-
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 20 }}>
-                    <span style={{ fontSize: 32, fontWeight: 900, letterSpacing: "-1px" }}>{plan.price}</span>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
-                    {plan.features.map(f => (
-                      <div key={f} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{
-                          width: 18, height: 18, borderRadius: 5, flexShrink: 0,
-                          background: plan.highlight ? "rgba(255,255,255,0.15)" : "rgba(29,78,216,0.2)",
-                          border: `1px solid ${plan.highlight ? "rgba(255,255,255,0.2)" : "rgba(29,78,216,0.4)"}`,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 10, color: plan.highlight ? "#fff" : "#60a5fa",
-                        }}>✓</div>
-                        <span style={{ fontSize: 13, color: plan.highlight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.6)" }}>{f}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <a href="#contact" style={{
-                    display: "block", textAlign: "center", padding: "12px",
-                    borderRadius: 10, fontWeight: 700, fontSize: 14, textDecoration: "none",
-                    background: plan.highlight ? "rgba(255,255,255,0.18)" : "rgba(29,78,216,0.25)",
-                    border: `1px solid ${plan.highlight ? "rgba(255,255,255,0.25)" : "rgba(29,78,216,0.4)"}`,
-                    color: "#fff",
-                    marginTop: "auto",
-                  }}>Începe acum →</a>
-                </div>
-              ))}
+          <div style={{ marginBottom: 52 }}>
+            <h3 className="price-group" style={{
+              fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)",
+              letterSpacing: 2, textTransform: "uppercase", marginBottom: 22,
+            }}>{L(UI.pricingOneTime)}</h3>
+            <div className="pricing-grid" style={{
+              display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16,
+            }}>
+              {PLANS.map(planCard)}
             </div>
           </div>
 
-          {/* Monthly maintenance */}
           <div>
-            <h3 style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: 2, textTransform: "uppercase", marginBottom: 24 }}>Mentenanță Lunară</h3>
-            <div className="pricing-monthly-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
-              {PLANS.filter(p => p.isMonthly).map((plan) => (
-                <div key={plan.name} style={{
-                  background: "rgba(255,255,255,0.025)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 20, padding: "32px 26px",
-                  position: "relative",
-                  display: "flex", flexDirection: "column",
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "#60a5fa", background: "rgba(29,78,216,0.15)", border: "1px solid rgba(29,78,216,0.3)", borderRadius: 6, padding: "2px 8px" }}>{plan.badge}</span>
-                  </div>
-
-                  <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 4 }}>{plan.name}</div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 16 }}>{plan.desc}</div>
-
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 20 }}>
-                    <span style={{ fontSize: 32, fontWeight: 900, letterSpacing: "-1px" }}>{plan.price}</span>
-                    <span style={{ fontSize: 13, color: "rgba(255,255,255,0.3)" }}>/lună</span>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
-                    {plan.features.map(f => (
-                      <div key={f} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{
-                          width: 18, height: 18, borderRadius: 5, flexShrink: 0,
-                          background: "rgba(29,78,216,0.2)", border: "1px solid rgba(29,78,216,0.4)",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 10, color: "#60a5fa",
-                        }}>✓</div>
-                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{f}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <a href="#contact" style={{
-                    display: "block", textAlign: "center", padding: "12px",
-                    borderRadius: 10, fontWeight: 700, fontSize: 14, textDecoration: "none",
-                    background: "rgba(29,78,216,0.25)", border: "1px solid rgba(29,78,216,0.4)", color: "#fff",
-                    marginTop: "auto",
-                  }}>Începe acum →</a>
-                </div>
-              ))}
+            <h3 className="price-group" style={{
+              fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)",
+              letterSpacing: 2, textTransform: "uppercase", marginBottom: 22,
+            }}>{L(UI.pricingMonthly)}</h3>
+            <div className="pricing-grid" style={{
+              display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: 16, maxWidth: 760,
+            }}>
+              {SUPPORT_PLANS.map(planCard)}
             </div>
           </div>
         </div>
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ padding: "110px 24px", background: "rgba(255,255,255,0.015)" }}>
+      <section style={{ padding: "110px 24px" }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#60a5fa", letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>FAQ</p>
-            <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-1.5px" }}>
-              Întrebări Frecvente
-            </h2>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <p style={eyebrow}>{L(UI.faqEyebrow)}</p>
+            <h2 style={h2}>{L(UI.faqTitle)}</h2>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {FAQS.map((faq, i) => (
-              <div key={i} style={{
-                background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: 16, overflow: "hidden",
+              <div key={faq.q.en} style={{
+                ...card, borderRadius: 16, overflow: "hidden",
                 borderColor: openFaq === i ? "rgba(29,78,216,0.4)" : "rgba(255,255,255,0.07)",
-                transition: "border-color 0.2s",
+                transition: "border-color .2s",
               }}>
                 <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  aria-expanded={openFaq === i}
                   style={{
                     width: "100%", padding: "20px 24px", background: "none", border: "none",
-                    cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center",
-                    color: "#fff", textAlign: "left",
+                    cursor: "pointer", display: "flex", justifyContent: "space-between",
+                    alignItems: "center", color: "#fff", textAlign: "left", gap: 16,
+                    fontFamily: "inherit",
                   }}>
-                  <span style={{ fontSize: 16, fontWeight: 700 }}>{faq.q}</span>
+                  <span style={{ fontSize: 16, fontWeight: 700, lineHeight: 1.45 }}>{L(faq.q)}</span>
                   <span style={{
-                    fontSize: 20, color: "#60a5fa", flexShrink: 0, marginLeft: 16,
+                    fontSize: 20, color: "#60a5fa", flexShrink: 0,
                     transform: openFaq === i ? "rotate(45deg)" : "rotate(0deg)",
-                    transition: "transform 0.2s",
+                    transition: "transform .2s",
                   }}>+</span>
                 </button>
                 {openFaq === i && (
                   <div style={{ padding: "0 24px 20px" }}>
-                    <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}>{faq.a}</p>
+                    <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}>{L(faq.a)}</p>
                   </div>
                 )}
               </div>
@@ -974,32 +1378,32 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── CTA BAND ── */}
+      {/* ── BANDĂ CTA ── */}
       <section style={{ padding: "0 24px 110px" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{
+          <div className="cta-band" style={{
             background: "linear-gradient(135deg, #1d4ed8 0%, #0f172a 60%, #1e40af 100%)",
             border: "1px solid rgba(96,165,250,0.2)", borderRadius: 24,
-            padding: "72px 56px", textAlign: "center", position: "relative", overflow: "hidden",
-          }} className="cta-band">
+            padding: "68px 56px", textAlign: "center", position: "relative", overflow: "hidden",
+          }}>
             <div style={{
               position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)",
               width: 500, height: 500, borderRadius: "50%",
               background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%)",
               pointerEvents: "none",
             }} />
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900, letterSpacing: "-1.5px", marginBottom: 16 }}>
-              Gata să Îți Automatizezi Afacerea?
+            <h2 style={{ ...h2, fontSize: "clamp(27px, 4vw, 48px)", marginBottom: 16, position: "relative" }}>
+              {L(UI.ctaTitle)}
             </h2>
-            <p style={{ fontSize: 18, color: "rgba(255,255,255,0.6)", marginBottom: 40, maxWidth: 480, margin: "0 auto 40px" }}>
-              Discuție gratuită, fără obligații. Îți spunem exact ce putem face pentru afacerea ta.
-            </p>
+            <p style={{
+              fontSize: 17, color: "rgba(255,255,255,0.65)", maxWidth: 520,
+              margin: "0 auto 36px", lineHeight: 1.7, position: "relative",
+            }}>{L(UI.ctaSub)}</p>
             <a href="#contact" style={{
-              background: "#fff", color: "#1d4ed8",
-              padding: "16px 40px", borderRadius: 12,
+              background: "#fff", color: "#1d4ed8", padding: "16px 40px", borderRadius: 12,
               fontWeight: 900, fontSize: 17, textDecoration: "none",
-              display: "inline-block",
-            }}>Programează o Discuție →</a>
+              display: "inline-block", position: "relative",
+            }}>{L(UI.ctaButton)} →</a>
           </div>
         </div>
       </section>
@@ -1007,75 +1411,44 @@ export default function App() {
       {/* ── CONTACT ── */}
       <section id="contact" style={{ padding: "0 24px 110px" }}>
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 56 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#60a5fa", letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Contact</p>
-            <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-1.5px", marginBottom: 16 }}>
-              Hai să Vorbim
-            </h2>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>
-              Descrie-ne afacerea și ce vrei să automatizezi. Îți răspundem în maxim 24 de ore.
-            </p>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <p style={eyebrow}>{L(UI.contactEyebrow)}</p>
+            <h2 style={{ ...h2, marginBottom: 16 }}>{L(UI.contactTitle)}</h2>
+            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>{L(UI.contactSub)}</p>
           </div>
 
           <form ref={formRef} style={{ display: "flex", flexDirection: "column", gap: 14 }} onSubmit={handleSubmit}>
             <div className="contact-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-              <input type="text" name="name" placeholder="Numele tău" required
-                style={{
-                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                  borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
-                  outline: "none", fontFamily: "inherit",
-                }}
-              />
-              <input type="email" name="email" placeholder="Email" required
-                style={{
-                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                  borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
-                  outline: "none", fontFamily: "inherit",
-                }}
-              />
+              <input type="text" name="name" placeholder={L(UI.fName)} required style={input} />
+              <input type="email" name="email" placeholder={L(UI.fEmail)} required style={input} />
             </div>
-            <input type="text" name="phone" placeholder="Telefon / WhatsApp"
-              style={{
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
-                outline: "none", fontFamily: "inherit",
-              }}
-            />
-            <input type="text" name="business" placeholder="Tipul afacerii tale (ex: construcții, transport, servicii)"
-              style={{
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
-                outline: "none", fontFamily: "inherit",
-              }}
-            />
-            <textarea name="message" placeholder="Ce vrei să automatizezi? Descrie procesul actual..."
-              rows={5}
-              style={{
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
-                borderRadius: 12, padding: "15px 18px", color: "#fff", fontSize: 15,
-                outline: "none", resize: "vertical", fontFamily: "inherit",
-              }}
-            />
+            <input type="text" name="phone" placeholder={L(UI.fPhone)} style={input} />
+            <input type="text" name="business" placeholder={L(UI.fBusiness)} style={input} />
+            <textarea name="message" placeholder={L(UI.fMessage)} rows={5}
+              style={{ ...input, resize: "vertical" }} />
+
             {sent && (
               <div style={{
                 background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)",
                 borderRadius: 12, padding: "14px 18px", color: "#4ade80", fontSize: 15, fontWeight: 600,
-              }}>✓ Mesaj trimis! Te contactăm în maxim 24 de ore.</div>
+              }}>✓ {L(UI.fOk)}</div>
             )}
             {error && (
               <div style={{
                 background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)",
                 borderRadius: 12, padding: "14px 18px", color: "#f87171", fontSize: 15, fontWeight: 600,
-              }}>❌ Eroare la trimitere. Încearcă din nou.</div>
+              }}>{L(UI.fErr)}</div>
             )}
+
             <button type="submit" disabled={sending || sent} style={{
               background: sent ? "rgba(34,197,94,0.2)" : "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
               color: "#fff", padding: "18px", borderRadius: 12, border: "none",
-              fontWeight: 800, fontSize: 17, cursor: sending || sent ? "default" : "pointer",
+              fontWeight: 800, fontSize: 17, fontFamily: "inherit",
+              cursor: sending || sent ? "default" : "pointer",
               boxShadow: sent ? "none" : "0 0 50px rgba(29,78,216,0.45)",
               opacity: sending ? 0.7 : 1,
             }}>
-              {sending ? "Se trimite..." : sent ? "✓ Trimis!" : "Trimite Mesajul →"}
+              {sending ? L(UI.fSending) : sent ? `✓ ${L(UI.fSent)}` : `${L(UI.fSend)} →`}
             </button>
           </form>
         </div>
@@ -1083,97 +1456,74 @@ export default function App() {
 
       {/* ── FOOTER ── */}
       <footer style={{
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-        padding: "48px 48px",
+        borderTop: "1px solid rgba(255,255,255,0.06)", padding: "44px 48px",
         display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 24,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <svg width="34" height="34" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logoGrad2" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#1d4ed8"/>
-                <stop offset="100%" stopColor="#0ea5e9"/>
-              </linearGradient>
-            </defs>
-            <path d="M21 2L38 11.5V30.5L21 40L4 30.5V11.5L21 2Z" fill="url(#logoGrad2)" opacity="0.15"/>
-            <path d="M21 2L38 11.5V30.5L21 40L4 30.5V11.5L21 2Z" stroke="url(#logoGrad2)" strokeWidth="1.5" fill="none"/>
-            <text x="21" y="27" textAnchor="middle" fill="white" fontSize="18" fontWeight="900" fontFamily="-apple-system, sans-serif">H</text>
-            <circle cx="21" cy="2" r="2" fill="#0ea5e9" opacity="0.8"/>
-          </svg>
+          <Logo size={34} id="lg2" />
           <div>
             <div style={{ fontWeight: 800, fontSize: 15 }}>HUMANEX</div>
-            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, textTransform: "uppercase" }}>AI Systems</div>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, textTransform: "uppercase" }}>
+              {L(UI.basedIn)}
+            </div>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 32 }}>
-          {[
-            { label: "Servicii", href: "#servicii" },
-            { label: "Prețuri", href: "#preturi" },
-            { label: "Contact", href: "#contact" },
-          ].map(l => (
-            <a key={l.label} href={l.href}
-              style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>{l.label}</a>
+        <div style={{ display: "flex", gap: 28, flexWrap: "wrap", justifyContent: "center" }}>
+          {navLinks.map((l) => (
+            <a key={l.id} href={`#${l.id}`}
+              style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>{L(l.label)}</a>
           ))}
         </div>
         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.25)", textAlign: "right" }}>
-          © {new Date().getFullYear()} HUMANEX. Toate drepturile rezervate.
+          © {new Date().getFullYear()} HUMANEX. {L(UI.rights)}
         </p>
       </footer>
 
       <style>{`
-        /* ── MOBILE RESPONSIVE ── */
-        @media (max-width: 768px) {
+        html { scroll-behavior: smooth; }
+        input:focus, textarea:focus { border-color: rgba(29,78,216,0.5) !important; }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
 
-          /* Navbar */
+        @media (max-width: 1000px) {
+          .cc-shots { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+
+        @media (max-width: 860px) {
           .nav-links { display: none !important; }
           .nav-cta { display: none !important; }
-          nav { padding: 0 20px !important; }
+          nav { padding: 0 18px !important; }
 
-          /* Hero */
-          .hero-section { padding-top: 100px !important; padding-bottom: 48px !important; }
-          .hero-stats { flex-direction: column !important; gap: 0 !important; }
+          .hero-section { padding-top: 104px !important; padding-bottom: 48px !important; }
+          .hero-stats { flex-direction: column !important; }
           .hero-stats > div { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
           .hero-stats > div:last-child { border-bottom: none; }
-          .hero-cta { flex-direction: column !important; align-items: center !important; margin-bottom: 36px !important; }
-          .hero-cta a { width: 100% !important; text-align: center !important; box-sizing: border-box; }
-          .stat-item { padding: 14px 16px !important; flex: 1 1 100% !important; }
+          .hero-cta { flex-direction: column !important; align-items: stretch !important; width: 100%; max-width: 340px; margin-bottom: 40px !important; }
+          .hero-cta a { justify-content: center !important; box-sizing: border-box; }
+          .stat-item { padding: 16px !important; flex: 1 1 100% !important; }
 
-          /* Services */
           .services-header { flex-direction: column !important; align-items: flex-start !important; }
+          .cc-head { flex-direction: column !important; align-items: flex-start !important; }
 
-          /* Case study */
-          .case-study-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .case-study-stats { flex-wrap: wrap !important; gap: 20px !important; }
-          .case-study-wrap { padding: 32px 24px !important; }
+          .project-grid { grid-template-columns: 1fr !important; gap: 26px !important; }
+          .project-card { padding: 30px 24px !important; }
 
-          /* How it works */
           .steps-grid { grid-template-columns: 1fr !important; }
           .step-connector { display: none !important; }
 
-          /* Pricing */
           .pricing-grid { grid-template-columns: 1fr !important; }
-          .pricing-highlight { transform: scale(1) !important; }
+          .pricing-highlight { transform: none !important; }
 
-          /* CTA band */
-          .cta-band { padding: 48px 28px !important; }
-
-          /* Contact form */
+          .cta-band { padding: 48px 26px !important; }
           .contact-form-row { grid-template-columns: 1fr !important; }
 
-          /* Footer */
-          footer { display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 32px 24px !important; gap: 16px !important; }
+          footer { display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 32px 24px !important; gap: 18px !important; }
           footer p { text-align: center !important; }
 
-          /* Section padding */
-          section { padding-left: 16px !important; padding-right: 16px !important; }
+          section { padding-left: 18px !important; padding-right: 18px !important; }
         }
 
-        /* Smooth hover for inputs */
-        input:focus, textarea:focus {
-          border-color: rgba(29,78,216,0.5) !important;
-        }
-        input::placeholder, textarea::placeholder {
-          color: rgba(255,255,255,0.3);
+        @media (max-width: 560px) {
+          .cc-shots { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
