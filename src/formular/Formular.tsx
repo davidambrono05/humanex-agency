@@ -200,6 +200,10 @@ export default function Formular() {
               În primul apel aflăm ce vinzi și cui, și îți spunem sincer dacă reclamele
               au sens pentru afacerea ta. Nu plătești nimic pentru apel.
             </p>
+            <p style={{ ...S.sub, marginTop: 14, fontSize: 15 }}>
+              Ai o întrebare până atunci? Scrie-ne la{" "}
+              <a href={`mailto:${EMAIL_HUMANEX}`} style={S.mail}>{EMAIL_HUMANEX}</a>
+            </p>
             <a href="https://humanex.space" style={S.legaturaInapoi}>Vezi site-ul HUMANEX →</a>
           </section>
         ) : (
@@ -293,6 +297,10 @@ export default function Formular() {
               </button>
 
               <p style={S.mic}>Durează 30 de secunde. Nu primești spam.</p>
+              <p style={{ ...S.mic, marginTop: 6 }}>
+                Preferi emailul? Scrie-ne la{" "}
+                <a href={`mailto:${EMAIL_HUMANEX}`} style={S.mail}>{EMAIL_HUMANEX}</a>
+              </p>
             </form>
 
             <ul style={S.avantaje}>
@@ -339,7 +347,10 @@ export default function Formular() {
           </>
         )}
 
-        <footer style={S.subsol}>© {new Date().getFullYear()} HUMANEX · AMBRONUS SRL · Brașov</footer>
+        <footer style={S.subsol}>
+          © {new Date().getFullYear()} HUMANEX · AMBRONUS SRL · Brașov ·{" "}
+          <a href={`mailto:${EMAIL_HUMANEX}`} style={{ color: "inherit" }}>{EMAIL_HUMANEX}</a>
+        </footer>
       </main>
 
       {ARE_PIXELI && cookies === null && (
@@ -483,6 +494,7 @@ const S: Record<string, React.CSSProperties> = {
     fontWeight: 900, fontSize: 18, fontFamily: "inherit", cursor: "pointer",
     boxShadow: "0 0 50px rgba(29,78,216,0.45)",
   },
+  mail: { color: "#60a5fa", fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", display: "inline-block" },
   mic: { textAlign: "center", fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 12 },
   ascuns: { position: "absolute", left: -9999, width: 1, height: 1, overflow: "hidden" },
   avantaje: { listStyle: "none", padding: 0, margin: "30px 0 0", display: "grid", gap: 16 },
