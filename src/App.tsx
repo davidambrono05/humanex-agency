@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
+import { areWhatsApp, linkWhatsApp, PAUZA_WHATSAPP } from "./whatsapp.ts";
 
 /* ═══════════════════════════════════════════════════════════════
    Bilingv RO / EN.
@@ -153,6 +154,13 @@ const UI = {
     ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct la ambronus@humanex.space.",
     en: "Something went wrong. Try again, or email us at ambronus@humanex.space.",
   },
+  waTitlu: { ro: "Mai ai un singur pas", en: "One last step" },
+  waText: {
+    ro: "Trimite-ne și un mesaj pe WhatsApp, ca să vorbim mai repede. Mesajul e deja scris, tu doar apeși Trimite.",
+    en: "Send us a WhatsApp message too, so we can talk sooner. The message is already written; just press Send.",
+  },
+  waButon: { ro: "Trimite mesajul pe WhatsApp", en: "Send the message on WhatsApp" },
+  waAuto: { ro: "Te ducem singuri în WhatsApp în câteva secunde.", en: "We will open WhatsApp for you in a few seconds." },
   rights: { ro: "Toate drepturile rezervate.", en: "All rights reserved." },
   basedIn: { ro: "Brașov, România", en: "Brașov, Romania" },
 };
@@ -749,6 +757,7 @@ export default function App() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
   const [topic, setTopic] = useState<Topic>("");
+  const [linkWa, setLinkWa] = useState("");
 
   const L = (x: TX) => t(x, lang);
 
@@ -764,6 +773,15 @@ export default function App() {
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", META[lang].desc);
   }, [lang]);
+
+  /* După trimitere, deschidem singuri WhatsApp cu mesajul deja scris. */
+  useEffect(() => {
+    if (!linkWa) return;
+    const t = window.setTimeout(() => {
+      window.location.href = linkWa;
+    }, PAUZA_WHATSAPP);
+    return () => window.clearTimeout(t);
+  }, [linkWa]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -795,6 +813,14 @@ export default function App() {
         },
         { publicKey: EMAILJS_KEY },
       );
+      if (areWhatsApp) {
+        const despre =
+          topic === "ads" ? "reclame plătite" : topic === "sys" ? "un sistem sau un site" : topic === "both" ? "reclame și un sistem" : "un proiect";
+        const cine = g("business") ? `${g("name")}, de la ${g("business")}` : g("name");
+        setLinkWa(linkWhatsApp(
+          `Bună! Sunt ${cine}. Tocmai v-am scris de pe humanex.space și aș vrea să vorbim despre ${despre}.`,
+        ));
+      }
       setSent(true);
       setTopic("");
       formRef.current.reset();
@@ -1534,6 +1560,27 @@ export default function App() {
                 background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)",
                 borderRadius: 12, padding: "14px 18px", color: "#4ade80", fontSize: 15, fontWeight: 600,
               }}>✓ {L(UI.fOk)}</div>
+            )}
+            {sent && linkWa && (
+              <div style={{
+                background: "rgba(37,211,102,0.08)", border: "1px solid rgba(37,211,102,0.35)",
+                borderRadius: 14, padding: "18px", textAlign: "center",
+              }}>
+                <p style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>{L(UI.waTitlu)}</p>
+                <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.7)", lineHeight: 1.55, marginBottom: 14 }}>{L(UI.waText)}</p>
+                <a href={linkWa} style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
+                  width: "100%", boxSizing: "border-box", padding: "15px 18px", borderRadius: 12,
+                  background: "#25D366", color: "#06210f", fontWeight: 900, fontSize: 16.5,
+                  textDecoration: "none", boxShadow: "0 0 40px rgba(37,211,102,0.3)",
+                }}>
+                  <svg width={21} height={21} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z" />
+                  </svg>
+                  {L(UI.waButon)}
+                </a>
+                <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.45)", marginTop: 10 }}>{L(UI.waAuto)}</p>
+              </div>
             )}
             {error && (
               <div style={{

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
+import { areWhatsApp, linkWhatsApp, PAUZA_WHATSAPP } from "../whatsapp.ts";
 
 /* Pagina humanex.space/formular — aici ajung oamenii care apasă pe
    reclamele HUMANEX. Cererea pleacă pe email prin același cont EmailJS
@@ -89,6 +90,7 @@ export default function Formular() {
   const [capcana, setCapcana] = useState("");
 
   const [trimis, setTrimis] = useState(false);
+  const [linkWa, setLinkWa] = useState("");
   const [seTrimite, setSeTrimite] = useState(false);
   const [eroare, setEroare] = useState("");
   const [incercat, setIncercat] = useState(false);
@@ -97,6 +99,15 @@ export default function Formular() {
   useEffect(() => {
     if (cookies === "da") pornestePixeli();
   }, [cookies]);
+
+  /* După trimitere, deschidem singuri WhatsApp cu mesajul deja scris. */
+  useEffect(() => {
+    if (!linkWa) return;
+    const t = window.setTimeout(() => {
+      window.location.href = linkWa;
+    }, PAUZA_WHATSAPP);
+    return () => window.clearTimeout(t);
+  }, [linkWa]);
 
   const alegeCookies = (v: "da" | "nu") => {
     try {
@@ -163,6 +174,12 @@ export default function Formular() {
         { publicKey: EMAILJS_KEY },
       );
       anuntaCererea();
+      if (areWhatsApp) {
+        const cine = afacere.trim() ? `${nume.trim()}, de la ${afacere.trim()}` : nume.trim();
+        setLinkWa(linkWhatsApp(
+          `Bună! Sunt ${cine}. Tocmai am completat formularul de pe humanex.space și aș vrea să vorbim despre reclame.`,
+        ));
+      }
       setTrimis(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
@@ -192,6 +209,21 @@ export default function Formular() {
           <section style={{ ...S.card, textAlign: "center", padding: "44px 26px" }} aria-live="polite">
             <div style={S.bifa} aria-hidden="true">✓</div>
             <h1 style={{ ...S.titlu, fontSize: 32 }}>Gata, am primit!</h1>
+            {linkWa && (
+              <div style={S.wa}>
+                <p style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>Mai ai un singur pas</p>
+                <p style={{ fontSize: 15, color: "rgba(255,255,255,0.75)", lineHeight: 1.55, marginBottom: 16 }}>
+                  Trimite-ne și un mesaj pe WhatsApp, ca să vorbim mai repede. Mesajul e deja
+                  scris, tu doar apeși Trimite.
+                </p>
+                <a href={linkWa} style={S.butonWa}>
+                  <IconWa /> Trimite pe WhatsApp
+                </a>
+                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 12 }}>
+                  Te ducem singuri în WhatsApp în câteva secunde.
+                </p>
+              </div>
+            )}
             <p style={S.sub}>
               Te sunăm noi în cel mult o zi lucrătoare, de pe un număr de mobil.
               Ține telefonul aproape.
@@ -411,6 +443,14 @@ function Cip({ activ, onClick, children }: {
   );
 }
 
+function IconWa() {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z" />
+    </svg>
+  );
+}
+
 function Logo() {
   return (
     <svg width={40} height={40} viewBox="0 0 42 42" fill="none" aria-hidden="true">
@@ -493,6 +533,16 @@ const S: Record<string, React.CSSProperties> = {
     background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)", color: "#fff",
     fontWeight: 900, fontSize: 18, fontFamily: "inherit", cursor: "pointer",
     boxShadow: "0 0 50px rgba(29,78,216,0.45)",
+  },
+  wa: {
+    background: "rgba(37,211,102,0.08)", border: "1px solid rgba(37,211,102,0.35)",
+    borderRadius: 16, padding: "20px 18px", margin: "6px 0 22px",
+  },
+  butonWa: {
+    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
+    width: "100%", padding: "16px 18px", borderRadius: 14, background: "#25D366",
+    color: "#06210f", fontWeight: 900, fontSize: 17, textDecoration: "none",
+    boxShadow: "0 0 40px rgba(37,211,102,0.35)",
   },
   mail: { color: "#60a5fa", fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", display: "inline-block" },
   mic: { textAlign: "center", fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 12 },
