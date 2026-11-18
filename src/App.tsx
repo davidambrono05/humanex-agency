@@ -150,8 +150,8 @@ const UI = {
     en: "Message sent. We will be in touch within 24 hours.",
   },
   fErr: {
-    ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct la humanex23@gmail.com.",
-    en: "Something went wrong. Try again, or email us at humanex23@gmail.com.",
+    ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct la ambronus@humanex.space.",
+    en: "Something went wrong. Try again, or email us at ambronus@humanex.space.",
   },
   rights: { ro: "Toate drepturile rezervate.", en: "All rights reserved." },
   basedIn: { ro: "Brașov, România", en: "Brașov, Romania" },
@@ -708,7 +708,7 @@ const EMAILJS_SERVICE = "service_vgg5fdg";
 const EMAILJS_TEMPLATE = "template_asjlv4r";
 const EMAILJS_KEY = "km3Un_Nuwq0eqaiPP";
 /* Mesajele din formular ajung aici (și e trimis șablonului ca to_email). */
-const CONTACT_EMAIL = "humanex23@gmail.com";
+const CONTACT_EMAIL = "ambronus@humanex.space";
 
 type Topic = "" | "ads" | "sys" | "both";
 

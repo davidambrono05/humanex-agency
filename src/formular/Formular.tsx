@@ -13,7 +13,7 @@ const EMAILJS_KEY = "km3Un_Nuwq0eqaiPP";
 
 /* Formularul nu cere email (doar telefonul), dar șablonul are un câmp de
    email. Îl completăm cu adresa HUMANEX, ca emailul să plece oricum. */
-const EMAIL_HUMANEX = "humanex23@gmail.com";
+const EMAIL_HUMANEX = "ambronus@humanex.space";
 
 /* Pixelii pentru reclame. Lasă-le goale până ai ID-urile:
    - Meta: Events Manager → Surse de date → ID-ul pixelului (doar cifre)
