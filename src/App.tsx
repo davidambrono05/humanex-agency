@@ -25,10 +25,6 @@ const UI = {
   navContact: { ro: "Contact", en: "Contact" },
   navCta: { ro: "Începe acum", en: "Get started" },
 
-  heroBadge: {
-    ro: "Reclame plătite și sisteme la comandă · Brașov",
-    en: "Paid ads and custom systems · Romania",
-  },
   heroTitle1: { ro: "Îți aducem clienți.", en: "We bring you customers." },
   heroTitle2: { ro: "Și îți automatizăm munca.", en: "And automate the work." },
   heroSub: {
@@ -1188,20 +1184,6 @@ export default function App() {
               "linear-gradient(rgba(29,78,216,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(29,78,216,0.04) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
           }} />
-        </div>
-
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 28,
-          background: "rgba(29,78,216,0.12)", border: "1px solid rgba(29,78,216,0.35)",
-          borderRadius: 999, padding: "7px 18px", position: "relative",
-        }}>
-          <span style={{
-            width: 7, height: 7, borderRadius: "50%", background: "#22d3ee",
-            display: "inline-block", boxShadow: "0 0 8px #22d3ee",
-          }} />
-          <span style={{ fontSize: 13, color: "#93c5fd", fontWeight: 600, letterSpacing: 0.5 }}>
-            {L(UI.heroBadge)}
-          </span>
         </div>
 
         <h1 style={{
