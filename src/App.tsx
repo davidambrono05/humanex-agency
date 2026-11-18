@@ -18,36 +18,73 @@ const t = (x: TX, l: Lang) => x[l];
 /* ── Texte de interfață ─────────────────────────────────────── */
 
 const UI = {
-  tagline: { ro: "Sisteme AI & Promovare", en: "AI Systems & Marketing" },
-  navServices: { ro: "Servicii", en: "Services" },
-  navProjects: { ro: "Proiecte", en: "Work" },
-  navProcess: { ro: "Proces", en: "Process" },
-  navPricing: { ro: "Prețuri", en: "Pricing" },
+  tagline: { ro: "Reclame & Sisteme", en: "Ads & Systems" },
+  navAds: { ro: "Reclame", en: "Ads" },
+  navSystems: { ro: "Sisteme", en: "Systems" },
+  navFaq: { ro: "Întrebări", en: "FAQ" },
   navContact: { ro: "Contact", en: "Contact" },
   navCta: { ro: "Începe acum", en: "Get started" },
 
   heroBadge: {
-    ro: "Agenție de software și promovare · România",
-    en: "Software & marketing studio · Romania",
+    ro: "Reclame plătite și sisteme la comandă · Brașov",
+    en: "Paid ads and custom systems · Romania",
   },
-  heroTitle1: { ro: "Sisteme care lucrează", en: "Systems that work" },
-  heroTitle2: { ro: "cât timp tu dormi.", en: "while you sleep." },
+  heroTitle1: { ro: "Îți aducem clienți.", en: "We bring you customers." },
+  heroTitle2: { ro: "Și îți automatizăm munca.", en: "And automate the work." },
   heroSub: {
-    ro: "Construim software la comandă pentru afaceri mici și mijlocii — și le ducem clienți prin campanii pe Meta și TikTok. Din Brașov, pentru clienți din România și din afară.",
-    en: "We build custom software for small and mid-sized businesses — and bring them customers through Meta and TikTok campaigns. Based in Romania, working with clients anywhere.",
+    ro: "Facem două lucruri: reclame plătite care îți aduc clienți și sisteme la comandă care fac singure munca de rutină. Alege ce te interesează:",
+    en: "We do two things: paid ads that bring you customers, and custom systems that take routine work off your hands. Pick what you need:",
   },
-  heroCta1: { ro: "Începe un proiect", en: "Start a project" },
-  heroCta2: { ro: "Vezi ce am construit", en: "See our work" },
-
-  projectsEyebrow: { ro: "Proiecte", en: "Selected work" },
-  projectsTitle: { ro: "Ce am construit", en: "What we have built" },
-  projectsSub: {
-    ro: "Fiecare sistem de mai jos rulează acum, pentru o afacere reală.",
-    en: "Every system below is running right now, for a real business.",
+  doorAdsKicker: { ro: "Reclame plătite", en: "Paid ads" },
+  doorAdsTitle: { ro: "Vreau mai mulți clienți", en: "I want more customers" },
+  doorAdsDesc: {
+    ro: "Facebook, Instagram, TikTok și ChatGPT. Facem noi și clipurile.",
+    en: "Facebook, Instagram, TikTok and ChatGPT. We make the videos too.",
   },
-  liveLabel: { ro: "Live", en: "Live" },
-  buildingLabel: { ro: "În dezvoltare", en: "In development" },
+  doorSysKicker: { ro: "Sisteme la comandă", en: "Custom systems" },
+  doorSysTitle: { ro: "Vreau să scap de munca manuală", en: "I want to stop doing it by hand" },
+  doorSysDesc: {
+    ro: "Software, rapoarte automate, panouri de control și site-uri.",
+    en: "Software, automatic reports, dashboards and websites.",
+  },
 
+  /* ── Reclame ── */
+  adsEyebrow: { ro: "01 · Reclame plătite", en: "01 · Paid ads" },
+  adsTitle: { ro: "Reclame care îți aduc clienți", en: "Ads that bring you customers" },
+  adsSub: {
+    ro: "Ne ocupăm de tot: clipurile, reclamele, bugetul și raportul. Tu primești telefoane și mesaje de la clienți.",
+    en: "We handle all of it: the videos, the ads, the budget and the report. You get the calls and messages from customers.",
+  },
+  adsServicesTitle: { ro: "Unde apar reclamele tale", en: "Where your ads run" },
+  adsHowTitle: { ro: "Cum lucrăm", en: "How it works" },
+  adsOfferTitle: { ro: "Ce primești", en: "What you get" },
+  adsOfferName: { ro: "Reclame făcute și administrate de noi", en: "Ads made and run by us" },
+  adsOfferPrice: {
+    ro: "Prețul lunar îl stabilim împreună în primul apel, în funcție de platforme și de cât vrei să crești.",
+    en: "We agree the monthly fee on the first call, depending on the platforms and how fast you want to grow.",
+  },
+  adsOfferNote: {
+    ro: "Bugetul de reclame îl plătești separat, direct către Meta, TikTok sau OpenAI, din contul tău. Așa vezi exact cât se cheltuie, iar contul rămâne al tău.",
+    en: "Ad spend is paid separately, straight to Meta, TikTok or OpenAI from your own account. You see exactly what is spent, and the account stays yours.",
+  },
+  adsResultsTitle: { ro: "Pentru cine am făcut reclame", en: "Who we have run ads for" },
+  adsCtaTitle: {
+    ro: "Vrei să vezi ce pot face reclamele pentru afacerea ta?",
+    en: "Want to see what ads could do for your business?",
+  },
+  adsCtaSub: {
+    ro: "Lasă-ne numărul și te sunăm noi. Primul apel e gratuit și fără obligații.",
+    en: "Leave your number and we will call you. The first call is free, with no strings.",
+  },
+  adsCtaButton: { ro: "Vreau să fiu sunat", en: "Call me back" },
+
+  /* ── Sisteme ── */
+  sysEyebrow: { ro: "02 · Sisteme la comandă", en: "02 · Custom systems" },
+  sysTitle: { ro: "Sisteme care lucrează cât timp tu dormi", en: "Systems that work while you sleep" },
+  sysSub: {
+    ro: "Construim software pentru afaceri mici și mijlocii: rapoarte care se trimit singure, panouri de control, site-uri și automatizări.",
+    en: "We build software for small and mid-sized businesses: reports that send themselves, dashboards, websites and automation.",
+  },
   ccEyebrow: { ro: "Ultimul proiect", en: "Latest project" },
   ccWatch: { ro: "Vezi prezentarea completă", en: "Watch the full walkthrough" },
   ccDuration: { ro: "4 min", en: "4 min" },
@@ -55,44 +92,26 @@ const UI = {
     ro: "Browserul tău nu poate reda acest video.",
     en: "Your browser cannot play this video.",
   },
-
-  servicesEyebrow: { ro: "Ce facem", en: "What we do" },
-  servicesTitle: {
-    ro: "Software la comandă și promovare",
-    en: "Custom software and marketing",
+  projectsTitle: { ro: "Alte sisteme construite de noi", en: "Other systems we have built" },
+  projectsSub: {
+    ro: "Fiecare sistem de mai jos rulează acum, pentru o afacere reală.",
+    en: "Every system below is running right now, for a real business.",
   },
-  servicesSub: {
-    ro: "Îți aducem clienți prin campanii, apoi automatizăm munca care vine după.",
-    en: "We bring you customers through campaigns, then automate the work that follows.",
-  },
-
-  processEyebrow: { ro: "Cum lucrăm", en: "How we work" },
-  processTitle: { ro: "Simplu. Rapid. Gata.", en: "Simple. Fast. Done." },
-
-  pricingEyebrow: { ro: "Prețuri", en: "Pricing" },
-  pricingTitle: { ro: "Transparent, fără surprize", en: "Transparent, no surprises" },
+  liveLabel: { ro: "Live", en: "Live" },
+  buildingLabel: { ro: "În dezvoltare", en: "In development" },
+  sysServicesTitle: { ro: "Ce putem construi", en: "What we can build" },
+  sysHowTitle: { ro: "Cum lucrăm", en: "How it works" },
+  pricingTitle: { ro: "Prețuri pentru sisteme", en: "Pricing for systems" },
   pricingSub: {
-    ro: "Promovarea se lucrează pe abonament lunar. Sistemele se plătesc o singură dată, la livrare.",
-    en: "Marketing runs on a monthly retainer. Systems are paid once, on delivery.",
+    ro: "Sistemele se plătesc o singură dată, la livrare. Mentenanța lunară e opțională.",
+    en: "Systems are paid once, on delivery. Monthly support is optional.",
   },
-  pricingSocial: {
-    ro: "Promovare și social media — lunar",
-    en: "Marketing and social media — monthly",
-  },
-  pricingOneTime: { ro: "Sisteme — plată unică", en: "Systems — one-time" },
-  pricingMonthly: { ro: "Mentenanță lunară", en: "Monthly support" },
-  pricingNote: {
-    ro: "Bugetul de reclame se plătește separat, direct către Meta sau TikTok, din contul tău. Prețurile de mai sus acoperă strategia, conținutul și administrarea.",
-    en: "Ad spend is paid separately, straight to Meta or TikTok from your own account. The prices above cover strategy, content and management.",
-  },
+  pricingOneTime: { ro: "Plată unică", en: "One-time" },
+  pricingMonthly: { ro: "Mentenanță lunară (opțional)", en: "Monthly support (optional)" },
   perMonth: { ro: "lună", en: "month" },
   perProject: { ro: "proiect", en: "project" },
   planCta: { ro: "Începe acum", en: "Get started" },
   popular: { ro: "Cel mai ales", en: "Most chosen" },
-
-  faqEyebrow: { ro: "Întrebări", en: "Questions" },
-  faqTitle: { ro: "Întrebări frecvente", en: "Frequently asked" },
-
   ctaTitle: {
     ro: "Ai un proces care îți mănâncă ziua?",
     en: "Got a process eating your day?",
@@ -103,22 +122,29 @@ const UI = {
   },
   ctaButton: { ro: "Programează o discuție", en: "Book a call" },
 
+  faqEyebrow: { ro: "Întrebări", en: "Questions" },
+  faqTitle: { ro: "Întrebări frecvente", en: "Frequently asked" },
+
   contactEyebrow: { ro: "Contact", en: "Contact" },
   contactTitle: { ro: "Hai să vorbim", en: "Let us talk" },
   contactSub: {
-    ro: "Descrie-ne afacerea și ce vrei să automatizezi. Îți răspundem în maxim 24 de ore.",
-    en: "Tell us about your business and what you want to automate. We reply within 24 hours.",
+    ro: "Spune-ne ce te interesează și câteva cuvinte despre afacerea ta. Îți răspundem în maxim 24 de ore.",
+    en: "Tell us what you are interested in and a little about your business. We reply within 24 hours.",
   },
+  fTopic: { ro: "Despre ce vrei să vorbim?", en: "What would you like to talk about?" },
+  tAds: { ro: "Reclame plătite", en: "Paid ads" },
+  tSys: { ro: "Un sistem sau un site", en: "A system or a website" },
+  tBoth: { ro: "Amândouă", en: "Both" },
   fName: { ro: "Numele tău", en: "Your name" },
   fEmail: { ro: "Email", en: "Email" },
   fPhone: { ro: "Telefon / WhatsApp", en: "Phone / WhatsApp" },
   fBusiness: {
-    ro: "Tipul afacerii (ex: restaurant, construcții, transport)",
-    en: "Type of business (e.g. restaurant, construction, logistics)",
+    ro: "Tipul afacerii (ex: restaurant, construcții, salon)",
+    en: "Type of business (e.g. restaurant, construction, salon)",
   },
   fMessage: {
-    ro: "Ce vrei să automatizezi? Descrie procesul actual…",
-    en: "What would you like to automate? Describe how it works today…",
+    ro: "Spune-ne pe scurt ce vinzi sau ce ai vrea să automatizezi…",
+    en: "Tell us briefly what you sell, or what you would like to automate…",
   },
   fSend: { ro: "Trimite mesajul", en: "Send message" },
   fSending: { ro: "Se trimite…", en: "Sending…" },
@@ -128,8 +154,8 @@ const UI = {
     en: "Message sent. We will be in touch within 24 hours.",
   },
   fErr: {
-    ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct pe email.",
-    en: "Something went wrong. Try again, or email us directly.",
+    ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct la humanex23@gmail.com.",
+    en: "Something went wrong. Try again, or email us at humanex23@gmail.com.",
   },
   rights: { ro: "Toate drepturile rezervate.", en: "All rights reserved." },
   basedIn: { ro: "Brașov, România", en: "Brașov, Romania" },
@@ -205,11 +231,11 @@ const PROJECTS: Project[] = [
   },
   {
     name: { ro: "da Vinci", en: "da Vinci" },
-    kind: { ro: "Site + Promovare", en: "Website + Marketing" },
+    kind: { ro: "Reclame + Site", en: "Ads + Website" },
     client: { ro: "Restaurant & boutique hotel · Brașov", en: "Restaurant & boutique hotel · Brașov" },
     desc: {
-      ro: "Site complet pentru un restaurant din Centrul Vechi al Brașovului, cu meniul real de 278 de preparate și rezervări trimise direct pe WhatsApp. Plus campanii plătite pe Meta și TikTok și conținut foto-video produs lunar.",
-      en: "A complete website for a restaurant in Brașov's old town, with the real 278-dish menu and reservations sent straight to WhatsApp. Plus paid Meta and TikTok campaigns and monthly photo and video content.",
+      ro: "Site complet pentru un restaurant din Centrul Vechi al Brașovului, cu meniul real de 278 de preparate și rezervări trimise direct pe WhatsApp. Plus reclame plătite pe Meta și TikTok, cu clipurile făcute de noi.",
+      en: "A complete website for a restaurant in Brașov's old town, with the real 278-dish menu and reservations sent straight to WhatsApp. Plus paid Meta and TikTok ads, with the videos made by us.",
     },
     points: [
       { ro: "Meniu complet, care se salvează ca PDF", en: "Full menu, saveable as a PDF" },
@@ -222,7 +248,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: { ro: "SpecialDelivery", en: "SpecialDelivery" },
-    kind: { ro: "Site + Promovare", en: "Website + Marketing" },
+    kind: { ro: "Reclame + Site", en: "Ads + Website" },
     client: { ro: "Livrări fast food · Județul Bacău", en: "Fast food delivery · Romania" },
     desc: {
       ro: "Brandurile mari de livrare se opreau la marginea orașului. Am construit site-ul prin care satele și orașele din tot județul puteau comanda aceeași mâncare, livrată caldă — plus campaniile care au dus vestea acolo.",
@@ -238,6 +264,10 @@ const PROJECTS: Project[] = [
   },
 ];
 
+/* Proiectele de reclame apar în zona Reclame, sistemele în zona Sisteme. */
+const SYS_PROJECTS = PROJECTS.slice(1, 3);
+const ADS_PROJECTS = PROJECTS.slice(3);
+
 /* Capturi din prezentarea CloseCheck */
 const CC_SHOTS: { src: string; cap: TX }[] = [
   { src: "/cc-mobil.jpg", cap: { ro: "Închiderea turei, de pe telefon", en: "Shift close, from the phone" } },
@@ -248,7 +278,65 @@ const CC_SHOTS: { src: string; cap: TX }[] = [
 
 /* ── Servicii ───────────────────────────────────────────────── */
 
-const SERVICES: { icon: string; title: TX; desc: TX; tags: TX[] }[] = [
+type Service = { icon: string; title: TX; desc: TX; tags: TX[] };
+
+/* Reclame plătite. Doar reclame — postările zilnice și administrarea
+   paginilor (promovarea organică) nu le mai oferim. */
+const ADS_SERVICES: Service[] = [
+  {
+    icon: "🎯",
+    title: { ro: "Facebook și Instagram", en: "Facebook and Instagram" },
+    desc: {
+      ro: "Reclame care ajung la oamenii din zona ta care chiar pot cumpăra. Buget controlat, cereri pe telefon, formular sau WhatsApp.",
+      en: "Ads that reach the people near you who can actually buy. A controlled budget, with enquiries by phone, form or WhatsApp.",
+    },
+    tags: [
+      { ro: "Meta Ads", en: "Meta Ads" },
+      { ro: "WhatsApp", en: "WhatsApp" },
+      { ro: "Local", en: "Local" },
+    ],
+  },
+  {
+    icon: "🎬",
+    title: { ro: "TikTok", en: "TikTok" },
+    desc: {
+      ro: "Clipuri scurte care opresc degetul din scroll, testate și îmbunătățite în fiecare săptămână.",
+      en: "Short videos that stop the scroll, tested and improved every week.",
+    },
+    tags: [
+      { ro: "TikTok Ads", en: "TikTok Ads" },
+      { ro: "Video", en: "Video" },
+      { ro: "Testare", en: "Testing" },
+    ],
+  },
+  {
+    icon: "🤖",
+    title: { ro: "ChatGPT", en: "ChatGPT" },
+    desc: {
+      ro: "Reclamele din ChatGPT au pornit în Europa. Apari când cineva îi cere o recomandare pentru ce vinzi tu.",
+      en: "ChatGPT ads have launched in Europe. You show up when someone asks it for a recommendation for what you sell.",
+    },
+    tags: [
+      { ro: "ChatGPT Ads", en: "ChatGPT Ads" },
+      { ro: "Nou", en: "New" },
+    ],
+  },
+  {
+    icon: "📸",
+    title: { ro: "Clipurile pentru reclame", en: "The ad videos" },
+    desc: {
+      ro: "Facem noi clipurile și pozele pentru reclame, inclusiv o mascotă AI pentru brandul tău. Tu nu filmezi și nu scrii nimic.",
+      en: "We make the videos and images for your ads, including an AI mascot for your brand. You do not film or write anything.",
+    },
+    tags: [
+      { ro: "Video", en: "Video" },
+      { ro: "Mascote AI", en: "AI mascots" },
+      { ro: "Foto", en: "Photo" },
+    ],
+  },
+];
+
+const SYS_SERVICES: Service[] = [
   {
     icon: "⚙️",
     title: { ro: "Software la comandă", en: "Custom software" },
@@ -302,58 +390,6 @@ const SERVICES: { icon: string; title: TX; desc: TX; tags: TX[] }[] = [
     ],
   },
   {
-    icon: "🎯",
-    title: { ro: "Campanii Meta Ads", en: "Meta Ads campaigns" },
-    desc: {
-      ro: "Reclame pe Facebook și Instagram — targetare locală, buget controlat, raport lunar clar.",
-      en: "Facebook and Instagram ads — local targeting, controlled budget, a clear monthly report.",
-    },
-    tags: [
-      { ro: "Facebook", en: "Facebook" },
-      { ro: "Instagram", en: "Instagram" },
-      { ro: "Targetare", en: "Targeting" },
-    ],
-  },
-  {
-    icon: "🎬",
-    title: { ro: "Campanii TikTok Ads", en: "TikTok Ads campaigns" },
-    desc: {
-      ro: "Reclame video pentru audiențe tinere — creative produse de noi, testate și optimizate săptămânal.",
-      en: "Video ads for younger audiences — creative made in-house, tested and tuned every week.",
-    },
-    tags: [
-      { ro: "TikTok", en: "TikTok" },
-      { ro: "Video", en: "Video" },
-      { ro: "Optimizare", en: "Optimisation" },
-    ],
-  },
-  {
-    icon: "📱",
-    title: { ro: "Gestionare social media", en: "Social media management" },
-    desc: {
-      ro: "Ne ocupăm complet de paginile tale: plan de conținut, postări, reels, story-uri și răspuns la mesaje.",
-      en: "We run your pages end to end: content plan, posts, reels, stories and replies to messages.",
-    },
-    tags: [
-      { ro: "Conținut", en: "Content" },
-      { ro: "Reels", en: "Reels" },
-      { ro: "Comunitate", en: "Community" },
-    ],
-  },
-  {
-    icon: "📸",
-    title: { ro: "Conținut foto și video", en: "Photo and video content" },
-    desc: {
-      ro: "Producție de materiale pentru rețele și reclame, cu editare profesională și unelte AI acolo unde ajută.",
-      en: "Content produced for social and ads, professionally edited, with AI tools where they genuinely help.",
-    },
-    tags: [
-      { ro: "Foto", en: "Photo" },
-      { ro: "Video", en: "Video" },
-      { ro: "Editare", en: "Editing" },
-    ],
-  },
-  {
     icon: "🔗",
     title: { ro: "Integrări între programe", en: "Integrations" },
     desc: {
@@ -383,7 +419,48 @@ const SERVICES: { icon: string; title: TX; desc: TX; tags: TX[] }[] = [
 
 /* ── Proces ─────────────────────────────────────────────────── */
 
-const STEPS: { number: string; title: TX; desc: TX; detail: TX }[] = [
+type Step = { number: string; title: TX; desc: TX; detail: TX };
+
+const ADS_STEPS: Step[] = [
+  {
+    number: "01",
+    title: { ro: "Primul apel", en: "First call" },
+    desc: {
+      ro: "Aflăm ce vinzi, cui și cât ai vrea să investești. Îți spunem sincer dacă reclamele au sens pentru tine.",
+      en: "We find out what you sell, to whom, and what you would like to spend. We tell you honestly whether ads make sense for you.",
+    },
+    detail: { ro: "Gratuit, fără obligații", en: "Free, no obligation" },
+  },
+  {
+    number: "02",
+    title: { ro: "Facem clipurile și pornim reclamele", en: "We make the videos and launch" },
+    desc: {
+      ro: "Pregătim clipurile, textele și setările. Tu doar te uiți și aprobi.",
+      en: "We prepare the videos, the copy and the setup. You just look and approve.",
+    },
+    detail: { ro: "Tu doar aprobi", en: "You just approve" },
+  },
+  {
+    number: "03",
+    title: { ro: "Urmărim și îmbunătățim", en: "We track and improve" },
+    desc: {
+      ro: "În fiecare săptămână oprim ce nu merge și punem banii pe ce aduce clienți. Primești un raport simplu: câți au văzut, câți au sunat, câți au cumpărat.",
+      en: "Every week we stop what is not working and put the money behind what brings customers. You get a simple report: how many saw, called and bought.",
+    },
+    detail: { ro: "Raport lunar clar", en: "A clear monthly report" },
+  },
+];
+
+const ADS_OFFER: TX[] = [
+  { ro: "Strategia: cui arătăm reclamele și cu ce mesaj", en: "The strategy: who sees the ads, and with what message" },
+  { ro: "Clipurile și pozele pentru reclame, făcute de noi", en: "The ad videos and images, made by us" },
+  { ro: "Reclame pe Facebook, Instagram, TikTok și ChatGPT", en: "Ads on Facebook, Instagram, TikTok and ChatGPT" },
+  { ro: "Testare și îmbunătățiri în fiecare săptămână", en: "Testing and improvements every week" },
+  { ro: "Raport lunar pe înțelesul tău", en: "A monthly report in plain words" },
+  { ro: "Fără contract pe termen lung", en: "No long-term contract" },
+];
+
+const SYS_STEPS: Step[] = [
   {
     number: "01",
     title: { ro: "Discuție inițială", en: "First conversation" },
@@ -425,45 +502,6 @@ type Plan = {
   badge: TX;
   isMonthly?: boolean;
 };
-
-const SOCIAL_PLANS: Plan[] = [
-  {
-    name: { ro: "Social Media Start", en: "Social Media Start" },
-    price: "150 € – 300 €",
-    period: "month",
-    desc: {
-      ro: "Postăm în fiecare zi pentru tine. Pagina rămâne activă, fără să te ocupi de nimic.",
-      en: "We post every day for you. Your page stays alive without you touching it.",
-    },
-    features: [
-      { ro: "O postare în fiecare zi — 30 pe lună", en: "A post every day — 30 a month" },
-      { ro: "Story-uri zilnice", en: "Daily stories" },
-      { ro: "Plan de conținut lunar", en: "Monthly content plan" },
-      { ro: "Răspuns la comentarii și mesaje", en: "Replies to comments and messages" },
-      { ro: "Raport lunar", en: "Monthly report" },
-    ],
-    badge: { ro: "Social Media", en: "Social Media" },
-  },
-  {
-    name: { ro: "Social Media + Reclame", en: "Social Media + Ads" },
-    price: "300 € – 600 €",
-    period: "month",
-    desc: {
-      ro: "Postare zilnică, plus campanii plătite administrate și optimizate de noi.",
-      en: "Daily posting, plus paid campaigns run and optimised by us.",
-    },
-    features: [
-      { ro: "O postare în fiecare zi — 30 pe lună", en: "A post every day — 30 a month" },
-      { ro: "8 reels pe lună", en: "8 reels a month" },
-      { ro: "Campanii Meta Ads și TikTok Ads", en: "Meta Ads and TikTok Ads campaigns" },
-      { ro: "Story-uri zilnice", en: "Daily stories" },
-      { ro: "Răspuns la comentarii și mesaje", en: "Replies to comments and messages" },
-      { ro: "Raport lunar", en: "Monthly report" },
-    ],
-    highlight: true,
-    badge: { ro: "Cel mai ales", en: "Most chosen" },
-  },
-];
 
 const PLANS: Plan[] = [
   {
@@ -636,8 +674,8 @@ const FAQS: { q: TX; a: TX }[] = [
   {
     q: { ro: "Bugetul de reclame e inclus în preț?", en: "Is ad spend included in the price?" },
     a: {
-      ro: "Nu. Prețul acoperă strategia, conținutul, administrarea și optimizarea. Bugetul de reclame îl plătești separat, direct către Meta sau TikTok, din contul tău — așa vezi exact cât se cheltuie și rămâi proprietarul contului.",
-      en: "No. The price covers strategy, content, management and optimisation. Ad spend is paid separately, straight to Meta or TikTok from your own account — so you see exactly what is spent and you stay the owner of the account.",
+      ro: "Nu. Prețul acoperă strategia, clipurile, administrarea și optimizarea. Bugetul de reclame îl plătești separat, direct către Meta, TikTok sau OpenAI, din contul tău — așa vezi exact cât se cheltuie și rămâi proprietarul contului.",
+      en: "No. The price covers strategy, the videos, management and optimisation. Ad spend is paid separately, straight to Meta, TikTok or OpenAI from your own account — so you see exactly what is spent and you stay the owner of the account.",
     },
   },
   {
@@ -673,15 +711,19 @@ const FAQS: { q: TX; a: TX }[] = [
 const EMAILJS_SERVICE = "service_vgg5fdg";
 const EMAILJS_TEMPLATE = "template_asjlv4r";
 const EMAILJS_KEY = "km3Un_Nuwq0eqaiPP";
+/* Mesajele din formular ajung aici (și e trimis șablonului ca to_email). */
+const CONTACT_EMAIL = "humanex23@gmail.com";
+
+type Topic = "" | "ads" | "sys" | "both";
 
 const META: Record<Lang, { title: string; desc: string }> = {
   ro: {
-    title: "HUMANEX — Sisteme AI și promovare pentru afaceri",
-    desc: "Software la comandă, sisteme de raportare și campanii Meta și TikTok pentru afaceri mici și mijlocii. Din Brașov, România.",
+    title: "HUMANEX — Reclame plătite și sisteme la comandă | Brașov",
+    desc: "Reclame plătite pe Facebook, Instagram, TikTok și ChatGPT, cu clipurile făcute de noi, plus software la comandă pentru afaceri mici și mijlocii. Din Brașov.",
   },
   en: {
-    title: "HUMANEX — Custom software and marketing for small business",
-    desc: "Bespoke software, reporting systems and Meta and TikTok campaigns for small and mid-sized businesses. Based in Romania, working worldwide.",
+    title: "HUMANEX — Paid ads and custom systems for small business",
+    desc: "Paid ads on Facebook, Instagram, TikTok and ChatGPT, with the videos made in-house, plus custom software for small and mid-sized businesses. Based in Romania.",
   },
 };
 
@@ -710,6 +752,7 @@ export default function App() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
+  const [topic, setTopic] = useState<Topic>("");
 
   const L = (x: TX) => t(x, lang);
 
@@ -737,9 +780,27 @@ export default function App() {
     if (!formRef.current) return;
     setSending(true);
     setError(false);
+    const fd = new FormData(formRef.current);
+    const g = (k: string) => String(fd.get(k) ?? "").trim();
+    const interes =
+      topic === "ads" ? UI.tAds.ro : topic === "sys" ? UI.tSys.ro : topic === "both" ? UI.tBoth.ro : "nu a ales";
     try {
-      await emailjs.sendForm(EMAILJS_SERVICE, EMAILJS_TEMPLATE, formRef.current, EMAILJS_KEY);
+      await emailjs.send(
+        EMAILJS_SERVICE,
+        EMAILJS_TEMPLATE,
+        {
+          name: g("name"),
+          email: g("email"),
+          phone: g("phone"),
+          business: g("business"),
+          topic: interes,
+          message: `Interesat de: ${interes}\n\n${g("message")}`,
+          to_email: CONTACT_EMAIL,
+        },
+        { publicKey: EMAILJS_KEY },
+      );
       setSent(true);
+      setTopic("");
       formRef.current.reset();
     } catch {
       setError(true);
@@ -756,10 +817,9 @@ export default function App() {
   };
 
   const navLinks = [
-    { label: UI.navProjects, id: "proiecte" },
-    { label: UI.navServices, id: "servicii" },
-    { label: UI.navProcess, id: "proces" },
-    { label: UI.navPricing, id: "preturi" },
+    { label: UI.navAds, id: "reclame" },
+    { label: UI.navSystems, id: "sisteme" },
+    { label: UI.navFaq, id: "intrebari" },
     { label: UI.navContact, id: "contact" },
   ];
 
@@ -837,7 +897,7 @@ export default function App() {
         ))}
       </div>
 
-      <a href="#contact" style={{
+      <a href="#contact" onClick={() => setTopic("sys")} style={{
         display: "block", textAlign: "center", padding: "12px 18px", borderRadius: 10,
         fontSize: 13.5, fontWeight: 700, textDecoration: "none", marginTop: "auto",
         color: plan.highlight ? "#1e3a8a" : "#93c5fd",
@@ -846,6 +906,203 @@ export default function App() {
       }}>{L(UI.planCta)} →</a>
     </div>
   );
+
+  /* Cele două zone ale site-ului au fiecare culoarea ei, ca să știi
+     mereu în care ești: turcoaz pentru reclame, mov pentru sisteme. */
+  const ACC_ADS = "#22d3ee";
+  const ACC_SYS = "#a78bfa";
+
+  const catHead = (eb: TX, title: TX, sub: TX, accent: string) => (
+    <div style={{ marginBottom: 48, maxWidth: 780 }}>
+      <div style={{
+        display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 20,
+        padding: "7px 16px", borderRadius: 999,
+        border: `1px solid ${accent}59`, background: `${accent}14`,
+      }}>
+        <span style={{ width: 8, height: 8, borderRadius: "50%", background: accent, boxShadow: `0 0 10px ${accent}` }} />
+        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2.5, textTransform: "uppercase", color: accent }}>
+          {L(eb)}
+        </span>
+      </div>
+      <h2 style={{ ...h2, fontSize: "clamp(34px, 5vw, 58px)", marginBottom: 16 }}>{L(title)}</h2>
+      <p style={{ fontSize: "clamp(16px, 1.9vw, 18px)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>{L(sub)}</p>
+    </div>
+  );
+
+  const subHead = (x: TX, sub?: TX) => (
+    <div style={{ margin: "76px 0 26px" }}>
+      <h3 style={{ fontSize: "clamp(22px, 2.6vw, 30px)", fontWeight: 900, letterSpacing: "-0.6px", lineHeight: 1.2 }}>
+        {L(x)}
+      </h3>
+      {sub && (
+        <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", marginTop: 10, lineHeight: 1.7, maxWidth: 620 }}>{L(sub)}</p>
+      )}
+    </div>
+  );
+
+  const servicesGrid = (list: Service[], accent: string, min = 260) => (
+    <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fit, minmax(${min}px, 1fr))`, gap: 20 }}>
+      {list.map((s) => (
+        <div key={s.title.en} style={{ ...card, padding: "30px 26px", transition: "border-color .3s, transform .3s, background .3s" }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget;
+            el.style.borderColor = `${accent}80`;
+            el.style.background = `${accent}0f`;
+            el.style.transform = "translateY(-5px)";
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget;
+            el.style.borderColor = "rgba(255,255,255,0.07)";
+            el.style.background = "rgba(255,255,255,0.025)";
+            el.style.transform = "translateY(0)";
+          }}
+        >
+          <div style={{
+            width: 50, height: 50, borderRadius: 14,
+            background: `${accent}1f`, border: `1px solid ${accent}4d`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 23, marginBottom: 18,
+          }}>{s.icon}</div>
+          <h4 style={{ fontSize: 18, fontWeight: 800, marginBottom: 11, letterSpacing: "-0.3px" }}>{L(s.title)}</h4>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.75, marginBottom: 18 }}>{L(s.desc)}</p>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {s.tags.map((tag) => (
+              <span key={tag.en} style={{
+                fontSize: 11, fontWeight: 700, color: accent,
+                background: `${accent}14`, border: `1px solid ${accent}40`,
+                borderRadius: 6, padding: "3px 10px", letterSpacing: 0.5,
+              }}>{L(tag)}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const stepsGrid = (list: Step[], accent: string) => (
+    <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+      {list.map((step, i) => (
+        <div key={step.number} style={{ position: "relative" }}>
+          {i < list.length - 1 && (
+            <div className="step-connector" style={{
+              position: "absolute", top: 32, left: "calc(100% - 12px)", right: "-12px",
+              height: 1, background: `linear-gradient(90deg, ${accent}80, ${accent}1a)`,
+            }} />
+          )}
+          <div style={{ ...card, padding: "34px 28px", height: "100%", boxSizing: "border-box" }}>
+            <div style={{
+              width: 54, height: 54, borderRadius: 14,
+              background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontWeight: 900, fontSize: 20, marginBottom: 22,
+              boxShadow: "0 0 30px rgba(29,78,216,0.4)",
+            }}>{step.number}</div>
+            <div style={{
+              display: "inline-block", fontSize: 11, fontWeight: 700,
+              color: accent, background: `${accent}1a`,
+              border: `1px solid ${accent}33`, borderRadius: 6,
+              padding: "3px 10px", marginBottom: 14, letterSpacing: 0.5,
+            }}>{L(step.detail)}</div>
+            <h4 style={{ fontSize: 20, fontWeight: 800, marginBottom: 11, letterSpacing: "-0.3px" }}>{L(step.title)}</h4>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{L(step.desc)}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const projectCards = (list: Project[]) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      {list.map((p) => (
+        <article key={p.name.en} className="project-card" style={{
+          ...card, padding: "40px 44px", position: "relative", overflow: "hidden",
+        }}>
+          <div className="project-grid" style={{
+            display: "grid", gridTemplateColumns: "1fr 1.35fr", gap: 44, alignItems: "start",
+          }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+                <span style={{
+                  fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase",
+                  color: p.accent, background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "3px 10px",
+                }}>{L(p.kind)}</span>
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
+                  color: p.live ? "#4ade80" : "#fbbf24",
+                }}>
+                  <span style={{
+                    width: 6, height: 6, borderRadius: "50%",
+                    background: p.live ? "#4ade80" : "#fbbf24",
+                  }} />
+                  {p.live ? L(UI.liveLabel) : L(UI.buildingLabel)}
+                </span>
+              </div>
+
+              <h4 style={{
+                fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 900,
+                letterSpacing: "-0.8px", lineHeight: 1.15, marginBottom: 8,
+                overflowWrap: "anywhere",
+              }}>{L(p.name)}</h4>
+              <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.4)", marginBottom: 22 }}>{L(p.client)}</p>
+            </div>
+
+            <div>
+              <p style={{
+                fontSize: "clamp(15px, 1.7vw, 17px)", color: "rgba(255,255,255,0.85)",
+                lineHeight: 1.7, marginBottom: 24,
+              }}>{L(p.desc)}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {p.points.map((pt) => (
+                  <div key={pt.en} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <span style={{ color: p.accent, fontSize: 13, lineHeight: "22px" }}>✓</span>
+                    <span style={{ fontSize: 14, color: "rgba(255,255,255,0.68)", lineHeight: 1.6 }}>{L(pt)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+
+  const ctaBand = (title: TX, sub: TX, href: string, button: TX, onClick?: () => void) => (
+    <div className="cta-band" style={{
+      marginTop: 80,
+      background: "linear-gradient(135deg, #1d4ed8 0%, #0f172a 60%, #1e40af 100%)",
+      border: "1px solid rgba(96,165,250,0.2)", borderRadius: 24,
+      padding: "64px 56px", textAlign: "center", position: "relative", overflow: "hidden",
+    }}>
+      <div style={{
+        position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)",
+        width: 500, height: 500, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+      <h3 style={{ ...h2, fontSize: "clamp(26px, 3.6vw, 42px)", marginBottom: 16, position: "relative" }}>
+        {L(title)}
+      </h3>
+      <p style={{
+        fontSize: 17, color: "rgba(255,255,255,0.7)", maxWidth: 540,
+        margin: "0 auto 34px", lineHeight: 1.7, position: "relative",
+      }}>{L(sub)}</p>
+      <a href={href} onClick={onClick} style={{
+        background: "#fff", color: "#1d4ed8", padding: "16px 40px", borderRadius: 12,
+        fontWeight: 900, fontSize: 17, textDecoration: "none",
+        display: "inline-block", position: "relative",
+      }}>{L(button)} →</a>
+    </div>
+  );
+
+  const chip = (activ: boolean): React.CSSProperties => ({
+    background: activ ? "rgba(29,78,216,0.3)" : "rgba(255,255,255,0.04)",
+    border: `1px solid ${activ ? "#3b82f6" : "rgba(255,255,255,0.12)"}`,
+    boxShadow: activ ? "0 0 0 1px #3b82f6 inset" : "none",
+    color: activ ? "#fff" : "rgba(255,255,255,0.8)", borderRadius: 999, padding: "11px 18px",
+    fontSize: 14.5, fontWeight: 600, fontFamily: "inherit", cursor: "pointer",
+  });
 
   return (
     <div style={{ minHeight: "100vh", background: "#040d1f", color: "#fff", overflowX: "hidden" }}>
@@ -936,7 +1193,7 @@ export default function App() {
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 28,
           background: "rgba(29,78,216,0.12)", border: "1px solid rgba(29,78,216,0.35)",
-          borderRadius: 999, padding: "7px 18px",
+          borderRadius: 999, padding: "7px 18px", position: "relative",
         }}>
           <span style={{
             width: 7, height: 7, borderRadius: "50%", background: "#22d3ee",
@@ -948,7 +1205,7 @@ export default function App() {
         </div>
 
         <h1 style={{
-          fontSize: "clamp(38px, 6.2vw, 78px)", fontWeight: 900,
+          fontSize: "clamp(38px, 6.2vw, 78px)", fontWeight: 900, position: "relative",
           lineHeight: 1.05, letterSpacing: "-2.5px", maxWidth: 900, marginBottom: 28,
         }}>
           {L(UI.heroTitle1)}{" "}
@@ -959,45 +1216,116 @@ export default function App() {
         </h1>
 
         <p style={{
-          fontSize: "clamp(16px, 2vw, 19px)", color: "rgba(255,255,255,0.5)",
-          maxWidth: 640, lineHeight: 1.75, marginBottom: 44,
+          fontSize: "clamp(16px, 2vw, 19px)", color: "rgba(255,255,255,0.55)", position: "relative",
+          maxWidth: 640, lineHeight: 1.75, marginBottom: 36,
         }}>{L(UI.heroSub)}</p>
 
-        <div className="hero-cta" style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center", marginBottom: 80 }}>
-          <a href="#contact" style={{
-            background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
-            color: "#fff", padding: "16px 36px", borderRadius: 12,
-            fontWeight: 800, fontSize: 16, textDecoration: "none",
-            boxShadow: "0 0 50px rgba(29,78,216,0.45)",
-            display: "flex", alignItems: "center", gap: 8,
-          }}>{L(UI.heroCta1)} <span style={{ fontSize: 18 }}>→</span></a>
-          <a href="#proiecte" style={{
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
-            color: "#fff", padding: "16px 36px", borderRadius: 12,
-            fontWeight: 600, fontSize: 16, textDecoration: "none",
-          }}>{L(UI.heroCta2)}</a>
-        </div>
-
-        <div className="hero-stats" style={{
-          display: "flex", flexWrap: "wrap", justifyContent: "center",
-          background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
-          borderRadius: 16, overflow: "hidden", maxWidth: 820, width: "100%",
+        {/* Cele două uși: fiecare duce la zona ei, cu tot ce ține de ea */}
+        <div className="doors" style={{
+          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16,
+          maxWidth: 880, width: "100%", position: "relative",
         }}>
-          {STATS.map((s, i) => (
-            <div key={s.label.en} className="stat-item" style={{
-              flex: "1 1 180px", padding: "24px 20px", textAlign: "center",
-              borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
-            }}>
-              <div style={{ fontSize: 26, fontWeight: 900, color: "#60a5fa", marginBottom: 4 }}>{s.value}</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{L(s.label)}</div>
-            </div>
+          {[
+            { href: "#reclame", kicker: UI.doorAdsKicker, title: UI.doorAdsTitle, desc: UI.doorAdsDesc, accent: ACC_ADS, num: "01" },
+            { href: "#sisteme", kicker: UI.doorSysKicker, title: UI.doorSysTitle, desc: UI.doorSysDesc, accent: ACC_SYS, num: "02" },
+          ].map((d) => (
+            <a key={d.href} href={d.href} style={{
+              ...card, textAlign: "left", padding: "28px 26px", textDecoration: "none", color: "#fff",
+              display: "flex", flexDirection: "column", gap: 10,
+              border: `1px solid ${d.accent}4d`,
+              background: `linear-gradient(160deg, ${d.accent}1a 0%, rgba(255,255,255,0.02) 70%)`,
+              transition: "transform .25s, border-color .25s",
+            }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = d.accent; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.borderColor = `${d.accent}4d`; }}
+            >
+              <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2.5, textTransform: "uppercase", color: d.accent }}>
+                {d.num} · {L(d.kicker)}
+              </span>
+              <span style={{ fontSize: "clamp(21px, 2.4vw, 25px)", fontWeight: 900, letterSpacing: "-0.6px", lineHeight: 1.2 }}>
+                {L(d.title)}
+              </span>
+              <span style={{ fontSize: 14.5, color: "rgba(255,255,255,0.62)", lineHeight: 1.6 }}>{L(d.desc)}</span>
+              <span style={{ marginTop: 6, fontWeight: 800, color: d.accent, fontSize: 15 }}>
+                {lang === "ro" ? "Vezi detalii" : "See more"} →
+              </span>
+            </a>
           ))}
         </div>
       </section>
 
-      {/* ── CLOSECHECK — proiectul cu video ── */}
-      <section id="proiecte" style={{ padding: "90px 24px 0" }}>
+      {/* ══════════════ 01 · RECLAME PLĂTITE ══════════════ */}
+      <section id="reclame" style={{ padding: "110px 24px", borderTop: `1px solid ${ACC_ADS}26` }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
+          {catHead(UI.adsEyebrow, UI.adsTitle, UI.adsSub, ACC_ADS)}
+
+          {servicesGrid(ADS_SERVICES, ACC_ADS)}
+
+          {subHead(UI.adsHowTitle)}
+          {stepsGrid(ADS_STEPS, ACC_ADS)}
+
+          {subHead(UI.adsOfferTitle)}
+          <div className="offer-grid" style={{
+            ...card, padding: "40px 38px", display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 40,
+            border: `1px solid ${ACC_ADS}4d`,
+            background: `linear-gradient(160deg, ${ACC_ADS}14 0%, rgba(255,255,255,0.02) 70%)`,
+          }}>
+            <div>
+              <h4 style={{ fontSize: "clamp(22px, 2.6vw, 28px)", fontWeight: 900, letterSpacing: "-0.6px", lineHeight: 1.2, marginBottom: 14 }}>
+                {L(UI.adsOfferName)}
+              </h4>
+              <p style={{ fontSize: 16, color: "rgba(255,255,255,0.78)", lineHeight: 1.7, marginBottom: 16 }}>{L(UI.adsOfferPrice)}</p>
+              <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, marginBottom: 26 }}>{L(UI.adsOfferNote)}</p>
+              <a href="/formular" style={{
+                display: "inline-block", background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
+                color: "#fff", padding: "15px 30px", borderRadius: 12, fontWeight: 800, fontSize: 16,
+                textDecoration: "none", boxShadow: "0 0 40px rgba(29,78,216,0.4)",
+              }}>{L(UI.adsCtaButton)} →</a>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, justifyContent: "center" }}>
+              {ADS_OFFER.map((f) => (
+                <div key={f.en} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                  <span style={{
+                    width: 24, height: 24, borderRadius: 7, flexShrink: 0, display: "grid", placeItems: "center",
+                    background: `${ACC_ADS}26`, color: ACC_ADS, fontSize: 13, fontWeight: 900,
+                  }}>✓</span>
+                  <span style={{ fontSize: 15, color: "rgba(255,255,255,0.85)", lineHeight: 1.55 }}>{L(f)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {subHead(UI.adsResultsTitle)}
+          {projectCards(ADS_PROJECTS)}
+
+          {ctaBand(UI.adsCtaTitle, UI.adsCtaSub, "/formular", UI.adsCtaButton)}
+        </div>
+      </section>
+
+      {/* ══════════════ 02 · SISTEME LA COMANDĂ ══════════════ */}
+      <section id="sisteme" style={{
+        padding: "110px 24px", background: "rgba(255,255,255,0.015)",
+        borderTop: `1px solid ${ACC_SYS}26`,
+      }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
+          {catHead(UI.sysEyebrow, UI.sysTitle, UI.sysSub, ACC_SYS)}
+
+          <div className="hero-stats" style={{
+            display: "flex", flexWrap: "wrap",
+            background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: 16, overflow: "hidden", marginBottom: 72,
+          }}>
+            {STATS.map((s, i) => (
+              <div key={s.label.en} className="stat-item" style={{
+                flex: "1 1 180px", padding: "24px 20px", textAlign: "center",
+                borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
+              }}>
+                <div style={{ fontSize: 26, fontWeight: 900, color: ACC_SYS, marginBottom: 4 }}>{s.value}</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>{L(s.label)}</div>
+              </div>
+            ))}
+          </div>
+
           <p style={eyebrow}>{L(UI.ccEyebrow)}</p>
 
           <div className="cc-head" style={{
@@ -1107,205 +1435,22 @@ export default function App() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ── CELELALTE PROIECTE ── */}
-      <section style={{ padding: "80px 24px 110px" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ marginBottom: 48 }}>
-            <p style={eyebrow}>{L(UI.projectsEyebrow)}</p>
-            <h2 style={{ ...h2, marginBottom: 14 }}>{L(UI.projectsTitle)}</h2>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", maxWidth: 560, lineHeight: 1.7 }}>
-              {L(UI.projectsSub)}
-            </p>
-          </div>
+          {subHead(UI.projectsTitle, UI.projectsSub)}
+          {projectCards(SYS_PROJECTS)}
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {PROJECTS.slice(1).map((p) => (
-              <article key={p.name.en} className="project-card" style={{
-                ...card, padding: "40px 44px", position: "relative", overflow: "hidden",
-              }}>
-                <div className="project-grid" style={{
-                  display: "grid", gridTemplateColumns: "1fr 1.35fr", gap: 44, alignItems: "start",
-                }}>
-                  <div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-                      <span style={{
-                        fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase",
-                        color: p.accent, background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "3px 10px",
-                      }}>{L(p.kind)}</span>
-                      <span style={{
-                        display: "inline-flex", alignItems: "center", gap: 6,
-                        fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
-                        color: p.live ? "#4ade80" : "#fbbf24",
-                      }}>
-                        <span style={{
-                          width: 6, height: 6, borderRadius: "50%",
-                          background: p.live ? "#4ade80" : "#fbbf24",
-                        }} />
-                        {p.live ? L(UI.liveLabel) : L(UI.buildingLabel)}
-                      </span>
-                    </div>
+          {subHead(UI.sysServicesTitle)}
+          {servicesGrid(SYS_SERVICES, ACC_SYS, 320)}
 
-                    <h3 style={{
-                      fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 900,
-                      letterSpacing: "-0.8px", lineHeight: 1.15, marginBottom: 8,
-                      overflowWrap: "anywhere",
-                    }}>{L(p.name)}</h3>
-                    <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.4)", marginBottom: 22 }}>{L(p.client)}</p>
-                  </div>
+          {subHead(UI.sysHowTitle)}
+          {stepsGrid(SYS_STEPS, ACC_SYS)}
 
-                  <div>
-                    <p style={{
-                      fontSize: "clamp(15px, 1.7vw, 17px)", color: "rgba(255,255,255,0.85)",
-                      lineHeight: 1.7, marginBottom: 24,
-                    }}>{L(p.desc)}</p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      {p.points.map((pt) => (
-                        <div key={pt.en} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                          <span style={{ color: p.accent, fontSize: 13, lineHeight: "22px" }}>✓</span>
-                          <span style={{ fontSize: 14, color: "rgba(255,255,255,0.68)", lineHeight: 1.6 }}>{L(pt)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SERVICII ── */}
-      <section id="servicii" style={{ padding: "110px 24px", background: "rgba(255,255,255,0.015)" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div className="services-header" style={{
-            display: "flex", alignItems: "flex-end", justifyContent: "space-between",
-            marginBottom: 56, flexWrap: "wrap", gap: 24,
-          }}>
-            <div>
-              <p style={eyebrow}>{L(UI.servicesEyebrow)}</p>
-              <h2 style={{ ...h2, maxWidth: 560 }}>{L(UI.servicesTitle)}</h2>
-            </div>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", maxWidth: 340, lineHeight: 1.8 }}>
-              {L(UI.servicesSub)}
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
-            {SERVICES.map((s) => (
-              <div key={s.title.en} style={{ ...card, padding: "30px 26px", transition: "border-color .3s, transform .3s, background .3s" }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  el.style.borderColor = "rgba(29,78,216,0.5)";
-                  el.style.background = "rgba(29,78,216,0.06)";
-                  el.style.transform = "translateY(-5px)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  el.style.borderColor = "rgba(255,255,255,0.07)";
-                  el.style.background = "rgba(255,255,255,0.025)";
-                  el.style.transform = "translateY(0)";
-                }}
-              >
-                <div style={{
-                  width: 50, height: 50, borderRadius: 14,
-                  background: "rgba(29,78,216,0.15)", border: "1px solid rgba(29,78,216,0.3)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 23, marginBottom: 18,
-                }}>{s.icon}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 11, letterSpacing: "-0.3px" }}>{L(s.title)}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75, marginBottom: 18 }}>{L(s.desc)}</p>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {s.tags.map((tag) => (
-                    <span key={tag.en} style={{
-                      fontSize: 11, fontWeight: 700, color: "#60a5fa",
-                      background: "rgba(29,78,216,0.12)", border: "1px solid rgba(29,78,216,0.25)",
-                      borderRadius: 6, padding: "3px 10px", letterSpacing: 0.5,
-                    }}>{L(tag)}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROCES ── */}
-      <section id="proces" style={{ padding: "110px 24px" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <p style={eyebrow}>{L(UI.processEyebrow)}</p>
-            <h2 style={h2}>{L(UI.processTitle)}</h2>
-          </div>
-
-          <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-            {STEPS.map((step, i) => (
-              <div key={step.number} style={{ position: "relative" }}>
-                {i < STEPS.length - 1 && (
-                  <div className="step-connector" style={{
-                    position: "absolute", top: 32, left: "calc(100% - 12px)", right: "-12px",
-                    height: 1, background: "linear-gradient(90deg, rgba(29,78,216,0.5), rgba(29,78,216,0.1))",
-                  }} />
-                )}
-                <div style={{ ...card, padding: "34px 28px", height: "100%", boxSizing: "border-box" }}>
-                  <div style={{
-                    width: 54, height: 54, borderRadius: 14,
-                    background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontWeight: 900, fontSize: 20, marginBottom: 22,
-                    boxShadow: "0 0 30px rgba(29,78,216,0.4)",
-                  }}>{step.number}</div>
-                  <div style={{
-                    display: "inline-block", fontSize: 11, fontWeight: 700,
-                    color: "#22d3ee", background: "rgba(34,211,238,0.1)",
-                    border: "1px solid rgba(34,211,238,0.2)", borderRadius: 6,
-                    padding: "3px 10px", marginBottom: 14, letterSpacing: 0.5,
-                  }}>{L(step.detail)}</div>
-                  <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 11, letterSpacing: "-0.3px" }}>{L(step.title)}</h3>
-                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>{L(step.desc)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PREȚURI ── */}
-      <section id="preturi" style={{ padding: "110px 24px", background: "rgba(255,255,255,0.015)" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <p style={eyebrow}>{L(UI.pricingEyebrow)}</p>
-            <h2 style={{ ...h2, marginBottom: 16 }}>{L(UI.pricingTitle)}</h2>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
-              {L(UI.pricingSub)}
-            </p>
-          </div>
-
-          <div style={{ marginBottom: 52 }}>
-            <h3 className="price-group" style={{
+          <div id="preturi">{subHead(UI.pricingTitle, UI.pricingSub)}</div>
+          <div style={{ marginBottom: 44 }}>
+            <h4 className="price-group" style={{
               fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)",
               letterSpacing: 2, textTransform: "uppercase", marginBottom: 22,
-            }}>{L(UI.pricingSocial)}</h3>
-            <div className="pricing-grid" style={{
-              display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 16, maxWidth: 760, margin: "0 auto",
-            }}>
-              {SOCIAL_PLANS.map(planCard)}
-            </div>
-            <p style={{
-              fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7,
-              maxWidth: 760, margin: "16px auto 0",
-            }}>{L(UI.pricingNote)}</p>
-          </div>
-
-          <div style={{ marginBottom: 52 }}>
-            <h3 className="price-group" style={{
-              fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)",
-              letterSpacing: 2, textTransform: "uppercase", marginBottom: 22,
-            }}>{L(UI.pricingOneTime)}</h3>
+            }}>{L(UI.pricingOneTime)}</h4>
             <div className="pricing-grid" style={{
               display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16,
             }}>
@@ -1314,10 +1459,10 @@ export default function App() {
           </div>
 
           <div>
-            <h3 className="price-group" style={{
+            <h4 className="price-group" style={{
               fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)",
               letterSpacing: 2, textTransform: "uppercase", marginBottom: 22,
-            }}>{L(UI.pricingMonthly)}</h3>
+            }}>{L(UI.pricingMonthly)}</h4>
             <div className="pricing-grid" style={{
               display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: 16, maxWidth: 760,
@@ -1325,11 +1470,13 @@ export default function App() {
               {SUPPORT_PLANS.map(planCard)}
             </div>
           </div>
+
+          {ctaBand(UI.ctaTitle, UI.ctaSub, "#contact", UI.ctaButton, () => setTopic("sys"))}
         </div>
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ padding: "110px 24px" }}>
+      <section id="intrebari" style={{ padding: "110px 24px" }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <p style={eyebrow}>{L(UI.faqEyebrow)}</p>
@@ -1369,36 +1516,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── BANDĂ CTA ── */}
-      <section style={{ padding: "0 24px 110px" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div className="cta-band" style={{
-            background: "linear-gradient(135deg, #1d4ed8 0%, #0f172a 60%, #1e40af 100%)",
-            border: "1px solid rgba(96,165,250,0.2)", borderRadius: 24,
-            padding: "68px 56px", textAlign: "center", position: "relative", overflow: "hidden",
-          }}>
-            <div style={{
-              position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)",
-              width: 500, height: 500, borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }} />
-            <h2 style={{ ...h2, fontSize: "clamp(27px, 4vw, 48px)", marginBottom: 16, position: "relative" }}>
-              {L(UI.ctaTitle)}
-            </h2>
-            <p style={{
-              fontSize: 17, color: "rgba(255,255,255,0.65)", maxWidth: 520,
-              margin: "0 auto 36px", lineHeight: 1.7, position: "relative",
-            }}>{L(UI.ctaSub)}</p>
-            <a href="#contact" style={{
-              background: "#fff", color: "#1d4ed8", padding: "16px 40px", borderRadius: 12,
-              fontWeight: 900, fontSize: 17, textDecoration: "none",
-              display: "inline-block", position: "relative",
-            }}>{L(UI.ctaButton)} →</a>
-          </div>
-        </div>
-      </section>
-
       {/* ── CONTACT ── */}
       <section id="contact" style={{ padding: "0 24px 110px" }}>
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
@@ -1409,6 +1526,18 @@ export default function App() {
           </div>
 
           <form ref={formRef} style={{ display: "flex", flexDirection: "column", gap: 14 }} onSubmit={handleSubmit}>
+            <fieldset style={{ border: "none", padding: 0, margin: "0 0 4px" }}>
+              <legend style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, padding: 0 }}>{L(UI.fTopic)}</legend>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {([["ads", UI.tAds], ["sys", UI.tSys], ["both", UI.tBoth]] as [Topic, TX][]).map(([k, lbl]) => (
+                  <button key={k} type="button" aria-pressed={topic === k}
+                    onClick={() => setTopic(topic === k ? "" : k)} style={chip(topic === k)}>
+                    {topic === k && <span aria-hidden="true" style={{ marginRight: 6 }}>✓</span>}
+                    {L(lbl)}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
             <div className="contact-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               <input type="text" name="name" placeholder={L(UI.fName)} required style={input} />
               <input type="email" name="email" placeholder={L(UI.fEmail)} required style={input} />
@@ -1441,9 +1570,39 @@ export default function App() {
             }}>
               {sending ? L(UI.fSending) : sent ? `✓ ${L(UI.fSent)}` : `${L(UI.fSend)} →`}
             </button>
+            <p style={{ textAlign: "center", fontSize: 14, color: "rgba(255,255,255,0.45)", marginTop: 4 }}>
+              {lang === "ro" ? "Sau scrie-ne direct la " : "Or email us directly at "}
+              <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "#60a5fa", fontWeight: 700, textDecoration: "none" }}>
+                {CONTACT_EMAIL}
+              </a>
+            </p>
           </form>
         </div>
       </section>
+
+      {/* Pe telefon meniul de sus dispare, așa că după primul ecran
+          apare jos o bară cu cele două zone și contactul. */}
+      <nav className="mobile-tabs" aria-label={lang === "ro" ? "Secțiuni" : "Sections"} style={{
+        position: "fixed", left: "50%", bottom: 14, transform: `translateX(-50%) translateY(${scrolled ? 0 : 90}px)`,
+        transition: "transform .35s ease", zIndex: 90, display: "none", gap: 4, padding: 5,
+        background: "rgba(8,20,44,0.92)", backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255,255,255,0.12)", borderRadius: 999,
+        boxShadow: "0 14px 40px rgba(0,0,0,0.5)",
+      }}>
+        {[
+          { id: "reclame", label: UI.navAds, accent: ACC_ADS },
+          { id: "sisteme", label: UI.navSystems, accent: ACC_SYS },
+          { id: "contact", label: UI.navContact, accent: "#60a5fa" },
+        ].map((t) => (
+          <a key={t.id} href={`#${t.id}`} style={{
+            display: "flex", alignItems: "center", gap: 7, padding: "10px 15px", borderRadius: 999,
+            color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 700, whiteSpace: "nowrap",
+          }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: t.accent }} />
+            {L(t.label)}
+          </a>
+        ))}
+      </nav>
 
       {/* ── FOOTER ── */}
       <footer style={{
@@ -1472,6 +1631,7 @@ export default function App() {
 
       <style>{`
         html { scroll-behavior: smooth; }
+        section[id] { scroll-margin-top: 64px; }
         input:focus, textarea:focus { border-color: rgba(29,78,216,0.5) !important; }
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
 
@@ -1488,6 +1648,10 @@ export default function App() {
           .hero-stats { flex-direction: column !important; }
           .hero-stats > div { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07); }
           .hero-stats > div:last-child { border-bottom: none; }
+          .doors { grid-template-columns: 1fr !important; }
+          .mobile-tabs { display: flex !important; }
+          footer { padding-bottom: 96px !important; }
+          .offer-grid { grid-template-columns: 1fr !important; padding: 30px 22px !important; gap: 28px !important; }
           .hero-cta { flex-direction: column !important; align-items: stretch !important; width: 100%; max-width: 340px; margin-bottom: 40px !important; }
           .hero-cta a { justify-content: center !important; box-sizing: border-box; }
           .stat-item { padding: 16px !important; flex: 1 1 100% !important; }
