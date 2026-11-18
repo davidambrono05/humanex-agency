@@ -26,9 +26,15 @@ const TIKTOK_PIXEL_ID = "";
 const ARE_PIXELI = Boolean(META_PIXEL_ID || TIKTOK_PIXEL_ID);
 const CHEIE_COOKIES = "humanex-cookies";
 
-const PLATFORME = ["Facebook și Instagram", "TikTok", "ChatGPT", "Nu știu încă"];
-const NU_STIU = "Nu știu încă";
 const BUGETE = ["Sub 1.000 lei", "1.000 – 3.000 lei", "Peste 3.000 lei", "Nu știu încă"];
+/* Cât de repede merită sunat omul, după bugetul ales. Apare în email,
+   ca să știi pe cine suni primul. */
+const PRIORITATE: Record<string, string> = {
+  "Peste 3.000 lei": "MARE — sună-l primul",
+  "1.000 – 3.000 lei": "MEDIE",
+  "Sub 1.000 lei": "MICĂ",
+  "Nu știu încă": "de aflat la telefon",
+};
 
 type Fereastra = Window & {
   fbq?: (...a: unknown[]) => void;
@@ -84,9 +90,7 @@ export default function Formular() {
   const [nume, setNume] = useState("");
   const [telefon, setTelefon] = useState("");
   const [afacere, setAfacere] = useState("");
-  const [platforme, setPlatforme] = useState<string[]>([]);
   const [buget, setBuget] = useState("");
-  const [acord, setAcord] = useState(false);
   const [capcana, setCapcana] = useState("");
 
   const [trimis, setTrimis] = useState(false);
@@ -118,20 +122,11 @@ export default function Formular() {
     setCookies(v);
   };
 
-  const comutaPlatforma = (p: string) => {
-    setPlatforme((curent) => {
-      if (curent.includes(p)) return curent.filter((x) => x !== p);
-      if (p === NU_STIU) return [NU_STIU];
-      return [...curent.filter((x) => x !== NU_STIU), p];
-    });
-  };
-
   const telOk = cifre(telefon).length >= 9 && cifre(telefon).length <= 13;
   const greseli = {
     nume: !nume.trim(),
     telefon: !telOk,
     afacere: !afacere.trim(),
-    acord: !acord,
   };
   const valid = !Object.values(greseli).some(Boolean);
 
@@ -153,12 +148,12 @@ export default function Formular() {
       `Nume: ${nume.trim()}`,
       `Telefon: ${telefon.trim()}`,
       `Afacere: ${afacere.trim()}`,
-      `Unde vrea reclame: ${platforme.length ? platforme.join(", ") : "nu a ales"}`,
       `Buget lunar pentru reclame: ${buget || "nu a ales"}`,
+      `Prioritate: ${PRIORITATE[buget] ?? "de aflat la telefon"}`,
       "",
       `De unde a venit: ${sursa()}`,
       `Trimis la: ${data}`,
-      "A fost de acord să fie contactat telefonic sau pe WhatsApp.",
+      "A cerut să fie contactat (telefon sau WhatsApp).",
     ].join("\n");
     try {
       await emailjs.send(
@@ -175,10 +170,8 @@ export default function Formular() {
       );
       anuntaCererea();
       if (areWhatsApp) {
-        const cine = afacere.trim() ? `${nume.trim()}, de la ${afacere.trim()}` : nume.trim();
-        setLinkWa(linkWhatsApp(
-          `Bună! Sunt ${cine}. Tocmai am completat formularul de pe humanex.space și aș vrea să vorbim despre reclame.`,
-        ));
+        const cine = afacere.trim() ? `${nume.trim()} (${afacere.trim()})` : nume.trim();
+        setLinkWa(linkWhatsApp(`Bună! Sunt ${cine}. Vreau detalii despre reclame.`));
       }
       setTrimis(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -208,33 +201,22 @@ export default function Formular() {
         {trimis ? (
           <section style={{ ...S.card, textAlign: "center", padding: "44px 26px" }} aria-live="polite">
             <div style={S.bifa} aria-hidden="true">✓</div>
-            <h1 style={{ ...S.titlu, fontSize: 32 }}>Gata, am primit!</h1>
+            <h1 style={{ ...S.titlu, fontSize: 32 }}>{linkWa ? "Gata! Încă un pas:" : "Gata, am primit!"}</h1>
             {linkWa && (
               <div style={S.wa}>
-                <p style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>Mai ai un singur pas</p>
-                <p style={{ fontSize: 15, color: "rgba(255,255,255,0.75)", lineHeight: 1.55, marginBottom: 16 }}>
-                  Trimite-ne și un mesaj pe WhatsApp, ca să vorbim mai repede. Mesajul e deja
-                  scris, tu doar apeși Trimite.
+                <p style={{ fontSize: 16, color: "rgba(255,255,255,0.8)", lineHeight: 1.5, marginBottom: 16 }}>
+                  Apasă butonul și trimite mesajul pe WhatsApp. E deja scris.
                 </p>
                 <a href={linkWa} style={S.butonWa}>
                   <IconWa /> Trimite pe WhatsApp
                 </a>
                 <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 12 }}>
-                  Te ducem singuri în WhatsApp în câteva secunde.
+                  Se deschide singur în câteva secunde.
                 </p>
               </div>
             )}
             <p style={S.sub}>
-              Te sunăm noi în cel mult o zi lucrătoare, de pe un număr de mobil.
-              Ține telefonul aproape.
-            </p>
-            <p style={{ ...S.sub, marginTop: 14 }}>
-              În primul apel aflăm ce vinzi și cui, și îți spunem sincer dacă reclamele
-              au sens pentru afacerea ta. Nu plătești nimic pentru apel.
-            </p>
-            <p style={{ ...S.sub, marginTop: 14, fontSize: 15 }}>
-              Ai o întrebare până atunci? Scrie-ne la{" "}
-              <a href={`mailto:${EMAIL_HUMANEX}`} style={S.mail}>{EMAIL_HUMANEX}</a>
+              Te sunăm în cel mult o zi lucrătoare. Primul apel e gratuit.
             </p>
             <a href="https://humanex.space" style={S.legaturaInapoi}>Vezi site-ul HUMANEX →</a>
           </section>
@@ -245,7 +227,7 @@ export default function Formular() {
               Hai să-ți aducem <span style={S.albastru}>clienți din reclame.</span>
             </h1>
             <p style={S.sub}>
-              Completezi în 30 de secunde și te sunăm noi. Primul apel e gratuit și fără
+              Trei întrebări, 20 de secunde. Te sunăm noi, iar primul apel e gratuit și fără
               obligații.
             </p>
 
@@ -278,23 +260,15 @@ export default function Formular() {
               >
                 <input
                   id="afacere" name="afacere" type="text" autoComplete="organization"
-                  placeholder="Ex: salon, service auto, magazin online"
+                  placeholder="Ex: salon, service auto"
                   value={afacere} onChange={(e) => setAfacere(e.target.value)}
                   style={{ ...S.input, ...(arata("afacere") ? S.inputRau : {}) }}
                 />
               </Camp>
 
-              <Grup eticheta="Unde vrei să apară reclamele?" nota="Poți alege mai multe.">
-                {PLATFORME.map((p) => (
-                  <Cip key={p} activ={platforme.includes(p)} onClick={() => comutaPlatforma(p)}>
-                    {p}
-                  </Cip>
-                ))}
-              </Grup>
-
               <Grup
-                eticheta="Cât ai vrea să investești lunar în reclame?"
-                nota="Banii de reclamă îi plătești direct platformei. Ne ajută doar să-ți dăm un sfat potrivit."
+                eticheta="Cât ai putea investi lunar în reclame?"
+                nota="Banii de reclamă merg direct la Facebook sau TikTok, nu la noi."
               >
                 {BUGETE.map((b) => (
                   <Cip key={b} activ={buget === b} onClick={() => setBuget(buget === b ? "" : b)}>
@@ -310,25 +284,16 @@ export default function Formular() {
                   value={capcana} onChange={(e) => setCapcana(e.target.value)} />
               </div>
 
-              <label style={{ ...S.acord, ...(arata("acord") ? { borderColor: "rgba(248,113,113,0.6)" } : {}) }}>
-                <input
-                  type="checkbox" checked={acord} onChange={(e) => setAcord(e.target.checked)}
-                  style={S.bifaInput}
-                />
-                <span>
-                  Sunt de acord ca HUMANEX să mă contacteze telefonic sau pe WhatsApp în legătură
-                  cu această cerere.
-                </span>
-              </label>
-              {arata("acord") && <p style={S.eroare}>Bifează căsuța ca să te putem suna.</p>}
-
               {eroare && <p style={{ ...S.eroare, ...S.cutieEroare }} role="alert">{eroare}</p>}
 
               <button type="submit" disabled={seTrimite} style={{ ...S.buton, opacity: seTrimite ? 0.7 : 1 }}>
                 {seTrimite ? "Se trimite…" : "Vreau să fiu sunat →"}
               </button>
 
-              <p style={S.mic}>Durează 30 de secunde. Nu primești spam.</p>
+              <p style={S.mic}>
+                Apăsând, ne dai voie să te sunăm sau să-ți scriem pe WhatsApp despre cererea ta.
+                Nu primești spam.
+              </p>
               <p style={{ ...S.mic, marginTop: 6 }}>
                 Preferi emailul? Scrie-ne la{" "}
                 <a href={`mailto:${EMAIL_HUMANEX}`} style={S.mail}>{EMAIL_HUMANEX}</a>
@@ -355,7 +320,7 @@ export default function Formular() {
               <summary style={S.dateTitlu}>Ce facem cu datele tale</summary>
               <div style={S.dateText}>
                 <p>
-                  Datele din formular (nume, telefon, afacerea ta și ce ai ales) ajung doar la
+                  Datele din formular (nume, telefon, afacerea ta și bugetul ales) ajung doar la
                   HUMANEX (AMBRONUS SRL, Brașov). Le folosim ca să te contactăm în legătură cu
                   cererea ta și nu le vindem și nu le dăm nimănui.
                 </p>
@@ -522,12 +487,6 @@ const S: Record<string, React.CSSProperties> = {
     background: "rgba(29,78,216,0.3)", borderColor: "#3b82f6", color: "#fff",
     boxShadow: "0 0 0 1px #3b82f6 inset",
   },
-  acord: {
-    display: "flex", gap: 12, alignItems: "flex-start", fontSize: 14, lineHeight: 1.5,
-    color: "rgba(255,255,255,0.75)", cursor: "pointer", padding: "14px",
-    border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, marginTop: 4,
-  },
-  bifaInput: { width: 20, height: 20, marginTop: 1, flexShrink: 0, accentColor: "#3b82f6" },
   buton: {
     width: "100%", marginTop: 18, padding: "18px", borderRadius: 14, border: "none",
     background: "linear-gradient(135deg, #1d4ed8, #0ea5e9)", color: "#fff",

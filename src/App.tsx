@@ -154,13 +154,13 @@ const UI = {
     ro: "Eroare la trimitere. Încearcă din nou sau scrie-ne direct la ambronus@humanex.space.",
     en: "Something went wrong. Try again, or email us at ambronus@humanex.space.",
   },
-  waTitlu: { ro: "Mai ai un singur pas", en: "One last step" },
+  waTitlu: { ro: "Încă un pas:", en: "One more step:" },
   waText: {
-    ro: "Trimite-ne și un mesaj pe WhatsApp, ca să vorbim mai repede. Mesajul e deja scris, tu doar apeși Trimite.",
-    en: "Send us a WhatsApp message too, so we can talk sooner. The message is already written; just press Send.",
+    ro: "Apasă butonul și trimite mesajul pe WhatsApp. E deja scris.",
+    en: "Tap the button and send the WhatsApp message. It is already written.",
   },
-  waButon: { ro: "Trimite mesajul pe WhatsApp", en: "Send the message on WhatsApp" },
-  waAuto: { ro: "Te ducem singuri în WhatsApp în câteva secunde.", en: "We will open WhatsApp for you in a few seconds." },
+  waButon: { ro: "Trimite pe WhatsApp", en: "Send on WhatsApp" },
+  waAuto: { ro: "Se deschide singur în câteva secunde.", en: "It opens by itself in a few seconds." },
   rights: { ro: "Toate drepturile rezervate.", en: "All rights reserved." },
   basedIn: { ro: "Brașov, România", en: "Brașov, Romania" },
 };
@@ -815,11 +815,9 @@ export default function App() {
       );
       if (areWhatsApp) {
         const despre =
-          topic === "ads" ? "reclame plătite" : topic === "sys" ? "un sistem sau un site" : topic === "both" ? "reclame și un sistem" : "un proiect";
-        const cine = g("business") ? `${g("name")}, de la ${g("business")}` : g("name");
-        setLinkWa(linkWhatsApp(
-          `Bună! Sunt ${cine}. Tocmai v-am scris de pe humanex.space și aș vrea să vorbim despre ${despre}.`,
-        ));
+          topic === "ads" ? "reclame" : topic === "sys" ? "un sistem" : topic === "both" ? "reclame și un sistem" : "o colaborare";
+        const cine = g("business") ? `${g("name")} (${g("business")})` : g("name");
+        setLinkWa(linkWhatsApp(`Bună! Sunt ${cine}. Vreau detalii despre ${despre}.`));
       }
       setSent(true);
       setTopic("");
